@@ -7,7 +7,7 @@ import { renderSecondChildAddedScreen }   from "./screens/secondChildAddedScreen
 import { renderShowPainScreen }           from "./screens/ShowpainScreen";
 import { renderPainTypeScreen }           from "./screens/Paintypescreen";
 import { renderWhenDidItStartScreen }     from "./screens/WhenDidItStartScreen";
-import { renderPainScaleScreen }          from "./screens/PainScaleScreen";
+import { renderPainScaleScreen }          from "./screens/Painscalescreen";
 
 let previousHash = "#get-started";
 

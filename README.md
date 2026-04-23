@@ -194,4 +194,8 @@ These must be exported manually from the Figma file. File ID: `12pSgR1EI0bCNS5rD
 
 ## Author
 
+<<<<<<< HEAD
 Oyewole Sylvanna
+=======
+Oyewole Sylvanna
+>>>>>>> develop

@@ -1,4 +1,3 @@
-import { createStatusBar } from "../components/statusBar";
 import { ASSETS } from "../assets";
 
 const PAIN_TYPES = [
@@ -165,7 +164,6 @@ export function renderPainTypeScreen(app, { bodyPart = "", fromScreen = "#body-m
 
   const screen = document.createElement("main");
   screen.className = "screen pain-type-screen";
-  screen.append(createStatusBar());
 
   const subtitle = bodyPart ? `<p class="pain-type-subtitle">(${bodyPart})</p>` : "";
 

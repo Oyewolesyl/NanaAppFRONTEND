@@ -1,4 +1,3 @@
-import { createStatusBar } from "../components/statusBar";
 import { ASSETS } from "../assets";
 
 /* ─── Mini body SVG (compact, shows selected zones) ────────────────── */
@@ -114,7 +113,6 @@ export function renderPainScaleScreen(app, { painDesc = "", selectedZones = [], 
 
   const screen = document.createElement("main");
   screen.className = "screen pain-scale-screen";
-  screen.append(createStatusBar());
 
   const subtitle = painDesc ? `<p class="pain-scale-subtitle">(${painDesc})</p>` : "";
 

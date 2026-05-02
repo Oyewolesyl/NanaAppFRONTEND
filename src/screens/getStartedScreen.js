@@ -11,8 +11,7 @@ export function renderGetStartedScreen(app) {
     <img class="bg-teddy bg-teddy--bottom" src="${ASSETS.teddyBackground}" alt="" aria-hidden="true" />
     <h1 class="welcome-title">Welcome to</h1>
     <section class="app-thumbnail" aria-label="Nana app logo card">
-      <img src="${ASSETS.logoMark}" alt="" class="thumbnail-mark" />
-      <img src="${ASSETS.logoText}" alt="Nana the app" class="thumbnail-text" />
+      <img src="${ASSETS.logoMark}" alt="Nana the app" class="thumbnail-mark" />
     </section>
     <button type="button" class="continue-button get-started-button">Get Started</button>
     <p class="tagline">“a visual voice for when it hurts”</p>

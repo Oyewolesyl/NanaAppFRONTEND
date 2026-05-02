@@ -45,7 +45,7 @@ body {
   flex-shrink: 0; z-index: 1;
 }
 .back-button:active { opacity: 0.7; transform: scale(0.93); }
-.back-button img { width: 12px; height: 21px; display: block; pointer-events: none; }
+.back-button img { width: 20px; height: 34px; display: block; pointer-events: none; }
 .nav-page-title {
   position: absolute; left: 0; right: 0;
   text-align: center; pointer-events: none;
@@ -86,7 +86,7 @@ body {
   border-radius: 30px; border: 0.59px solid var(--teal); background: #fff;
   display: grid; place-items: center; padding: 24px 18px; gap: 18px; z-index: 1;
 }
-.thumbnail-mark { width: 60.773px; height: 61.364px; display: block; object-fit: contain; }
+.thumbnail-mark { width: 100%; max-width: 113px; height: auto; display: block; object-fit: contain; }
 .thumbnail-text { width: 114.598px; height: 55.444px; display: block; object-fit: contain; }
 .get-started-button { margin-top: auto; }
 .tagline {
@@ -111,12 +111,12 @@ body {
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
 .role-option:active { transform: scale(0.97); }
-.role-icon    { overflow: hidden; position: relative; background: transparent; pointer-events: none; }
+.role-icon    { display: flex; align-items: center; justify-content: center; background: transparent; pointer-events: none; }
 .role-icon--parent { width: 170px; height: 169px; }
 .role-icon--doctor { width: 167px; height: 167px; }
-.role-icon-image   { position: absolute; display: block; pointer-events: none; }
-.role-icon--parent .role-icon-image { width: 440px; top: -36px; left: -44px; }
-.role-icon--doctor .role-icon-image { width: 443px; top: -31px; left: -232px; }
+.role-icon-image   { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.role-icon--parent .role-icon-image { width: 100%; height: 100%; }
+.role-icon--doctor .role-icon-image { width: 100%; height: 100%; }
 .role-button {
   width: min(244px, 100%); min-height: 56px; padding: 14px 20px;
   border: 1.47px solid var(--outline); border-radius: 8.25px;
@@ -155,7 +155,7 @@ body {
 .children-add-section { margin-top: 42px; text-align: center; display: flex; flex-direction: column; align-items: center; flex: 1; width: 100%; }
 .children-add-title { color: var(--red); font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; line-height: 1; letter-spacing: 0.03px; -webkit-text-stroke: 1px #5f577f; }
 .children-add-button { margin-top: 16px; width: 100px; height: 100px; border: 0; background: transparent; cursor: pointer; }
-.children-add-button img { width: 100%; height: 100%; display: block; }
+.children-add-button img, .children-add-button svg { width: 100%; height: 100%; display: block; }
 .bottom-nav {
   position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 120px;
   background: var(--yellow); display: flex; align-items: center;
@@ -201,7 +201,7 @@ body {
 }
 .floating-add-btn:active { transform: scale(0.88); }
 .floating-add-btn--lower { top: 739px; }
-.floating-add-btn img { width: 100%; height: 100%; display: block; pointer-events: none; }
+.floating-add-btn img, .floating-add-btn svg { width: 100%; height: 100%; display: block; pointer-events: none; }
 .child-card-list--two { width: 350px; justify-content: space-between; margin-left: auto; margin-right: auto; }
 .add-child-overlay { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; }
 .add-child-overlay[hidden] { display: none; }
@@ -522,7 +522,7 @@ body {
   flex-shrink: 0; z-index: 1;
 }
 .back-button:active { opacity: 0.7; transform: scale(0.93); }
-.back-button img { width: 12px; height: 21px; display: block; pointer-events: none; }
+.back-button img { width: 20px; height: 34px; display: block; pointer-events: none; }
 .nav-page-title {
   position: absolute; left: 0; right: 0;
   text-align: center; pointer-events: none;
@@ -563,7 +563,7 @@ body {
   border-radius: 30px; border: 0.59px solid var(--teal); background: #fff;
   display: grid; place-items: center; padding: 24px 18px; gap: 18px; z-index: 1;
 }
-.thumbnail-mark { width: 60.773px; height: 61.364px; display: block; object-fit: contain; }
+.thumbnail-mark { width: 100%; max-width: 113px; height: auto; display: block; object-fit: contain; }
 .thumbnail-text { width: 114.598px; height: 55.444px; display: block; object-fit: contain; }
 .get-started-button { margin-top: auto; }
 .tagline {
@@ -588,12 +588,12 @@ body {
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
 .role-option:active { transform: scale(0.97); }
-.role-icon    { overflow: hidden; position: relative; background: transparent; pointer-events: none; }
+.role-icon    { display: flex; align-items: center; justify-content: center; background: transparent; pointer-events: none; }
 .role-icon--parent { width: 170px; height: 169px; }
 .role-icon--doctor { width: 167px; height: 167px; }
-.role-icon-image   { position: absolute; display: block; pointer-events: none; }
-.role-icon--parent .role-icon-image { width: 440px; top: -36px; left: -44px; }
-.role-icon--doctor .role-icon-image { width: 443px; top: -31px; left: -232px; }
+.role-icon-image   { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.role-icon--parent .role-icon-image { width: 100%; height: 100%; }
+.role-icon--doctor .role-icon-image { width: 100%; height: 100%; }
 .role-button {
   width: min(244px, 100%); min-height: 56px; padding: 14px 20px;
   border: 1.47px solid var(--outline); border-radius: 8.25px;
@@ -632,7 +632,7 @@ body {
 .children-add-section { margin-top: 42px; text-align: center; display: flex; flex-direction: column; align-items: center; flex: 1; width: 100%; }
 .children-add-title { color: var(--red); font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; line-height: 1; letter-spacing: 0.03px; -webkit-text-stroke: 1px #5f577f; }
 .children-add-button { margin-top: 16px; width: 100px; height: 100px; border: 0; background: transparent; cursor: pointer; }
-.children-add-button img { width: 100%; height: 100%; display: block; }
+.children-add-button img, .children-add-button svg { width: 100%; height: 100%; display: block; }
 .bottom-nav {
   position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 120px;
   background: var(--yellow); display: flex; align-items: center;
@@ -678,7 +678,7 @@ body {
 }
 .floating-add-btn:active { transform: scale(0.88); }
 .floating-add-btn--lower { top: 739px; }
-.floating-add-btn img { width: 100%; height: 100%; display: block; pointer-events: none; }
+.floating-add-btn img, .floating-add-btn svg { width: 100%; height: 100%; display: block; pointer-events: none; }
 .child-card-list--two { width: 350px; justify-content: space-between; margin-left: auto; margin-right: auto; }
 .add-child-overlay { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; }
 .add-child-overlay[hidden] { display: none; }

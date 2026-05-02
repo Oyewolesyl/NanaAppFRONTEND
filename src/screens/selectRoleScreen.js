@@ -1,12 +1,10 @@
 import { ASSETS } from "../assets";
-import { createStatusBar } from "../components/statusBar";
 
 export function renderSelectRoleScreen(app) {
   app.innerHTML = "";
 
   const screen = document.createElement("main");
   screen.className = "screen select-role-screen";
-  screen.append(createStatusBar());
 
   screen.insertAdjacentHTML("beforeend", `
     <header class="top-bar">
@@ -20,7 +18,7 @@ export function renderSelectRoleScreen(app) {
 
       <article class="role-option" data-role="parent">
         <div class="role-icon role-icon--parent">
-          <img src="${ASSETS.roleIcons}" alt="Parent illustration" class="role-icon-image" />
+          <img src="${ASSETS.caregiverIcon}" alt="Parent illustration" class="role-icon-image" />
         </div>
         <button class="role-button" type="button" data-role="parent">
           Parent / Caregiver
@@ -29,7 +27,7 @@ export function renderSelectRoleScreen(app) {
 
       <article class="role-option" data-role="doctor">
         <div class="role-icon role-icon--doctor">
-          <img src="${ASSETS.roleIcons}" alt="Doctor illustration" class="role-icon-image" />
+          <img src="${ASSETS.doctorIcon}" alt="Doctor illustration" class="role-icon-image" />
         </div>
         <button class="role-button" type="button" data-role="doctor">
           Doctor / Professional

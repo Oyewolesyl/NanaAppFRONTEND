@@ -1,4 +1,3 @@
-import { createStatusBar } from "../components/statusBar";
 import { ASSETS } from "../assets";
 
 function svgAfterFood() {
@@ -135,7 +134,6 @@ export function renderWhenDidItStartScreen(app, { painDesc = "", fromScreen = "#
 
   const screen = document.createElement("main");
   screen.className = "screen when-screen";
-  screen.append(createStatusBar());
 
   const subtitle = painDesc ? `<p class="when-subtitle">(${painDesc})</p>` : "";
 

@@ -50,8 +50,11 @@ export function createAddChildOverlay() {
     <section class="add-child-modal" aria-label="Add child">
       <div class="add-image-card">
         <div class="add-image-icon-wrap">
-          <img class="add-image-circle" src="${ASSETS.overlayCircle}" alt="" />
-          <img class="add-image-plus" src="${ASSETS.overlayPlus}" alt="" />
+          <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;">
+            <circle cx="55" cy="55" r="55" fill="#D9D9D9"/>
+            <line x1="55" y1="30" x2="55" y2="80" stroke="white" stroke-width="10" stroke-linecap="round"/>
+            <line x1="30" y1="55" x2="80" y2="55" stroke="white" stroke-width="10" stroke-linecap="round"/>
+          </svg>
         </div>
         <button type="button" class="add-image-action">+ Add image from Gallery</button>
       </div>

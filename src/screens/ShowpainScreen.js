@@ -1,4 +1,3 @@
-import { createStatusBar } from "../components/statusBar";
 import { ASSETS } from "../assets";
 
 /* ── Labels (child-friendly + clinically accurate) ─────────────── */
@@ -153,7 +152,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   app.innerHTML = "";
   const screen = document.createElement("main");
   screen.className = "screen show-pain-screen";
-  screen.append(createStatusBar());
 
   screen.insertAdjacentHTML("beforeend", `
     <header class="top-bar show-pain-top-bar">

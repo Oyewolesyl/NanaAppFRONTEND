@@ -1,171 +1,153 @@
 import { createStatusBar } from "../components/statusBar";
 import { ASSETS } from "../assets";
 
+/* ── Labels (child-friendly + clinically accurate) ─────────────── */
 const LABELS = {
-  head:"Head","back-head":"Head (back)",neck:"Neck",
-  chest:"Chest",abdomen:"Tummy","upper-back":"Upper Back","lower-back":"Lower Back",
-  hips:"Hips",glutes:"Bottom",
-  "left-arm":"Left Arm","right-arm":"Right Arm",
-  "left-forearm":"L. Forearm","right-forearm":"R. Forearm",
-  "left-hand":"Left Hand","right-hand":"Right Hand",
-  "left-thigh":"L. Thigh","right-thigh":"R. Thigh",
-  "left-hamstring":"L. Hamstring","right-hamstring":"R. Hamstring",
-  "left-shin":"Left Shin","right-shin":"Right Shin",
-  "left-calf":"Left Calf","right-calf":"Right Calf",
-  "left-foot":"Left Foot","right-foot":"Right Foot",
-  "left-heel":"Left Heel","right-heel":"Right Heel",
+  "head":              "Head",
+  "back-head":         "Back of Head",
+  "neck":              "Neck",
+  "back-neck":         "Back of Neck",
+  "left-shoulder":     "Left Shoulder",
+  "right-shoulder":    "Right Shoulder",
+  "chest":             "Chest",
+  "tummy":             "Tummy",
+  "groin":             "Groin",
+  "upper-back":        "Upper Back",
+  "lower-back":        "Lower Back",
+  "left-glute":        "Left Bottom",
+  "right-glute":       "Right Bottom",
+  "left-upper-arm":    "Left Upper Arm",
+  "right-upper-arm":   "Right Upper Arm",
+  "left-forearm":      "Left Forearm",
+  "right-forearm":     "Right Forearm",
+  "left-hand":         "Left Hand",
+  "right-hand":        "Right Hand",
+  "left-hip":          "Left Hip",
+  "right-hip":         "Right Hip",
+  "left-thigh":        "Left Thigh",
+  "right-thigh":       "Right Thigh",
+  "left-hamstring":    "Left Hamstring",
+  "right-hamstring":   "Right Hamstring",
+  "left-knee":         "Left Knee",
+  "right-knee":        "Right Knee",
+  "left-back-knee":    "Left Back of Knee",
+  "right-back-knee":   "Right Back of Knee",
+  "left-shin":         "Left Shin",
+  "right-shin":        "Right Shin",
+  "left-calf":         "Left Calf",
+  "right-calf":        "Right Calf",
+  "left-ankle":        "Left Ankle",
+  "right-ankle":       "Right Ankle",
+  "left-foot":         "Left Foot",
+  "right-foot":        "Right Foot",
+  "left-heel":         "Left Heel",
+  "right-heel":        "Right Heel",
 };
-const FILLS  = ["rgba(255,80,60,.42)","rgba(255,165,30,.42)","rgba(30,185,100,.42)","rgba(50,140,255,.42)","rgba(180,70,220,.42)"];
+
+const FILLS  = ["rgba(255,80,60,.7)","rgba(255,165,30,.7)","rgba(30,185,100,.7)","rgba(50,140,255,.7)","rgba(180,70,220,.7)"];
 const BADGES = ["#d42810","#c87800","#18904a","#1870d0","#9020b8"];
 
-/* ─── Body SVG ───────────────────────────────────────────────────
-   viewBox: 0 0 200 400
-   Centre line: x = 100
-   Everything is strictly mirrored. Uses rounded rects + ellipses
-   for a clean, friendly, child-appropriate look.
-   No freehand paths — purely geometric so nothing can go crooked.
-──────────────────────────────────────────────────────────────── */
-function makeSVG(isFront) {
-  const face = isFront ? `
-    <!-- eyes -->
-    <circle fill="#3a2a18" cx="88" cy="28" r="4"/>
-    <circle fill="#3a2a18" cx="112" cy="28" r="4"/>
-    <circle fill="#fff" cx="89.5" cy="26.5" r="1.6"/>
-    <circle fill="#fff" cx="113.5" cy="26.5" r="1.6"/>
-    <!-- nose -->
-    <circle fill="#c07850" cx="100" cy="34" r="2.2"/>
-    <!-- smile -->
-    <path fill="none" stroke="#c07850" stroke-width="2" stroke-linecap="round" d="M92 41 Q100 48 108 41"/>
-    <!-- cheeks -->
-    <ellipse fill="#f0a888" opacity=".55" cx="81" cy="38" rx="7" ry="5"/>
-    <ellipse fill="#f0a888" opacity=".55" cx="119" cy="38" rx="7" ry="5"/>
-  ` : `
-    <!-- hair swirl on back -->
-    <path fill="none" stroke="#c89050" stroke-width="2" stroke-linecap="round" opacity=".5"
-      d="M94 18 Q100 12 106 18 Q112 26 100 28 Q91 26 94 18"/>
-  `;
+/* ── Zone detection — ORIGINAL model local space ──────────────────
+   GLB accessor bounds:
+     Y: 0.001 → 1.100  (0 = feet, 1.1 = crown)
+     X: -0.341 → +0.341 (negative = model's LEFT arm)
+     Z: -0.062 → +0.221 (positive = front of body)
+   ────────────────────────────────────────────────────────────────*/
+function getZoneFromPoint(pt, isFront) {
+  const x = pt.x, y = pt.y;
 
-  const torsoDetail = isFront ? `
-    <line fill="none" stroke="#48AFA2" stroke-width=".9" stroke-dasharray="4 3" opacity=".4" x1="46" y1="108" x2="154" y2="108"/>
-  ` : `
-    <!-- spine -->
-    <line fill="none" stroke="#48AFA2" stroke-width=".9" stroke-dasharray="3 3" opacity=".4" x1="100" y1="72" x2="100" y2="138"/>
-    <!-- shoulder blades — same ellipse, perfectly symmetric -->
-    <ellipse fill="#FFD870" stroke="#48AFA2" stroke-width="1.2" cx="81" cy="98" rx="14" ry="18" opacity=".75"/>
-    <ellipse fill="#FFD870" stroke="#48AFA2" stroke-width="1.2" cx="119" cy="98" rx="14" ry="18" opacity=".75"/>
-    <!-- glute line -->
-    <line fill="none" stroke="#48AFA2" stroke-width=".9" stroke-dasharray="3 3" opacity=".35" x1="100" y1="140" x2="100" y2="184"/>
-  `;
+  // ── Head / neck
+  if (y > 0.93)                          return isFront ? "head" : "back-head";
+  if (y > 0.82 && Math.abs(x) < 0.09)   return isFront ? "neck" : "back-neck";
 
-  /* Zone names differ front vs back */
-  const z = (name, shape) => `<${shape} class="z" data-zone="${name}"`;
+  // ── Shoulders (outer upper torso / arm junction)
+  if (Math.abs(x) > 0.16 && y > 0.76) {
+    return (x < 0 ? "left" : "right") + "-shoulder";
+  }
 
-  const frontZones = `
-    ${z("head","ellipse")} cx="100" cy="30" rx="32" ry="34"/>
-    ${z("neck","rect")} x="91" y="62" width="18" height="14" rx="6"/>
-    ${z("chest","rect")} x="42" y="70" width="116" height="40" rx="4"/>
-    ${z("abdomen","rect")} x="42" y="108" width="116" height="34" rx="4"/>
-    ${z("hips","rect")} x="40" y="140" width="120" height="46" rx="4"/>
-    ${z("left-arm","rect")} x="20" y="72" width="24" height="68" rx="12"/>
-    ${z("right-arm","rect")} x="156" y="72" width="24" height="68" rx="12"/>
-    ${z("left-forearm","rect")} x="16" y="144" width="22" height="58" rx="11"/>
-    ${z("right-forearm","rect")} x="162" y="144" width="22" height="58" rx="11"/>
-    ${z("left-hand","ellipse")} cx="27" cy="216" rx="16" ry="14"/>
-    ${z("right-hand","ellipse")} cx="173" cy="216" rx="16" ry="14"/>
-    ${z("left-thigh","rect")} x="44" y="184" width="36" height="72" rx="4"/>
-    ${z("right-thigh","rect")} x="120" y="184" width="36" height="72" rx="4"/>
-    ${z("left-shin","rect")} x="44" y="258" width="36" height="72" rx="4"/>
-    ${z("right-shin","rect")} x="120" y="258" width="36" height="72" rx="4"/>
-    ${z("left-foot","ellipse")} cx="62" cy="344" rx="22" ry="12"/>
-    ${z("right-foot","ellipse")} cx="138" cy="344" rx="22" ry="12"/>
-  `;
+  // ── Arms (outside torso, below shoulder)
+  // Lower X threshold so narrow arm geometry is easier to tap
+  if (Math.abs(x) > 0.16) {
+    const s = x < 0 ? "left" : "right";
+    if (y > 0.64) return `${s}-upper-arm`;
+    if (y > 0.44) return `${s}-forearm`;
+    return `${s}-hand`;
+  }
 
-  const backZones = `
-    ${z("back-head","ellipse")} cx="100" cy="30" rx="32" ry="34"/>
-    ${z("neck","rect")} x="91" y="62" width="18" height="14" rx="6"/>
-    ${z("upper-back","rect")} x="42" y="70" width="116" height="40" rx="4"/>
-    ${z("lower-back","rect")} x="42" y="108" width="116" height="34" rx="4"/>
-    ${z("glutes","rect")} x="40" y="140" width="120" height="46" rx="4"/>
-    ${z("left-shoulder","rect")} x="20" y="72" width="24" height="68" rx="12"/>
-    ${z("right-shoulder","rect")} x="156" y="72" width="24" height="68" rx="12"/>
-    ${z("left-forearm","rect")} x="16" y="144" width="22" height="58" rx="11"/>
-    ${z("right-forearm","rect")} x="162" y="144" width="22" height="58" rx="11"/>
-    ${z("left-hand","ellipse")} cx="27" cy="216" rx="16" ry="14"/>
-    ${z("right-hand","ellipse")} cx="173" cy="216" rx="16" ry="14"/>
-    ${z("left-hamstring","rect")} x="44" y="184" width="36" height="72" rx="4"/>
-    ${z("right-hamstring","rect")} x="120" y="184" width="36" height="72" rx="4"/>
-    ${z("left-calf","rect")} x="44" y="258" width="36" height="72" rx="4"/>
-    ${z("right-calf","rect")} x="120" y="258" width="36" height="72" rx="4"/>
-    ${z("left-heel","ellipse")} cx="62" cy="344" rx="22" ry="12"/>
-    ${z("right-heel","ellipse")} cx="138" cy="344" rx="22" ry="12"/>
-  `;
+  // ── Torso centre
+  // chest: upper torso, tighter — stops well above navel
+  if (y > 0.76) return isFront ? "chest"   : "upper-back";
+  // tummy: mid torso, nudged up toward chest
+  if (y > 0.60) return isFront ? "tummy"   : "lower-back";
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 360" style="width:100%;height:100%;display:block">
-<defs><style>
-.b{fill:#FFE8A0;stroke:#48AFA2;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
-.j{fill:#FFD870;stroke:#48AFA2;stroke-width:1.5}
-.z{fill:transparent;cursor:pointer}.z:hover{fill:rgba(255,90,70,.2)}
-</style></defs>
+  // ── Hip / groin / glute belt
+  // groin sits just below tummy (0.46–0.60), nudged toward tummy not privates
+  if (y > 0.46) {
+    if (isFront) {
+      if (Math.abs(x) < 0.07) return "groin";
+      return (x < 0 ? "left" : "right") + "-hip";
+    }
+    return (x < 0 ? "left" : "right") + "-glute";
+  }
 
-<!-- HEAD -->
-<ellipse class="b" cx="100" cy="30" rx="28" ry="30"/>
-<ellipse class="b" cx="72"  cy="30" rx="5"  ry="6.5"/>
-<ellipse class="b" cx="128" cy="30" rx="5"  ry="6.5"/>
-${face}
-
-<!-- NECK -->
-<rect class="b" x="92" y="58" width="16" height="16" rx="6"/>
-
-<!-- TORSO: x=44 to x=156, perfectly centred -->
-<rect class="b" x="44" y="70" width="112" height="72" rx="20"/>
-${torsoDetail}
-
-<!-- HIPS: same width band -->
-<rect class="b" x="42" y="138" width="116" height="48" rx="22"/>
-
-<!-- LEFT ARM (x=20..44) — mirror of right (x=156..180) -->
-<rect class="b" x="20" y="72" width="26" height="60" rx="13"/>
-<ellipse class="j" cx="33" cy="134" rx="11" ry="8"/>
-<rect class="b" x="17" y="140" width="22" height="56" rx="11"/>
-<ellipse class="j" cx="28" cy="197" rx="9"  ry="6"/>
-<ellipse class="b" cx="28" cy="212" rx="14" ry="16"/>
-
-<!-- RIGHT ARM (mirror: 200-20=180, 200-44=156) -->
-<rect class="b" x="154" y="72" width="26" height="60" rx="13"/>
-<ellipse class="j" cx="167" cy="134" rx="11" ry="8"/>
-<rect class="b" x="161" y="140" width="22" height="56" rx="11"/>
-<ellipse class="j" cx="172" cy="197" rx="9"  ry="6"/>
-<ellipse class="b" cx="172" cy="212" rx="14" ry="16"/>
-
-<!-- LEFT THIGH (x=46..80) — mirror of right (x=120..154) -->
-<rect class="b" x="46" y="182" width="34" height="68" rx="17"/>
-<ellipse class="j" cx="63" cy="252" rx="14" ry="9"/>
-
-<!-- RIGHT THIGH (mirror) -->
-<rect class="b" x="120" y="182" width="34" height="68" rx="17"/>
-<ellipse class="j" cx="137" cy="252" rx="14" ry="9"/>
-
-<!-- LEFT SHIN (same x as thigh) -->
-<rect class="b" x="48" y="258" width="30" height="68" rx="15"/>
-<ellipse class="j" cx="63" cy="328" rx="12" ry="7"/>
-
-<!-- RIGHT SHIN (mirror) -->
-<rect class="b" x="122" y="258" width="30" height="68" rx="15"/>
-<ellipse class="j" cx="137" cy="328" rx="12" ry="7"/>
-
-<!-- LEFT FOOT -->
-<ellipse class="b" cx="60" cy="340" rx="20" ry="11"/>
-
-<!-- RIGHT FOOT (mirror: 200-60=140) -->
-<ellipse class="b" cx="140" cy="340" rx="20" ry="11"/>
-
-<!-- ZONES -->
-${isFront ? frontZones : backZones}
-</svg>`;
+  // ── Legs
+  const s = x < 0 ? "left" : "right";
+  if (y > 0.28) return isFront ? `${s}-thigh`     : `${s}-hamstring`;
+  if (y > 0.21) return isFront ? `${s}-knee`      : `${s}-back-knee`;
+  if (y > 0.09) return isFront ? `${s}-shin`      : `${s}-calf`;
+  if (y > 0.04) return `${s}-ankle`;
+  return isFront ? `${s}-foot` : `${s}-heel`;
 }
 
-const ZOOMS      = ["0 0 200 360","15 20 170 306","35 60 130 234","50 100 100 180"];
-const ZOOM_LABEL = ["100%","118%","154%","200%"];
+/* ── Zone bounding boxes — ORIGINAL model local space ──────────── */
+const ZONE_BOUNDS_LOCAL = {
+  "head":              { x: 0,      y: 0.99,  z: 0.06,  w:0.22, h:0.18, d:0.20 },
+  "back-head":         { x: 0,      y: 0.99,  z:-0.03,  w:0.22, h:0.18, d:0.20 },
+  "neck":              { x: 0,      y: 0.86,  z: 0.02,  w:0.09, h:0.09, d:0.09 },
+  "back-neck":         { x: 0,      y: 0.86,  z:-0.02,  w:0.09, h:0.09, d:0.09 },
+  "left-shoulder":     { x:-0.22,   y: 0.78,  z: 0,     w:0.12, h:0.10, d:0.12 },
+  "right-shoulder":    { x: 0.22,   y: 0.78,  z: 0,     w:0.12, h:0.10, d:0.12 },
+  "chest":             { x: 0,      y: 0.77,  z: 0.08,  w:0.30, h:0.11, d:0.10 },
+  "tummy":             { x: 0,      y: 0.63,  z: 0.07,  w:0.28, h:0.12, d:0.10 },
+  "groin":             { x: 0,      y: 0.50,  z: 0.06,  w:0.12, h:0.10, d:0.10 },
+  "left-hip":          { x:-0.12,   y: 0.50,  z: 0.06,  w:0.14, h:0.10, d:0.10 },
+  "right-hip":         { x: 0.12,   y: 0.50,  z: 0.06,  w:0.14, h:0.10, d:0.10 },
+  "upper-back":        { x: 0,      y: 0.77,  z:-0.07,  w:0.30, h:0.11, d:0.10 },
+  "lower-back":        { x: 0,      y: 0.63,  z:-0.06,  w:0.28, h:0.12, d:0.10 },
+  "left-glute":        { x:-0.10,   y: 0.50,  z:-0.06,  w:0.14, h:0.10, d:0.10 },
+  "right-glute":       { x: 0.10,   y: 0.50,  z:-0.06,  w:0.14, h:0.10, d:0.10 },
+  "left-upper-arm":    { x:-0.26,   y: 0.66,  z: 0,     w:0.10, h:0.16, d:0.10 },
+  "right-upper-arm":   { x: 0.26,   y: 0.66,  z: 0,     w:0.10, h:0.16, d:0.10 },
+  "left-forearm":      { x:-0.27,   y: 0.49,  z: 0,     w:0.09, h:0.16, d:0.09 },
+  "right-forearm":     { x: 0.27,   y: 0.49,  z: 0,     w:0.09, h:0.16, d:0.09 },
+  "left-hand":         { x:-0.27,   y: 0.32,  z: 0,     w:0.09, h:0.09, d:0.08 },
+  "right-hand":        { x: 0.27,   y: 0.32,  z: 0,     w:0.09, h:0.09, d:0.08 },
+  "left-thigh":        { x:-0.10,   y: 0.33,  z: 0,     w:0.13, h:0.14, d:0.13 },
+  "right-thigh":       { x: 0.10,   y: 0.33,  z: 0,     w:0.13, h:0.14, d:0.13 },
+  "left-hamstring":    { x:-0.10,   y: 0.33,  z:-0.05,  w:0.13, h:0.14, d:0.13 },
+  "right-hamstring":   { x: 0.10,   y: 0.33,  z:-0.05,  w:0.13, h:0.14, d:0.13 },
+  "left-knee":         { x:-0.09,   y: 0.23,  z: 0.02,  w:0.10, h:0.08, d:0.09 },
+  "right-knee":        { x: 0.09,   y: 0.23,  z: 0.02,  w:0.10, h:0.08, d:0.09 },
+  "left-back-knee":    { x:-0.09,   y: 0.23,  z:-0.04,  w:0.10, h:0.08, d:0.09 },
+  "right-back-knee":   { x: 0.09,   y: 0.23,  z:-0.04,  w:0.10, h:0.08, d:0.09 },
+  "left-shin":         { x:-0.09,   y: 0.14,  z: 0.02,  w:0.09, h:0.12, d:0.09 },
+  "right-shin":        { x: 0.09,   y: 0.14,  z: 0.02,  w:0.09, h:0.12, d:0.09 },
+  "left-calf":         { x:-0.09,   y: 0.14,  z:-0.04,  w:0.09, h:0.12, d:0.09 },
+  "right-calf":        { x: 0.09,   y: 0.14,  z:-0.04,  w:0.09, h:0.12, d:0.09 },
+  "left-ankle":        { x:-0.08,   y: 0.05,  z: 0.01,  w:0.08, h:0.05, d:0.08 },
+  "right-ankle":       { x: 0.08,   y: 0.05,  z: 0.01,  w:0.08, h:0.05, d:0.08 },
+  "left-foot":         { x:-0.08,   y: 0.02,  z: 0.05,  w:0.09, h:0.05, d:0.15 },
+  "right-foot":        { x: 0.08,   y: 0.02,  z: 0.05,  w:0.09, h:0.05, d:0.15 },
+  "left-heel":         { x:-0.08,   y: 0.02,  z:-0.04,  w:0.09, h:0.05, d:0.10 },
+  "right-heel":        { x: 0.08,   y: 0.02,  z:-0.04,  w:0.09, h:0.05, d:0.10 },
+};
+
+// Model constants from GLB accessor
+const MODEL_LOCAL_Y_MIN  = 0.0008;
+const MODEL_LOCAL_Y_MAX  = 1.1005;
+const MODEL_LOCAL_HEIGHT = MODEL_LOCAL_Y_MAX - MODEL_LOCAL_Y_MIN;
+const MODEL_SCALE        = 1.8 / MODEL_LOCAL_HEIGHT;
+const MODEL_CENTRE_Y     = (MODEL_LOCAL_Y_MIN + MODEL_LOCAL_Y_MAX) / 2;
 
 export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) {
   app.innerHTML = "";
@@ -186,7 +168,11 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     </div>
     <p class="body-hint">Tap the place that hurts</p>
     <div class="body-map-wrap">
-      <div class="body-svg-wrap" id="bodySvgWrap">${makeSVG(true)}</div>
+      <div class="body-svg-wrap" id="bodySvgWrap" style="position:relative;">
+        <canvas id="bodyCanvas" style="width:100%;height:100%;display:block;touch-action:none;cursor:pointer;border-radius:16px;"></canvas>
+        <div id="bodyLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#48AFA2;font-family:Nunito,sans-serif;font-size:14px;font-weight:700;pointer-events:none;">Loading model…</div>
+        <div id="bodyBadges" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+      </div>
     </div>
     <div class="zoom-row">
       <button type="button" class="zoom-btn zoom-btn--minus" aria-label="Zoom out">−</button>
@@ -196,74 +182,331 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     <button type="button" class="continue-button show-pain-continue">Continue</button>
   `);
 
-  screen.querySelector(".back-button").addEventListener("click", () => {
-    window.location.hash = fromScreen;
-  });
+  screen.querySelector(".back-button").addEventListener("click",  () => { window.location.hash = fromScreen; });
+  screen.querySelector(".show-pain-continue").addEventListener("click", () => { window.location.hash = "#pain-type"; });
 
-  const wrap = screen.querySelector("#bodySvgWrap");
+  const wrap      = screen.querySelector("#bodySvgWrap");
+  const canvas    = screen.querySelector("#bodyCanvas");
+  const loadingEl = screen.querySelector("#bodyLoading");
+  const badgesEl  = screen.querySelector("#bodyBadges");
+  const zlbl      = screen.querySelector("#zoomLabel");
 
+  let isFront   = true;
+  const sel     = new Map();
+  let cidx      = 0;
+  let hasTapped = false;   // pulse stops after first successful tap
+
+  // Continuous camera distance (zoom). Range: 0.7 (close) – 2.2 (far)
+  let camDist = 2.0;
+  const CAM_MIN = 0.7;
+  const CAM_MAX = 2.2;
+
+  let renderer, camera, scene, model, raycaster;
+  let bodyMeshes = [];
+  const overlays = [];
+
+  // ── CDN loader ───────────────────────────────────────────────
+  function loadLibs() {
+    return new Promise(resolve => {
+      if (window.THREE && window.THREE.GLTFLoader) { resolve(); return; }
+      const s1 = document.createElement("script");
+      s1.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+      s1.onload = () => {
+        const s2 = document.createElement("script");
+        s2.src = "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js";
+        s2.onload = resolve;
+        document.head.appendChild(s2);
+      };
+      document.head.appendChild(s1);
+    });
+  }
+
+  // ── Scene init ───────────────────────────────────────────────
+  async function init() {
+    await loadLibs();
+    const THREE = window.THREE;
+    const rect  = wrap.getBoundingClientRect();
+    const W = rect.width  || 300;
+    const H = rect.height || 420;
+
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(W, H);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.setClearColor(0x000000, 0);
+
+    scene  = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(58, W / H, 0.01, 100);
+    positionCamera();
+
+    scene.add(new THREE.AmbientLight(0xfff8f0, 0.7));
+    const key = new THREE.DirectionalLight(0xfff4e0, 1.5);
+    key.position.set(1.5, 3, 2.5); key.castShadow = true; scene.add(key);
+    const fill = new THREE.DirectionalLight(0xd0e8ff, 0.6);
+    fill.position.set(-2, 1, -1); scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.25);
+    rim.position.set(0, -2, -3); scene.add(rim);
+
+    raycaster = new THREE.Raycaster();
+
+    new THREE.GLTFLoader().load("/bodymap.glb", gltf => {
+      model = gltf.scene;
+      model.scale.setScalar(MODEL_SCALE);
+      model.position.set(0, -(MODEL_CENTRE_Y * MODEL_SCALE), 0);
+
+      model.traverse(c => {
+        if (!c.isMesh) return;
+        c.castShadow = true;
+        c.receiveShadow = true;
+        c.material = new THREE.MeshStandardMaterial({
+          color:     new THREE.Color(0xf0b882),
+          emissive:  new THREE.Color(0x000000),
+          roughness: 0.55,
+          metalness: 0.0,
+        });
+        bodyMeshes.push(c);
+      });
+
+      scene.add(model);
+      loadingEl.style.display = "none";
+
+      // ── Render + pulse loop ─────────────────────────────────
+      const PULSE_COLOR = new THREE.Color(0x48AFA2);   // teal
+      const BLACK       = new THREE.Color(0x000000);
+
+      (function loop(ts) {
+        requestAnimationFrame(loop);
+        if (!hasTapped) {
+          // Smooth sine wave: peaks every ~2 s, intensity 0–0.18
+          const t = (ts || 0) * 0.0015;
+          const intensity = Math.pow(Math.sin(t * Math.PI), 2) * 0.18;
+          bodyMeshes.forEach(m => {
+            m.material.emissive.lerpColors(BLACK, PULSE_COLOR, intensity);
+          });
+        } else {
+          bodyMeshes.forEach(m => m.material.emissive.set(0x000000));
+        }
+        renderer.render(scene, camera);
+      })();
+
+    }, undefined, err => {
+      loadingEl.textContent = "Place bodymap.glb in /public folder";
+      console.error("GLB load error:", err);
+    });
+  }
+
+  function positionCamera() {
+    if (!camera) return;
+    camera.position.set(0, 0, isFront ? camDist : -camDist);
+    camera.lookAt(0, 0, 0);
+  }
+
+  function clampDist(d) {
+    return Math.max(CAM_MIN, Math.min(CAM_MAX, d));
+  }
+
+  function updateZoomLabel() {
+    // Map camDist range (2.2=100% → 0.7=300%) to a readable %
+    const pct = Math.round(100 * CAM_MAX / camDist);
+    zlbl.textContent = pct + "%";
+  }
+
+  // ── Hit detection ────────────────────────────────────────────
+  function handleTap(clientX, clientY) {
+    if (!model) return;
+    const THREE = window.THREE;
+    const rect = canvas.getBoundingClientRect();
+    const nx =  ((clientX - rect.left) / rect.width)  * 2 - 1;
+    const ny = -((clientY - rect.top)  / rect.height) * 2 + 1;
+    raycaster.setFromCamera({ x: nx, y: ny }, camera);
+    const hits = raycaster.intersectObject(model, true);
+    if (!hits.length) return;
+
+    // Reverse model transform → original local space
+    const wp = hits[0].point.clone();
+    const origLocal = new THREE.Vector3(
+      wp.x / MODEL_SCALE,
+      (wp.y - model.position.y) / MODEL_SCALE,
+      wp.z / MODEL_SCALE
+    );
+
+    const zone = getZoneFromPoint(origLocal, isFront);
+    if (!zone) return;
+
+    hasTapped = true;
+    if (sel.has(zone)) { sel.delete(zone); } else { sel.set(zone, cidx++ % FILLS.length); }
+    refreshOverlays();
+    updateBadges();
+  }
+
+  canvas.addEventListener("click", e => handleTap(e.clientX, e.clientY));
+
+  // ── Touch: pinch-to-zoom + single-finger drag-to-zoom + tap ──
+  let touchState = null;   // tracks ongoing touch gesture
+
+  canvas.addEventListener("touchstart", e => {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      touchState = {
+        type: "single",
+        startY: e.touches[0].clientY,
+        startX: e.touches[0].clientX,
+        startDist: camDist,
+        moved: false,
+      };
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchState = {
+        type: "pinch",
+        startSpread: Math.hypot(dx, dy),
+        startDist: camDist,
+      };
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("touchmove", e => {
+    e.preventDefault();
+    if (!touchState) return;
+
+    if (touchState.type === "pinch" && e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const spread = Math.hypot(dx, dy);
+      // Larger spread = zoomed in = smaller camDist
+      camDist = clampDist(touchState.startDist * (touchState.startSpread / spread));
+      positionCamera();
+      updateZoomLabel();
+      updateBadges();
+
+    } else if (touchState.type === "single" && e.touches.length === 1) {
+      const dy = e.touches[0].clientY - touchState.startY;
+      const dx = e.touches[0].clientX - touchState.startX;
+      // Only trigger drag-zoom if primarily vertical movement
+      if (Math.abs(dy) > 8 || touchState.moved) {
+        touchState.moved = true;
+        // Drag down = zoom in (smaller dist), drag up = zoom out
+        camDist = clampDist(touchState.startDist + dy * 0.004);
+        positionCamera();
+        updateZoomLabel();
+        updateBadges();
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("touchend", e => {
+    e.preventDefault();
+    const state = touchState;
+    touchState = null;
+    // Only fire tap if it was a single touch and barely moved
+    if (state && state.type === "single" && !state.moved && e.changedTouches.length) {
+      handleTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    }
+  }, { passive: false });
+
+  // ── Mouse scroll wheel zoom (desktop) ────────────────────────
+  canvas.addEventListener("wheel", e => {
+    e.preventDefault();
+    camDist = clampDist(camDist + e.deltaY * 0.002);
+    positionCamera();
+    updateZoomLabel();
+    updateBadges();
+  }, { passive: false });
+
+  // ── Zone overlays ────────────────────────────────────────────
+  function localBoundToWorld(b, frontFace) {
+    const S  = MODEL_SCALE;
+    const Py = model ? model.position.y : -(MODEL_CENTRE_Y * MODEL_SCALE);
+    return {
+      wx: b.x * S,
+      wy: b.y * S + Py,
+      wz: (frontFace ? b.z : -b.z) * S,
+      ww: b.w * S, wh: b.h * S, wd: b.d * S,
+    };
+  }
+
+  function refreshOverlays() {
+    const THREE = window.THREE;
+    overlays.forEach(m => scene.remove(m));
+    overlays.length = 0;
+    sel.forEach((ci, zone) => {
+      const b = ZONE_BOUNDS_LOCAL[zone]; if (!b) return;
+      const w = localBoundToWorld(b, isFront);
+      const rgb = FILLS[ci].match(/[\d.]+/g);
+      const color = new THREE.Color(+rgb[0]/255, +rgb[1]/255, +rgb[2]/255);
+      const mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(w.ww, w.wh, w.wd),
+        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45, depthWrite: false })
+      );
+      mesh.position.set(w.wx, w.wy, w.wz);
+      scene.add(mesh);
+      overlays.push(mesh);
+    });
+  }
+
+  // ── Badge labels ─────────────────────────────────────────────
+  function updateBadges() {
+    badgesEl.innerHTML = "";
+    if (!camera || !renderer) return;
+    const THREE = window.THREE;
+    const rect = canvas.getBoundingClientRect();
+    sel.forEach((ci, zone) => {
+      const b = ZONE_BOUNDS_LOCAL[zone]; if (!b) return;
+      const w = localBoundToWorld(b, isFront);
+      const v = new THREE.Vector3(w.wx, w.wy, w.wz).project(camera);
+      const px = ((v.x + 1) / 2) * rect.width;
+      const py = ((-v.y + 1) / 2) * rect.height;
+      const el = document.createElement("div");
+      el.style.cssText = `
+        position:absolute;left:${px}px;top:${py}px;
+        transform:translate(-50%,-50%);
+        background:${BADGES[ci]};color:#fff;
+        font-family:Nunito,sans-serif;font-size:11px;font-weight:700;
+        padding:3px 9px;border-radius:10px;
+        border:1.5px solid rgba(255,255,255,0.9);
+        white-space:nowrap;pointer-events:auto;cursor:pointer;
+        box-shadow:0 2px 6px rgba(0,0,0,0.25);
+      `;
+      el.textContent = LABELS[zone] || zone;
+      el.addEventListener("click", () => { sel.delete(zone); refreshOverlays(); updateBadges(); });
+      badgesEl.appendChild(el);
+    });
+  }
+
+  // ── Front / Back toggle ──────────────────────────────────────
   screen.querySelectorAll(".body-toggle-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       screen.querySelectorAll(".body-toggle-btn").forEach(b => b.classList.remove("body-toggle-btn--active"));
       btn.classList.add("body-toggle-btn--active");
-      wrap.innerHTML = makeSVG(btn.dataset.view === "front");
-      applyZoom(); sel.clear(); cidx = 0; bindZones();
+      isFront = btn.dataset.view === "front";
+      positionCamera();
+      refreshOverlays();
+      updateBadges();
     });
   });
 
-  let zi = 0;
-  const zlbl = screen.querySelector("#zoomLabel");
-  function getSVG() { return wrap.querySelector("svg"); }
-  function applyZoom() {
-    const s = getSVG(); if (s) s.setAttribute("viewBox", ZOOMS[zi]);
-    zlbl.textContent = ZOOM_LABEL[zi];
-  }
-  screen.querySelector(".zoom-btn--minus").addEventListener("click", () => { if (zi > 0) { zi--; applyZoom(); } });
-  screen.querySelector(".zoom-btn--plus").addEventListener("click",  () => { if (zi < ZOOMS.length - 1) { zi++; applyZoom(); } });
-
-  const sel = new Map();
-  let cidx = 0;
-
-  function bindZones() {
-    wrap.querySelectorAll(".z").forEach(z => {
-      z.addEventListener("click", e => {
-        e.stopPropagation();
-        const n = z.dataset.zone;
-        if (sel.has(n)) { sel.delete(n); } else { sel.set(n, cidx++ % FILLS.length); }
-        redraw();
-      });
-    });
-  }
-
-  function redraw() {
-    wrap.querySelectorAll(".z").forEach(z => {
-      const ci = sel.get(z.dataset.zone);
-      z.style.fill = ci !== undefined ? FILLS[ci] : "";
-    });
-    wrap.querySelectorAll(".badge").forEach(b => b.remove());
-    const s = getSVG(); if (!s) return;
-    sel.forEach((ci, name) => {
-      const z = wrap.querySelector(`[data-zone="${name}"]`); if (!z) return;
-      const bb = z.getBBox();
-      const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
-      const lbl = LABELS[name] || name;
-      const pw = lbl.length * 4.8 + 14;
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", "badge"); g.setAttribute("data-zone", name); g.style.cursor = "pointer";
-      g.innerHTML = `<rect x="${cx-pw/2}" y="${cy-8}" width="${pw}" height="16" rx="8"
-        fill="${BADGES[ci]}" stroke="#fff" stroke-width="1.2" opacity=".95"/>
-        <text x="${cx}" y="${cy+4.5}" text-anchor="middle" font-size="7.5" font-weight="700"
-        fill="#fff" font-family="Nunito,sans-serif">${lbl}</text>`;
-      g.addEventListener("click", e => { e.stopPropagation(); sel.delete(name); redraw(); });
-      s.appendChild(g);
-    });
-  }
-
-  bindZones();
-
-  screen.querySelector(".show-pain-continue").addEventListener("click", () => {
-    window.location.hash = "#pain-type";
+  // ── Zoom buttons (step by 25% of range each press) ───────────
+  const ZOOM_STEP = (CAM_MAX - CAM_MIN) * 0.22;
+  screen.querySelector(".zoom-btn--minus").addEventListener("click", () => {
+    camDist = clampDist(camDist + ZOOM_STEP);   // further away = zoom out
+    positionCamera(); updateZoomLabel(); updateBadges();
   });
+  screen.querySelector(".zoom-btn--plus").addEventListener("click", () => {
+    camDist = clampDist(camDist - ZOOM_STEP);   // closer = zoom in
+    positionCamera(); updateZoomLabel(); updateBadges();
+  });
+
+  // ── Resize ───────────────────────────────────────────────────
+  new ResizeObserver(() => {
+    if (!renderer || !camera) return;
+    const r = wrap.getBoundingClientRect();
+    renderer.setSize(r.width, r.height);
+    camera.aspect = r.width / r.height;
+    camera.updateProjectionMatrix();
+    updateBadges();
+  }).observe(wrap);
 
   app.append(screen);
+  init();
 }

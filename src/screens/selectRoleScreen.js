@@ -65,7 +65,7 @@ export function renderSelectRoleScreen(app) {
   });
 
   continueBtn.addEventListener("click", () => {
-    if (selectedRole) window.location.hash = "#homepage-newuser";
+    if (selectedRole) window.location.hash = "#auth";
   });
 
   app.append(screen);

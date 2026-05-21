@@ -1,193 +1,45 @@
-import { ASSETS } from "../assets";
+import { ASSETS } from '../assets';
+import { appState, updatePainDraft } from '../appState';
+import { childContextHtml } from '../sharedUi';
+import { mountMiniBody } from '../miniBody3d';
 
-/* ─── Mini body SVG (compact, shows selected zones) ────────────────── */
-function makeMiniBody(selectedZones = []) {
-  const highlighted = new Set(selectedZones);
-  const zFill = (name) => highlighted.has(name) ? "rgba(255,80,60,.55)" : "transparent";
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 360" style="width:100%;height:100%;display:block">
-<defs><style>
-.b{fill:#FFE8A0;stroke:#48AFA2;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
-.j{fill:#FFD870;stroke:#48AFA2;stroke-width:1.5}
-</style></defs>
-<ellipse class="b" cx="100" cy="30" rx="28" ry="30"/>
-<ellipse class="b" cx="72" cy="30" rx="5" ry="6.5"/>
-<ellipse class="b" cx="128" cy="30" rx="5" ry="6.5"/>
-<circle fill="#3a2a18" cx="88" cy="28" r="4"/>
-<circle fill="#3a2a18" cx="112" cy="28" r="4"/>
-<circle fill="#fff" cx="89.5" cy="26.5" r="1.6"/>
-<circle fill="#fff" cx="113.5" cy="26.5" r="1.6"/>
-<circle fill="#c07850" cx="100" cy="34" r="2.2"/>
-<path fill="none" stroke="#c07850" stroke-width="2" stroke-linecap="round" d="M92 41 Q100 48 108 41"/>
-<ellipse fill="#f0a888" opacity=".55" cx="81" cy="38" rx="7" ry="5"/>
-<ellipse fill="#f0a888" opacity=".55" cx="119" cy="38" rx="7" ry="5"/>
-<rect class="b" x="92" y="58" width="16" height="16" rx="6"/>
-<rect class="b" x="44" y="70" width="112" height="72" rx="20"/>
-<line fill="none" stroke="#48AFA2" stroke-width=".9" stroke-dasharray="4 3" opacity=".4" x1="46" y1="108" x2="154" y2="108"/>
-<rect class="b" x="42" y="138" width="116" height="48" rx="22"/>
-<rect class="b" x="20" y="72" width="26" height="60" rx="13"/>
-<ellipse class="j" cx="33" cy="134" rx="11" ry="8"/>
-<rect class="b" x="17" y="140" width="22" height="56" rx="11"/>
-<ellipse class="j" cx="28" cy="197" rx="9" ry="6"/>
-<ellipse class="b" cx="28" cy="212" rx="14" ry="16"/>
-<rect class="b" x="154" y="72" width="26" height="60" rx="13"/>
-<ellipse class="j" cx="167" cy="134" rx="11" ry="8"/>
-<rect class="b" x="161" y="140" width="22" height="56" rx="11"/>
-<ellipse class="j" cx="172" cy="197" rx="9" ry="6"/>
-<ellipse class="b" cx="172" cy="212" rx="14" ry="16"/>
-<rect class="b" x="46" y="182" width="34" height="68" rx="17"/>
-<ellipse class="j" cx="63" cy="252" rx="14" ry="9"/>
-<rect class="b" x="120" y="182" width="34" height="68" rx="17"/>
-<ellipse class="j" cx="137" cy="252" rx="14" ry="9"/>
-<rect class="b" x="48" y="258" width="30" height="68" rx="15"/>
-<ellipse class="j" cx="63" cy="328" rx="12" ry="7"/>
-<rect class="b" x="122" y="258" width="30" height="68" rx="15"/>
-<ellipse class="j" cx="137" cy="328" rx="12" ry="7"/>
-<ellipse class="b" cx="60" cy="340" rx="20" ry="11"/>
-<ellipse class="b" cx="140" cy="340" rx="20" ry="11"/>
-<ellipse fill="${zFill("head")}"         cx="100" cy="30"  rx="32" ry="34"/>
-<rect    fill="${zFill("chest")}"        x="42"  y="70"  width="116" height="40" rx="4"/>
-<rect    fill="${zFill("abdomen")}"      x="42"  y="108" width="116" height="34" rx="4"/>
-<rect    fill="${zFill("hips")}"         x="40"  y="140" width="120" height="46" rx="4"/>
-<rect    fill="${zFill("left-arm")}"     x="20"  y="72"  width="24"  height="68" rx="12"/>
-<rect    fill="${zFill("right-arm")}"    x="156" y="72"  width="24"  height="68" rx="12"/>
-<rect    fill="${zFill("left-forearm")}" x="16"  y="144" width="22" height="58" rx="11"/>
-<rect    fill="${zFill("right-forearm")}" x="162" y="144" width="22" height="58" rx="11"/>
-<ellipse fill="${zFill("left-hand")}"   cx="27"  cy="216" rx="16" ry="14"/>
-<ellipse fill="${zFill("right-hand")}"  cx="173" cy="216" rx="16" ry="14"/>
-<rect    fill="${zFill("left-thigh")}"  x="44"  y="184" width="36" height="72" rx="4"/>
-<rect    fill="${zFill("right-thigh")}" x="120" y="184" width="36" height="72" rx="4"/>
-<rect    fill="${zFill("left-shin")}"   x="44"  y="258" width="36" height="72" rx="4"/>
-<rect    fill="${zFill("right-shin")}"  x="120" y="258" width="36" height="72" rx="4"/>
-<ellipse fill="${zFill("left-foot")}"  cx="62"  cy="344" rx="22" ry="12"/>
-<ellipse fill="${zFill("right-foot")}" cx="138" cy="344" rx="22" ry="12"/>
-</svg>`;
-}
-
-/* ─── Pain face SVGs 1-10 ───────────────────────────────────────────── */
-function makeFace(level) {
-  const color = level <= 2 ? "#50C890"
-              : level <= 4 ? "#90C840"
-              : level <= 6 ? "#FFB830"
-              : level <= 8 ? "#FF8030"
-              : "#FF3830";
-
-  const t = (level - 1) / 9; // 0..1
-  const ctrlY = 64 - t * 24; // smile 64 → frown 40
-
-  const leftEye  = t < 0.5
-    ? `<path d="M28 32 Q32 28 36 32" stroke="${color}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`
-    : `<path d="M28 30 Q32 34 36 30" stroke="${color}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
-  const rightEye = t < 0.5
-    ? `<path d="M44 32 Q48 28 52 32" stroke="${color}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`
-    : `<path d="M44 30 Q48 34 52 30" stroke="${color}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
-
-  const sweat = level >= 8
-    ? `<ellipse cx="56" cy="26" rx="3" ry="4" fill="#8CC8FF" opacity="0.8"/>
-       <polygon points="56,20 53,26 59,26" fill="#8CC8FF" opacity="0.8"/>`
-    : "";
-
-  const tears = level >= 9
-    ? `<ellipse cx="30" cy="42" rx="2" ry="3" fill="#8CC8FF" opacity="0.7"/>
-       <ellipse cx="50" cy="42" rx="2" ry="3" fill="#8CC8FF" opacity="0.7"/>`
-    : "";
-
-  return `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
-    <circle cx="40" cy="40" r="34" fill="${color}" opacity="0.18"/>
-    <circle cx="40" cy="40" r="26" fill="${color}" opacity="0.9"/>
-    ${leftEye}
-    ${rightEye}
-    <path d="M32,52 Q40,${ctrlY} 48,52" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
-    ${sweat}
-    ${tears}
-  </svg>`;
-}
-
-const DESCRIPTORS = [
-  "", "No pain", "Very mild", "Mild", "Moderate",
-  "Noticeable", "Moderate-severe", "Severe", "Very severe", "Intense", "Worst possible"
+const LEVELS = [
+  { value: 0, face: '🙂', label: 'None' },
+  { value: 2, face: '😐', label: 'Small' },
+  { value: 4, face: '🙁', label: 'Medium' },
+  { value: 6, face: '😣', label: 'Big' },
+  { value: 8, face: '😭', label: 'Very big' },
+  { value: 10, face: '🚨', label: 'Worst' },
 ];
 
-export function renderPainScaleScreen(app, { painDesc = "", selectedZones = [], fromScreen = "#when-did-it-start" } = {}) {
-  app.innerHTML = "";
-
-  const screen = document.createElement("main");
-  screen.className = "screen pain-scale-screen";
-
-  const subtitle = painDesc ? `<p class="pain-scale-subtitle">(${painDesc})</p>` : "";
-
-  screen.insertAdjacentHTML("beforeend", `
-    <header class="top-bar pain-scale-top-bar">
-      <button class="back-button" type="button" aria-label="Go back">
-        <img src="${ASSETS.backChevron}" alt=""/>
-      </button>
-    </header>
-
-    <div class="pain-scale-body-wrap">
-      <div class="pain-scale-body-svg" id="miniBody">${makeMiniBody(selectedZones)}</div>
+export function renderPainScaleScreen(app, { fromScreen = '#when-did-it-start' } = {}) {
+  app.innerHTML = '';
+  const current = appState.painDraft.intensity;
+  const screen = document.createElement('main');
+  screen.className = 'screen pain-scale-screen';
+  screen.insertAdjacentHTML('beforeend', `
+    <header class="top-bar pain-scale-top-bar"><button class="back-button" type="button" aria-label="Go back"><img src="${ASSETS.backChevron}" alt=""/></button></header>
+    <div class="pain-scale-body-wrap mini-body-wrap" aria-label="Selected body spot"></div>
+    <div class="pain-scale-heading-wrap"><h1 class="pain-scale-title">How much pain?</h1>${childContextHtml()}<p class="pain-scale-subtitle">Tap the face that feels closest.</p></div>
+    <div class="pain-scale-choice-row" role="group" aria-label="Pain intensity">
+      ${LEVELS.map(l => `<button type="button" class="pain-face-choice ${current === l.value ? 'pain-face-choice--selected' : ''}" data-level="${l.value}" aria-label="${l.label}"><span>${l.face}</span><small>${l.value}</small></button>`).join('')}
     </div>
-
-    <div class="pain-scale-heading-wrap">
-      <h1 class="pain-scale-title">How much is the pain?</h1>
-      ${subtitle}
-    </div>
-
-    <div class="pain-scale-face-card" id="painFaceCard">
-      <div class="pain-scale-face" id="painFace">${makeFace(1)}</div>
-      <span class="pain-scale-level-label" id="painLevelLabel">1 — No pain</span>
-    </div>
-
-    <div class="pain-scale-slider-wrap">
-      <input
-        type="range"
-        class="pain-slider"
-        id="painSlider"
-        min="1" max="10" value="1" step="1"
-        aria-label="Pain level"
-      />
-      <div class="pain-slider-labels">
-        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-        <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-      </div>
-    </div>
-
-    <div class="pain-type-actions">
-      <button type="button" class="pain-type-back-btn">Back</button>
-      <button type="button" class="pain-type-next-btn">Next</button>
-    </div>
+    <div class="pain-scale-simple-meter"><span style="width:${Math.max(0, current || 0) * 10}%"></span></div>
+    <div class="pain-type-actions"><button type="button" class="pain-type-back-btn">Back</button><button type="button" class="pain-type-next-btn" ${current === null || current === undefined ? 'disabled' : ''}>Next</button></div>
   `);
-
-  const slider      = screen.querySelector("#painSlider");
-  const faceWrap    = screen.querySelector("#painFace");
-  const faceCard    = screen.querySelector("#painFaceCard");
-  const levelLabel  = screen.querySelector("#painLevelLabel");
-
-  function update() {
-    const val = Number(slider.value);
-    faceWrap.innerHTML = makeFace(val);
-    levelLabel.textContent = `${val} — ${DESCRIPTORS[val] || ""}`;
-
-    // Update slider gradient fill
-    const pct = ((val - 1) / 9) * 100;
-    slider.style.setProperty("--fill", `${pct}%`);
-
-    // Tint the face card border subtly by pain level
-    const alpha = 0.15 + (val / 10) * 0.35;
-    faceCard.style.borderColor = `rgba(255,111,97,${alpha})`;
-  }
-
-  slider.addEventListener("input", update);
-  update();
-
-  screen.querySelector(".back-button").addEventListener("click", () => {
-    window.location.hash = fromScreen;
-  });
-  screen.querySelector(".pain-type-back-btn").addEventListener("click", () => {
-    window.location.hash = fromScreen;
-  });
-  screen.querySelector(".pain-type-next-btn").addEventListener("click", () => {
-    window.location.hash = "#pain-summary";
-  });
-
+  mountMiniBody(screen.querySelector('.mini-body-wrap'), { view: appState.painDraft.view, zones: appState.painDraft.zones, rotate: true });
+  const next = screen.querySelector('.pain-type-next-btn');
+  const meter = screen.querySelector('.pain-scale-simple-meter span');
+  screen.querySelectorAll('.pain-face-choice').forEach(btn => btn.addEventListener('click', () => {
+    screen.querySelectorAll('.pain-face-choice').forEach(x => x.classList.remove('pain-face-choice--selected'));
+    btn.classList.add('pain-face-choice--selected');
+    const value = Number(btn.dataset.level);
+    updatePainDraft({ intensity: value });
+    meter.style.width = `${value * 10}%`;
+    next.disabled = false;
+  }));
+  screen.querySelector('.back-button').addEventListener('click', () => { window.location.hash = fromScreen; });
+  screen.querySelector('.pain-type-back-btn').addEventListener('click', () => { window.location.hash = fromScreen; });
+  next.addEventListener('click', () => { window.location.hash = '#summary'; });
   app.append(screen);
 }

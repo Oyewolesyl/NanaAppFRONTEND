@@ -1,4 +1,6 @@
 import { ASSETS } from "../assets";
+import { getActiveChild, updatePainDraft, appState } from "../appState";
+import { childContextHtml } from "../sharedUi";
 
 /* ── Labels (child-friendly + clinically accurate) ─────────────── */
 const LABELS = {
@@ -43,8 +45,8 @@ const LABELS = {
   "right-heel":        "Right Heel",
 };
 
-const FILLS  = ["rgba(255,80,60,.7)","rgba(255,165,30,.7)","rgba(30,185,100,.7)","rgba(50,140,255,.7)","rgba(180,70,220,.7)"];
-const BADGES = ["#d42810","#c87800","#18904a","#1870d0","#9020b8"];
+const FILLS  = ["rgba(255,111,97,.55)"];
+const BADGES = ["#FF6F61"];
 
 /* ── Zone detection — ORIGINAL model local space ──────────────────
    GLB accessor bounds:
@@ -160,6 +162,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       </button>
     </header>
     <h1 class="show-pain-title">Where does it hurt?</h1>
+    ${childContextHtml()}
     <div class="body-toggle" role="group" aria-label="Body view">
       <button type="button" class="body-toggle-btn body-toggle-btn--active" data-view="front">Front</button>
       <button type="button" class="body-toggle-btn" data-view="back">Back</button>
@@ -181,7 +184,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   `);
 
   screen.querySelector(".back-button").addEventListener("click",  () => { window.location.hash = fromScreen; });
-  screen.querySelector(".show-pain-continue").addEventListener("click", () => { window.location.hash = "#pain-type"; });
+  screen.querySelector(".show-pain-continue").addEventListener("click", () => { updatePainDraft({ zones: [...sel.keys()], view: isFront ? "front" : "back" }); window.location.hash = "#pain-type"; });
 
   const wrap      = screen.querySelector("#bodySvgWrap");
   const canvas    = screen.querySelector("#bodyCanvas");
@@ -190,7 +193,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   const zlbl      = screen.querySelector("#zoomLabel");
 
   let isFront   = true;
-  const sel     = new Map();
+  const sel     = new Map((appState.painDraft?.zones || []).map(z => [z, 0]));
   let cidx      = 0;
   let hasTapped = false;   // pulse stops after first successful tap
 
@@ -333,7 +336,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     if (!zone) return;
 
     hasTapped = true;
-    if (sel.has(zone)) { sel.delete(zone); } else { sel.set(zone, cidx++ % FILLS.length); }
+    if (sel.has(zone)) { sel.delete(zone); } else { sel.set(zone, 0); }
+    updatePainDraft({ zones: [...sel.keys()], view: isFront ? "front" : "back" });
     refreshOverlays();
     updateBadges();
   }
@@ -460,13 +464,14 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         position:absolute;left:${px}px;top:${py}px;
         transform:translate(-50%,-50%);
         background:${BADGES[ci]};color:#fff;
-        font-family:Nunito,sans-serif;font-size:11px;font-weight:700;
-        padding:3px 9px;border-radius:10px;
+        font-family:Nunito,sans-serif;font-size:0;font-weight:700;
+        width:20px;height:20px;padding:0;border-radius:999px;
         border:1.5px solid rgba(255,255,255,0.9);
         white-space:nowrap;pointer-events:auto;cursor:pointer;
         box-shadow:0 2px 6px rgba(0,0,0,0.25);
       `;
-      el.textContent = LABELS[zone] || zone;
+      el.textContent = "";
+      el.setAttribute("aria-label", LABELS[zone] || zone);
       el.addEventListener("click", () => { sel.delete(zone); refreshOverlays(); updateBadges(); });
       badgesEl.appendChild(el);
     });
@@ -478,6 +483,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       screen.querySelectorAll(".body-toggle-btn").forEach(b => b.classList.remove("body-toggle-btn--active"));
       btn.classList.add("body-toggle-btn--active");
       isFront = btn.dataset.view === "front";
+      updatePainDraft({ view: isFront ? "front" : "back" });
       positionCamera();
       refreshOverlays();
       updateBadges();
@@ -506,5 +512,5 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   }).observe(wrap);
 
   app.append(screen);
-  init();
+  init().then(() => { setTimeout(() => { refreshOverlays(); updateBadges(); }, 500); });
 }

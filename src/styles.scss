@@ -1321,3 +1321,423 @@ body {
     height: 210px;
   }
 }
+
+
+/* === FINAL MOBILE NAV + HISTORY FIXES === */
+:root {
+  --nana-bottom-nav-height: 112px;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden !important;
+}
+
+.screen,
+.children-screen,
+.history-screen,
+.settings-screen,
+.manage-children-screen,
+.manage-screen {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100dvh !important;
+  box-sizing: border-box !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 18px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bottom-nav {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 0 clamp(26px, 9vw, 42px) env(safe-area-inset-bottom, 0px) !important;
+  border-radius: 0 !important;
+  z-index: 999 !important;
+  box-sizing: border-box !important;
+}
+
+.settings-content,
+.history-content,
+.children-content,
+.manage-content {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding-bottom: 22px !important;
+}
+
+.history-timeline,
+.history-list {
+  width: min(356px, calc(100vw - 24px)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.history-record-card {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden;
+}
+
+.history-record-top {
+  width: 100%;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+.history-child-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.history-child-photo {
+  width: clamp(46px, 13vw, 58px);
+  height: clamp(46px, 13vw, 58px);
+  border-radius: 999px;
+  object-fit: cover;
+  flex: 0 0 auto;
+  border: 4px solid #8cc8ff;
+  background: #fff;
+}
+
+.history-child-head > div {
+  min-width: 0;
+}
+
+.history-child-head strong,
+.history-child-head span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-record-meta {
+  flex-wrap: wrap;
+  justify-content: flex-start !important;
+}
+
+.history-record-zones,
+.history-record-note {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 380px) {
+  :root {
+    --nana-bottom-nav-height: 102px;
+  }
+
+  .bottom-nav-item--home,
+  .bottom-nav-item--activity,
+  .bottom-nav-item--settings {
+    transform: scale(.88);
+    transform-origin: center;
+  }
+
+  .settings-content {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@media (min-width: 431px) {
+  .screen,
+  .children-screen,
+  .history-screen,
+  .settings-screen,
+  .manage-children-screen,
+  .manage-screen {
+    max-width: 430px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .bottom-nav {
+    max-width: 430px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+  }
+}
+
+/* ════════ FINAL MOBILE FIT + GET STARTED CLEANUP ════════ */
+.final-get-started-screen,
+.landing-body-stage,
+.landing-mini-body,
+.landing-wink,
+.hero-body,
+.rotating-body,
+.body-preview,
+.wink-face,
+.wink-animation,
+.hero-animation {
+  display: none !important;
+}
+
+.get-started-screen {
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  padding: clamp(56px, 10dvh, 92px) 20px clamp(28px, 6dvh, 48px) !important;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 5dvh, 34px);
+  overflow: hidden;
+}
+
+.get-started-screen .welcome-title {
+  margin-top: 0 !important;
+}
+
+.get-started-screen .app-thumbnail {
+  margin-top: 0 !important;
+  flex-shrink: 0;
+}
+
+.get-started-screen .get-started-button {
+  margin-top: 0 !important;
+  flex-shrink: 0;
+}
+
+.get-started-screen .tagline {
+  margin-top: 0 !important;
+  max-width: 290px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.mobile-fit-screen {
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  padding-bottom: 0 !important;
+}
+
+.mobile-fit-screen .children-header,
+.mobile-fit-screen .top-bar,
+.mobile-fit-screen .screen-header,
+.mobile-fit-screen .page-header {
+  flex-shrink: 0;
+}
+
+.settings-content-fit,
+.history-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 22px 18px calc(120px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.settings-screen .settings-content-fit {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-screen .children-title {
+  margin-bottom: 4px;
+}
+
+.settings-screen .settings-field {
+  margin: 0;
+}
+
+.settings-screen .continue-button {
+  margin: 2px auto 0;
+  flex-shrink: 0;
+}
+
+.settings-screen .settings-link {
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.history-screen .children-title {
+  margin-bottom: 14px;
+}
+
+.history-timeline,
+.history-list,
+.history-group-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-group h2 {
+  font-family: "Nunito", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--red);
+  -webkit-text-stroke: 0.35px #5f577f;
+  letter-spacing: 0.02px;
+}
+
+.history-record-card {
+  width: 100%;
+  border: 1px solid var(--outline);
+  border-radius: 16px;
+  background: var(--yellow);
+  padding: 12px;
+  box-shadow: 0 3px 0 rgba(2, 2, 2, 0.08);
+}
+
+.history-record-top,
+.history-child-head {
+  width: 100%;
+}
+
+.history-child-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.history-child-photo {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 4px solid #8cc8ff;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.history-child-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.history-child-meta strong {
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--red);
+  -webkit-text-stroke: 0.45px #5f577f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-child-meta span {
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(2, 2, 2, 0.62);
+}
+
+.history-record-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--outline);
+}
+
+.history-record-zones,
+.history-record-note,
+.empty-state {
+  margin-top: 8px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: rgba(2, 2, 2, 0.72);
+}
+
+.bottom-nav {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 0 !important;
+  transform: translateX(-50%);
+  width: 100% !important;
+  max-width: 390px !important;
+  height: 104px !important;
+  padding: 0 34px calc(env(safe-area-inset-bottom, 0px) * 0.5) !important;
+  z-index: 999 !important;
+  flex-shrink: 0;
+}
+
+@media (max-width: 430px) {
+  #app {
+    align-items: stretch;
+  }
+
+  .screen {
+    width: 100vw;
+    max-width: none;
+  }
+
+  .bottom-nav {
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .get-started-screen {
+    gap: 18px;
+    padding-top: 42px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .welcome-title {
+    font-size: 2rem;
+  }
+
+  .app-thumbnail {
+    width: 136px;
+    min-height: 164px;
+    padding: 20px 16px;
+  }
+
+  .continue-button {
+    width: 190px;
+    height: 52px;
+    font-size: 18px;
+  }
+
+  .bottom-nav {
+    height: 96px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+
+  .settings-content-fit,
+  .history-content {
+    padding-bottom: 112px !important;
+  }
+}

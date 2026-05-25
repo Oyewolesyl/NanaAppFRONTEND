@@ -16,6 +16,7 @@ export function renderManageChildrenScreen(app) {
           <img src="${child.photo_url}" alt="${child.name}" />
           <div><strong>${child.name}</strong><span>${child.age} years old</span></div>
           <button type="button" data-open-child>Body Map</button>
+          <button type="button" data-edit-child>Edit</button>
           <button type="button" data-remove-child>Remove</button>
         </article>`).join('') || '<p class="empty-state">No children added yet.</p>'}
       </div>
@@ -23,7 +24,8 @@ export function renderManageChildrenScreen(app) {
     ${bottomNavHtml('settings')}
   `);
   const overlay = createAddChildOverlay(); screen.append(overlay);
-  wireAddChildOverlay(screen, overlay); wireBottomNav(screen); attachMenu(screen);
+  wireAddChildOverlay(screen, overlay, () => renderManageChildrenScreen(app)); wireBottomNav(screen); attachMenu(screen);
+  screen.querySelectorAll('[data-edit-child]').forEach(btn => btn.addEventListener('click', () => { const child = appState.children.find(c => c.id === btn.closest('[data-child-id]').dataset.childId); overlay.openForChild?.(child); overlay.afterSave = () => renderManageChildrenScreen(app); }));
   screen.querySelectorAll('[data-open-child]').forEach(btn => btn.addEventListener('click', () => { setActiveChild(btn.closest('[data-child-id]').dataset.childId); window.location.hash = '#body-map'; }));
   screen.querySelectorAll('[data-remove-child]').forEach(btn => btn.addEventListener('click', () => { removeChild(btn.closest('[data-child-id]').dataset.childId); renderManageChildrenScreen(app); }));
   app.append(screen);

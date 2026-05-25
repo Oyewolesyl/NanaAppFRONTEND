@@ -38,68 +38,65 @@ function updateAgeSelection(wheel) {
   if (closest) closest.classList.add("is-selected");
 }
 
-function scrollAgeIntoView(wheel, age) {
-  const item = wheel.querySelector(`[data-age="${age}"]`);
+function scrollToAge(wheel, age) {
+  const item = wheel.querySelector(`.age-wheel-item[data-age="${age}"]`);
   if (!item) return;
   setTimeout(() => {
-    item.scrollIntoView({ block: "center", behavior: "instant" });
+    item.scrollIntoView({ block: "center" });
     updateAgeSelection(wheel);
   }, 0);
 }
 
-export function createAddChildOverlay({ onSave } = {}) {
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+export function createAddChildOverlay() {
   const overlay = document.createElement("div");
   overlay.className = "add-child-overlay";
   overlay.hidden = true;
-  overlay.dataset.mode = "create";
+  overlay.dataset.mode = "add";
 
   overlay.innerHTML = `
     <div class="add-child-backdrop" data-close-overlay="true"></div>
     <section class="add-child-modal" aria-label="Add or edit child">
-      <div class="add-child-modal-head">
-        <h2 class="add-child-modal-title">Add Child</h2>
-        <button type="button" class="add-child-close" data-close-overlay="true" aria-label="Close">×</button>
-      </div>
-
       <div class="add-image-card">
         <div class="add-image-icon-wrap">
-          <img src="${ASSETS.inactiveChildPhoto}" alt="Child preview" class="child-image-preview" />
+          <img class="add-child-photo-preview" src="${ASSETS.inactiveChildPhoto}" alt="Child preview" />
+          <input class="add-child-file-input" type="file" accept="image/*" hidden />
         </div>
-        <input class="child-image-input" type="file" accept="image/*" hidden />
         <button type="button" class="add-image-action">+ Add image from Gallery</button>
       </div>
-
       <label class="child-name-field">
-        <span>Child's Name</span>
-        <input data-child-name type="text" placeholder="Child's Name" />
+        <input type="text" data-child-name placeholder="Child's Name" />
       </label>
-
       <h3 class="age-title">Select Age</h3>
       <div class="age-wheel-shell">
         <div class="age-wheel-fade age-wheel-fade--top"></div>
         <ul class="age-wheel" aria-label="Age selection"></ul>
         <div class="age-wheel-fade age-wheel-fade--bottom"></div>
       </div>
-
-      <label class="child-name-field child-notes-field">
-        <span>Profile note</span>
-        <textarea data-child-notes placeholder="Allergies, comfort tips, or anything useful"></textarea>
-      </label>
-
+      <div class="edit-profile-extra-fields">
+        <label class="settings-field settings-field--mini">Notes<input type="text" data-child-notes placeholder="Optional notes" /></label>
+      </div>
       <button type="button" class="save-child-button">Save</button>
     </section>
   `;
 
   const wheel = overlay.querySelector(".age-wheel");
-  const imageInput = overlay.querySelector(".child-image-input");
-  const imageButton = overlay.querySelector(".add-image-action");
-  const imagePreview = overlay.querySelector(".child-image-preview");
-  const title = overlay.querySelector(".add-child-modal-title");
   const nameInput = overlay.querySelector("[data-child-name]");
   const notesInput = overlay.querySelector("[data-child-notes]");
+  const fileInput = overlay.querySelector(".add-child-file-input");
+  const preview = overlay.querySelector(".add-child-photo-preview");
+  const imageButton = overlay.querySelector(".add-image-action");
 
   createAgeWheelItems(wheel);
-  scrollAgeIntoView(wheel, 4);
+  scrollToAge(wheel, 4);
 
   let scrollTimer = null;
   wheel.addEventListener("scroll", () => {
@@ -111,58 +108,49 @@ export function createAddChildOverlay({ onSave } = {}) {
     }, 80);
   });
 
-  imageButton.addEventListener("click", () => imageInput.click());
-  imagePreview.addEventListener("click", () => imageInput.click());
+  imageButton.addEventListener("click", () => fileInput.click());
 
-  imageInput.addEventListener("change", () => {
-    const file = imageInput.files?.[0];
+  fileInput.addEventListener("change", async () => {
+    const file = fileInput.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      overlay.dataset.photoUrl = String(reader.result || "");
-      imagePreview.src = overlay.dataset.photoUrl;
-    };
-    reader.readAsDataURL(file);
+    const dataUrl = await readFileAsDataUrl(file);
+    overlay.dataset.photoUrl = dataUrl;
+    preview.src = dataUrl;
   });
 
-  overlay.resetForm = (child = null) => {
-    overlay.dataset.mode = child ? "edit" : "create";
-    overlay.dataset.editChildId = child?.id || "";
-    overlay.dataset.photoUrl = child?.photo_url || "";
-    title.textContent = child ? "Edit Child" : "Add Child";
-    nameInput.value = child?.name || "";
-    notesInput.value = child?.notes || "";
-    imagePreview.src = child?.photo_url || ASSETS.inactiveChildPhoto;
-    imageInput.value = "";
-    scrollAgeIntoView(wheel, child?.age || 4);
+  overlay.resetForm = () => {
+    overlay.dataset.mode = "add";
+    overlay.dataset.editChildId = "";
+    overlay.dataset.photoUrl = "";
+    nameInput.value = "";
+    notesInput.value = "";
+    preview.src = ASSETS.inactiveChildPhoto;
+    fileInput.value = "";
+    scrollToAge(wheel, 4);
   };
 
-  overlay.querySelectorAll('[data-close-overlay="true"]').forEach((node) => {
-    node.addEventListener("click", () => { overlay.hidden = true; });
-  });
+  overlay.openForChild = (child) => {
+    overlay.dataset.mode = "edit";
+    overlay.dataset.editChildId = child.id;
+    overlay.dataset.photoUrl = child.photo_url || "";
+    nameInput.value = child.name || "";
+    notesInput.value = child.notes || "";
+    preview.src = child.photo_url || ASSETS.inactiveChildPhoto;
+    fileInput.value = "";
+    scrollToAge(wheel, Number(child.age || 4));
+    overlay.hidden = false;
+  };
 
-  overlay.querySelector(".save-child-button")?.addEventListener("click", () => {
+  overlay.getFormData = () => {
     const selectedAge = Number(wheel.querySelector(".age-wheel-item.is-selected")?.dataset.age || "4");
-    const name = nameInput.value.trim();
-    if (!name) {
-      nameInput.focus();
-      nameInput.classList.add("field-error");
-      setTimeout(() => nameInput.classList.remove("field-error"), 800);
-      return;
-    }
-
-    const child = {
-      id: overlay.dataset.editChildId || undefined,
-      name,
+    return {
+      id: overlay.dataset.mode === "edit" ? overlay.dataset.editChildId : undefined,
+      name: nameInput.value.trim(),
       age: selectedAge,
-      photo_url: overlay.dataset.photoUrl || ASSETS.inactiveChildPhoto,
+      photo_url: overlay.dataset.photoUrl || undefined,
       notes: notesInput.value.trim(),
     };
+  };
 
-    onSave?.(child);
-    overlay.hidden = true;
-  });
-
-  overlay.resetForm();
   return overlay;
 }

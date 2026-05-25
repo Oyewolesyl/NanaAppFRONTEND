@@ -18,8 +18,8 @@ export function renderChildAddedScreen(app) {
   `);
   const overlay = createAddChildOverlay();
   screen.append(overlay);
-  wireChildCards(screen);
-  wireAddChildOverlay(screen, overlay);
+  wireChildCards(screen, overlay, () => renderChildAddedScreen(app));
+  wireAddChildOverlay(screen, overlay, () => renderChildAddedScreen(app));
   wireBottomNav(screen);
   attachMenu(screen);
   app.append(screen);

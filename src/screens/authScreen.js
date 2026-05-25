@@ -19,7 +19,7 @@ export function renderAuthScreen(app) {
       <img
         src="${ASSETS.splashHeaderLogo}"
         alt="Nana"
-        class="auth-logo"
+        class="auth-logo nana-wink-logo"
       />
 
       <h1 class="screen-title">Welcome</h1>
@@ -65,14 +65,14 @@ export function renderAuthScreen(app) {
 
       <button
         type="button"
-        class="continue-button auth-register"
+        class="continue-button auth-register auth-compact-button"
       >
         Create Account
       </button>
 
       <button
         type="button"
-        class="continue-button auth-login"
+        class="continue-button auth-login auth-compact-button"
       >
         Login
       </button>

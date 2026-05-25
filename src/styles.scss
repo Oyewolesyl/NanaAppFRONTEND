@@ -1034,3 +1034,139 @@ body {
   .pain-scale-choice-row { grid-template-columns: repeat(2, 1fr); }
   .bottom-nav { height: 104px; }
 }
+
+/* ───────── SURGICAL FEEDBACK PATCH: keep original Nana colours/style ───────── */
+.child-card-actions {
+  width: 100%;
+  padding: 12px 10px 14px;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+.child-edit-btn {
+  min-width: 122px;
+  min-height: 34px;
+  border: 1px solid var(--outline);
+  border-radius: 10px;
+  background: var(--yellow);
+  color: var(--red);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.child-card-list { margin-top: 24px !important; }
+.floating-add-btn { bottom: 118px !important; }
+.add-child-photo-preview {
+  width: 110px;
+  height: 110px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+  border: 7px solid #8cc8ff;
+  background: var(--neutral);
+}
+.edit-profile-extra-fields { width: 275px; }
+.settings-field--mini { width: 100%; }
+.settings-field--mini input {
+  min-height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--teal);
+  background: var(--yellow);
+  padding: 0 12px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+}
+.manage-child-card button[data-edit-child] { background: var(--yellow); color: var(--red); border: 1px solid var(--outline); }
+.history-list { gap: 18px; }
+.history-group { display: grid; gap: 10px; }
+.history-group-title {
+  font-family: "Nunito", sans-serif;
+  font-size: 19px;
+  font-weight: 900;
+  color: var(--red);
+  -webkit-text-stroke: .35px #5f577f;
+}
+.history-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+.history-note {
+  border-top: 1px dashed rgba(2,2,2,.22);
+  padding-top: 8px;
+}
+.landing-body-animation {
+  width: 136px !important;
+  height: 168px !important;
+  margin-top: 18px;
+  border: 1.5px solid var(--teal);
+  border-radius: 24px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+.nana-wink-logo { animation: nanaWink 3.4s ease-in-out infinite; transform-origin: center; }
+@keyframes nanaWink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  91% { transform: scaleY(.72); }
+  94% { transform: scaleY(1); }
+}
+.auth-compact-button {
+  width: min(190px, 78vw) !important;
+  height: 48px !important;
+  font-size: 17px !important;
+}
+.auth-role {
+  min-height: 46px;
+  border-radius: 14px;
+  border: 1px solid var(--teal);
+  background: var(--yellow);
+  color: #020202;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  padding: 0 12px;
+}
+.pain-note-field {
+  display: grid;
+  gap: 7px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+  color: var(--red);
+}
+.pain-note-input {
+  width: 100%;
+  min-height: 78px;
+  resize: vertical;
+  border-radius: 14px;
+  border: 1px solid var(--teal);
+  background: var(--yellow);
+  padding: 10px 12px;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #020202;
+  outline: none;
+}
+.summary-actions {
+  width: min(330px, calc(100vw - 32px));
+  margin: 18px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.summary-actions .summary-add-spot-btn {
+  grid-column: 1 / -1;
+  min-height: 48px;
+  border: 1.5px solid var(--outline);
+  border-radius: 12px;
+  background: var(--yellow);
+  color: var(--red);
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+}
+@media (max-width: 360px) {
+  .summary-actions { grid-template-columns: 1fr; }
+}

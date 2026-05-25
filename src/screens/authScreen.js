@@ -8,9 +8,7 @@ export function renderAuthScreen(app) {
   app.innerHTML = '';
 
   const screen = document.createElement('main');
-
-  screen.className =
-    'screen select-role-screen auth-screen';
+  screen.className = 'screen select-role-screen auth-screen';
 
   screen.insertAdjacentHTML(
     'beforeend',
@@ -18,7 +16,7 @@ export function renderAuthScreen(app) {
       <img
         src="/ani1.svg"
         alt="Nana"
-        class="auth-logo nana-animated-face"
+        class="auth-logo nana-auth-face"
       />
 
       <h1 class="screen-title">Welcome</h1>
@@ -87,44 +85,23 @@ export function renderAuthScreen(app) {
     `
   );
 
-  const logo = screen.querySelector('.nana-animated-face');
+  const logo = screen.querySelector('.nana-auth-face');
 
-  const frames = [
-    '/ani1.svg',
-    '/ani2.svg',
-    '/ani3.svg',
-    '/ani2.svg',
-    '/ani1.svg'
-  ];
+  logo.src = '/ani1.svg';
 
-  let frame = 0;
+  setTimeout(() => {
+    logo.src = '/ani2.svg';
 
-  const animation = setInterval(() => {
-    frame++;
+    setTimeout(() => {
+      logo.src = '/ani3.svg';
+    }, 600);
+  }, 500);
 
-    if (frame >= frames.length) {
-      clearInterval(animation);
-      logo.src = '/ani1.svg';
-      return;
-    }
-
-    logo.src = frames[frame];
-  }, 180);
-
-  const emailInput =
-    screen.querySelector('.auth-email');
-
-  const passwordInput =
-    screen.querySelector('.auth-password');
-
-  const nameInput =
-    screen.querySelector('.auth-name');
-
-  const roleInput =
-    screen.querySelector('.auth-role');
-
-  const status =
-    screen.querySelector('.auth-status');
+  const emailInput = screen.querySelector('.auth-email');
+  const passwordInput = screen.querySelector('.auth-password');
+  const nameInput = screen.querySelector('.auth-name');
+  const roleInput = screen.querySelector('.auth-role');
+  const status = screen.querySelector('.auth-status');
 
   const goNext = () => {
     window.location.hash =
@@ -158,15 +135,14 @@ export function renderAuthScreen(app) {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.error || 'Registration failed'
-          );
+          throw new Error(data.error || 'Registration failed');
         }
 
         status.textContent =
           'Account created. Please login.';
       } catch (err) {
-        status.textContent = err.message;
+        status.textContent =
+          err?.message || 'Registration failed';
       }
     });
 
@@ -193,22 +169,23 @@ export function renderAuthScreen(app) {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.error || 'Login failed'
-          );
+          throw new Error(data.error || 'Login failed');
         }
 
         localStorage.setItem(
-          'nana_token',
-          data.token
+          'nana_access_token',
+          data.access_token
         );
 
-        status.textContent =
-          'Login successful';
+        localStorage.setItem(
+          'nana_user',
+          JSON.stringify(data.user)
+        );
 
         goNext();
       } catch (err) {
-        status.textContent = err.message;
+        status.textContent =
+          err?.message || 'Login failed';
       }
     });
 

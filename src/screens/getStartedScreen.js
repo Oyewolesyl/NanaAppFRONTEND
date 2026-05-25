@@ -13,7 +13,9 @@ export function renderGetStartedScreen(app) {
       <img src="${ASSETS.logoMark}" alt="Nana the app" class="thumbnail-mark" />
     </section>
 
-    <button type="button" class="continue-button get-started-button">Get Started</button>
+    <button type="button" class="continue-button get-started-button">
+      Get Started
+    </button>
 
     <p class="tagline">a visual voice for where and when it hurts</p>
   `);

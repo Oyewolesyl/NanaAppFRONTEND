@@ -54,9 +54,11 @@ function renderApp() {
 }
 
 window.addEventListener('hashchange', (event) => {
-  previousHash = new URL(event.oldURL).hash || '#get-started';
+  previousHash = event.oldURL ? new URL(event.oldURL).hash || '#get-started' : previousHash;
   renderApp();
 });
+
+window.addEventListener('nana:rerender', renderApp);
 
 if (!window.location.hash) window.location.hash = '#get-started';
 

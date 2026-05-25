@@ -5,7 +5,7 @@ import { headerHtml, bottomNavHtml, wireBottomNav, attachMenu, childCardHtml, wi
 export function renderChildAddedScreen(app) {
   app.innerHTML = '';
   const screen = document.createElement('main');
-  screen.className = 'screen children-screen child-added-screen';
+  screen.className = 'screen children-screen child-added-screen page-animate-in';
   const children = appState.children;
   screen.insertAdjacentHTML('beforeend', `
     ${headerHtml('')}
@@ -18,8 +18,8 @@ export function renderChildAddedScreen(app) {
   `);
   const overlay = createAddChildOverlay();
   screen.append(overlay);
-  wireChildCards(screen, overlay, () => renderChildAddedScreen(app));
-  wireAddChildOverlay(screen, overlay, () => renderChildAddedScreen(app));
+  wireChildCards(screen);
+  wireAddChildOverlay(screen, overlay, { onSave: () => renderChildAddedScreen(app) });
   wireBottomNav(screen);
   attachMenu(screen);
   app.append(screen);

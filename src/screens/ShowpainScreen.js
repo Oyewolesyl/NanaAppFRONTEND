@@ -163,11 +163,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     </header>
     <h1 class="show-pain-title">Where does it hurt?</h1>
     ${childContextHtml()}
-    <div class="body-toggle" role="group" aria-label="Body view">
-      <button type="button" class="body-toggle-btn body-toggle-btn--active" data-view="front">Front</button>
-      <button type="button" class="body-toggle-btn" data-view="back">Back</button>
-    </div>
-    <p class="body-hint">Tap the place that hurts</p>
+    <p class="body-hint">Drag the body to rotate. Tap the place that hurts.</p>
     <div class="body-map-wrap">
       <div class="body-svg-wrap" id="bodySvgWrap" style="position:relative;">
         <canvas id="bodyCanvas" style="width:100%;height:100%;display:block;touch-action:none;cursor:pointer;border-radius:16px;"></canvas>
@@ -184,7 +180,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   `);
 
   screen.querySelector(".back-button").addEventListener("click",  () => { window.location.hash = fromScreen; });
-  screen.querySelector(".show-pain-continue").addEventListener("click", () => { updatePainDraft({ zones: [...sel.keys()], view: isFront ? "front" : "back" }); window.location.hash = "#pain-type"; });
+  screen.querySelector(".show-pain-continue").addEventListener("click", () => { updatePainDraft({ zones: [...sel.keys()], view: "rotatable" }); window.location.hash = "#pain-type"; });
 
   const wrap      = screen.querySelector("#bodySvgWrap");
   const canvas    = screen.querySelector("#bodyCanvas");
@@ -193,6 +189,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   const zlbl      = screen.querySelector("#zoomLabel");
 
   let isFront   = true;
+  let modelYaw  = 0;
   const sel     = new Map((appState.painDraft?.zones || []).map(z => [z, 0]));
   let cidx      = 0;
   let hasTapped = false;   // pulse stops after first successful tap
@@ -288,6 +285,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         } else {
           bodyMeshes.forEach(m => m.material.emissive.set(0x000000));
         }
+        if (model) model.rotation.y = modelYaw;
         renderer.render(scene, camera);
       })();
 
@@ -299,7 +297,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
   function positionCamera() {
     if (!camera) return;
-    camera.position.set(0, 0, isFront ? camDist : -camDist);
+    camera.position.set(0, 0, camDist);
     camera.lookAt(0, 0, 0);
   }
 
@@ -324,25 +322,47 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const hits = raycaster.intersectObject(model, true);
     if (!hits.length) return;
 
-    // Reverse model transform → original local space
-    const wp = hits[0].point.clone();
-    const origLocal = new THREE.Vector3(
-      wp.x / MODEL_SCALE,
-      (wp.y - model.position.y) / MODEL_SCALE,
-      wp.z / MODEL_SCALE
-    );
+    // Convert hit point into original model-local space, including rotation.
+    const origLocal = model.worldToLocal(hits[0].point.clone());
+    const zoneSideIsFront = origLocal.z >= 0;
+    isFront = zoneSideIsFront;
 
-    const zone = getZoneFromPoint(origLocal, isFront);
+    const zone = getZoneFromPoint(origLocal, zoneSideIsFront);
     if (!zone) return;
 
     hasTapped = true;
     if (sel.has(zone)) { sel.delete(zone); } else { sel.set(zone, 0); }
-    updatePainDraft({ zones: [...sel.keys()], view: isFront ? "front" : "back" });
+    updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
     refreshOverlays();
     updateBadges();
   }
 
-  canvas.addEventListener("click", e => handleTap(e.clientX, e.clientY));
+  let suppressNextClick = false;
+  canvas.addEventListener("click", e => {
+    if (suppressNextClick) { suppressNextClick = false; return; }
+    handleTap(e.clientX, e.clientY);
+  });
+
+  let pointerDrag = null;
+  canvas.addEventListener("pointerdown", e => {
+    pointerDrag = { x: e.clientX, y: e.clientY, yaw: modelYaw, moved: false };
+    canvas.setPointerCapture?.(e.pointerId);
+  });
+  canvas.addEventListener("pointermove", e => {
+    if (!pointerDrag) return;
+    const dx = e.clientX - pointerDrag.x;
+    const dy = e.clientY - pointerDrag.y;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) pointerDrag.moved = true;
+    modelYaw = pointerDrag.yaw + dx * 0.012;
+    if (model) model.rotation.y = modelYaw;
+    refreshOverlays();
+    updateBadges();
+  });
+  canvas.addEventListener("pointerup", e => {
+    if (pointerDrag?.moved) suppressNextClick = true;
+    pointerDrag = null;
+    canvas.releasePointerCapture?.(e.pointerId);
+  });
 
   // ── Touch: pinch-to-zoom + single-finger drag-to-zoom + tap ──
   let touchState = null;   // tracks ongoing touch gesture
@@ -385,13 +405,10 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     } else if (touchState.type === "single" && e.touches.length === 1) {
       const dy = e.touches[0].clientY - touchState.startY;
       const dx = e.touches[0].clientX - touchState.startX;
-      // Only trigger drag-zoom if primarily vertical movement
-      if (Math.abs(dy) > 8 || touchState.moved) {
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8 || touchState.moved) {
         touchState.moved = true;
-        // Drag down = zoom in (smaller dist), drag up = zoom out
-        camDist = clampDist(touchState.startDist + dy * 0.004);
-        positionCamera();
-        updateZoomLabel();
+        modelYaw += dx * 0.004;
+        if (model) model.rotation.y = modelYaw;
         updateBadges();
       }
     }
@@ -417,32 +434,27 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   }, { passive: false });
 
   // ── Zone overlays ────────────────────────────────────────────
-  function localBoundToWorld(b, frontFace) {
-    const S  = MODEL_SCALE;
-    const Py = model ? model.position.y : -(MODEL_CENTRE_Y * MODEL_SCALE);
-    return {
-      wx: b.x * S,
-      wy: b.y * S + Py,
-      wz: (frontFace ? b.z : -b.z) * S,
-      ww: b.w * S, wh: b.h * S, wd: b.d * S,
-    };
+  function localBoundToWorld(b) {
+    const THREE = window.THREE;
+    if (!model) return { wx: b.x, wy: b.y, wz: b.z || 0, ww: b.w, wh: b.h, wd: b.d };
+    const world = model.localToWorld(new THREE.Vector3(b.x, b.y, b.z || 0));
+    return { wx: world.x, wy: world.y, wz: world.z, ww: b.w * MODEL_SCALE, wh: b.h * MODEL_SCALE, wd: b.d * MODEL_SCALE };
   }
 
   function refreshOverlays() {
     const THREE = window.THREE;
-    overlays.forEach(m => scene.remove(m));
+    overlays.forEach(m => m.parent?.remove(m));
     overlays.length = 0;
     sel.forEach((ci, zone) => {
-      const b = ZONE_BOUNDS_LOCAL[zone]; if (!b) return;
-      const w = localBoundToWorld(b, isFront);
+      const b = ZONE_BOUNDS_LOCAL[zone]; if (!b || !model) return;
       const rgb = FILLS[ci].match(/[\d.]+/g);
       const color = new THREE.Color(+rgb[0]/255, +rgb[1]/255, +rgb[2]/255);
       const mesh = new THREE.Mesh(
-        new THREE.BoxGeometry(w.ww, w.wh, w.wd),
+        new THREE.BoxGeometry(b.w, b.h, b.d),
         new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45, depthWrite: false })
       );
-      mesh.position.set(w.wx, w.wy, w.wz);
-      scene.add(mesh);
+      mesh.position.set(b.x, b.y, b.z || 0);
+      model.add(mesh);
       overlays.push(mesh);
     });
   }
@@ -450,45 +462,27 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   // ── Badge labels ─────────────────────────────────────────────
   function updateBadges() {
     badgesEl.innerHTML = "";
-    if (!camera || !renderer) return;
+    if (!camera || !renderer || !model) return;
     const THREE = window.THREE;
     const rect = canvas.getBoundingClientRect();
     sel.forEach((ci, zone) => {
       const b = ZONE_BOUNDS_LOCAL[zone]; if (!b) return;
-      const w = localBoundToWorld(b, isFront);
-      const v = new THREE.Vector3(w.wx, w.wy, w.wz).project(camera);
+      const world = model.localToWorld(new THREE.Vector3(b.x, b.y, b.z || 0));
+      const v = world.project(camera);
+      if (v.z < -1 || v.z > 1) return;
       const px = ((v.x + 1) / 2) * rect.width;
       const py = ((-v.y + 1) / 2) * rect.height;
       const el = document.createElement("div");
-      el.style.cssText = `
-        position:absolute;left:${px}px;top:${py}px;
-        transform:translate(-50%,-50%);
-        background:${BADGES[ci]};color:#fff;
-        font-family:Nunito,sans-serif;font-size:0;font-weight:700;
-        width:20px;height:20px;padding:0;border-radius:999px;
-        border:1.5px solid rgba(255,255,255,0.9);
-        white-space:nowrap;pointer-events:auto;cursor:pointer;
-        box-shadow:0 2px 6px rgba(0,0,0,0.25);
-      `;
-      el.textContent = "";
-      el.setAttribute("aria-label", LABELS[zone] || zone);
-      el.addEventListener("click", () => { sel.delete(zone); refreshOverlays(); updateBadges(); });
+      el.className = "body-zone-label";
+      el.style.left = `${px}px`;
+      el.style.top = `${py}px`;
+      el.textContent = LABELS[zone] || zone;
+      el.addEventListener("click", () => { sel.delete(zone); updatePainDraft({ zones: [...sel.keys()], view: 'rotatable' }); refreshOverlays(); updateBadges(); });
       badgesEl.appendChild(el);
     });
   }
 
-  // ── Front / Back toggle ──────────────────────────────────────
-  screen.querySelectorAll(".body-toggle-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      screen.querySelectorAll(".body-toggle-btn").forEach(b => b.classList.remove("body-toggle-btn--active"));
-      btn.classList.add("body-toggle-btn--active");
-      isFront = btn.dataset.view === "front";
-      updatePainDraft({ view: isFront ? "front" : "back" });
-      positionCamera();
-      refreshOverlays();
-      updateBadges();
-    });
-  });
+  // ── Rotatable model: no front/back buttons.
 
   // ── Zoom buttons (step by 25% of range each press) ───────────
   const ZOOM_STEP = (CAM_MAX - CAM_MIN) * 0.22;

@@ -18,32 +18,31 @@ const defaultChildren = [
   { id: 'sunny', name: 'Sunny', age: 4, photo_url: '/child1.svg', conditions: '', medications: '', notes: '' },
 ];
 
-const emptyPainDraft = () => ({
-  zones: [],
-  view: 'front',
-  painType: '',
-  started: '',
-  intensity: null,
-  notes: '',
-  editLogId: null,
-});
+function cleanName(name) {
+  return String(name || '').trim();
+}
 
 function normalizeChild(child = {}) {
-  const rawName = typeof child.name === 'string' ? child.name.trim() : '';
+  const name = cleanName(child.name);
   return {
     id: child.id || uid('child'),
-    name: rawName || 'Child',
-    age: Number(child.age || 4),
+    name: name || 'Child',
+    age: Math.max(1, Math.min(18, Number(child.age || 4))),
     photo_url: child.photo_url || child.photoUrl || '/inactivechildpicture.svg',
     conditions: child.conditions || '',
     medications: child.medications || '',
     notes: child.notes || '',
   };
 }
+
 function dedupe(children) {
   const map = new Map();
   children.map(normalizeChild).forEach((child) => map.set(String(child.id), child));
   return [...map.values()];
+}
+
+function defaultPainDraft() {
+  return { zones: [], view: 'rotatable', painType: '', started: '', intensity: null, notes: '' };
 }
 
 export const appState = {
@@ -51,9 +50,10 @@ export const appState = {
   caregiver: read(K.caregiver, { name: 'Caregiver', email: '', phone: '', notifications: true }),
   children: dedupe(read(K.children, defaultChildren)),
   activeChildId: read(K.activeChildId, 'sunny'),
-  painDraft: { ...emptyPainDraft(), ...read(K.painDraft, emptyPainDraft()) },
+  painDraft: read(K.painDraft, defaultPainDraft()),
   painLogs: read(K.painLogs, []),
 };
+
 if (!appState.children.length) appState.children = defaultChildren;
 if (!appState.children.some(c => c.id === appState.activeChildId)) appState.activeChildId = appState.children[0]?.id || null;
 write(K.children, appState.children);
@@ -63,15 +63,18 @@ write(K.painDraft, appState.painDraft);
 export function getActiveChild() {
   return appState.children.find(c => c.id === appState.activeChildId) || appState.children[0] || null;
 }
+
 export function setActiveChild(idOrChild) {
   const id = typeof idOrChild === 'object' ? idOrChild?.id : idOrChild;
   if (id) { appState.activeChildId = id; write(K.activeChildId, id); }
   return getActiveChild();
 }
+
 export function saveChild(child) {
-  const safe = normalizeChild(child);
+  const existing = child?.id ? appState.children.find(c => c.id === child.id) : null;
+  const safe = normalizeChild({ ...existing, ...child });
   const index = appState.children.findIndex(c => c.id === safe.id);
-  if (index >= 0) appState.children[index] = { ...appState.children[index], ...safe };
+  if (index >= 0) appState.children[index] = safe;
   else appState.children.push(safe);
   appState.children = dedupe(appState.children);
   appState.activeChildId = safe.id;
@@ -79,61 +82,80 @@ export function saveChild(child) {
   write(K.activeChildId, appState.activeChildId);
   return safe;
 }
+
 export function removeChild(id) {
   appState.children = appState.children.filter(c => c.id !== id);
-  if (!appState.children.length) appState.children = [];
   if (appState.activeChildId === id) appState.activeChildId = appState.children[0]?.id || null;
   write(K.children, appState.children);
   write(K.activeChildId, appState.activeChildId);
 }
+
 export function updateCaregiver(patch) {
   appState.caregiver = { ...appState.caregiver, ...patch };
   write(K.caregiver, appState.caregiver);
 }
+
 export function updatePainDraft(patch) {
-  appState.painDraft = { ...appState.painDraft, ...patch };
+  const zones = patch?.zones ? [...new Set(patch.zones)] : appState.painDraft.zones;
+  appState.painDraft = { ...appState.painDraft, ...patch, zones };
   write(K.painDraft, appState.painDraft);
 }
+
 export function resetPainDraft() {
-  appState.painDraft = emptyPainDraft();
+  appState.painDraft = defaultPainDraft();
   write(K.painDraft, appState.painDraft);
 }
-export function loadPainLogIntoDraft(logId) {
-  const log = appState.painLogs.find(x => x.id === logId);
-  if (!log) return null;
+
+export function loadPainDraftFromLog(log) {
+  if (!log) return resetPainDraft();
   appState.painDraft = {
-    zones: [...(log.zones || [])],
-    view: log.view || 'front',
+    zones: [...new Set(log.zones || [])],
+    view: 'rotatable',
     painType: log.painType || '',
     started: log.started || '',
     intensity: log.intensity ?? null,
     notes: log.notes || '',
-    editLogId: log.id,
   };
   write(K.painDraft, appState.painDraft);
-  return appState.painDraft;
 }
-export function savePainLog() {
+
+export function savePainLog({ extendLogId } = {}) {
   const child = getActiveChild();
-  const draft = { ...appState.painDraft };
-  const existingIndex = draft.editLogId ? appState.painLogs.findIndex(x => x.id === draft.editLogId) : -1;
+  const draft = {
+    ...appState.painDraft,
+    zones: [...new Set(appState.painDraft.zones || [])],
+    notes: String(appState.painDraft.notes || '').trim(),
+  };
+  const existingId = extendLogId || sessionStorage.getItem('nana_extend_log_id');
+  const existingIndex = existingId ? appState.painLogs.findIndex(x => x.id === existingId) : -1;
+
+  if (existingIndex >= 0) {
+    const previous = appState.painLogs[existingIndex];
+    const merged = {
+      ...previous,
+      ...draft,
+      zones: [...new Set([...(previous.zones || []), ...(draft.zones || [])])],
+      updated_at: new Date().toISOString(),
+    };
+    appState.painLogs[existingIndex] = merged;
+    write(K.painLogs, appState.painLogs);
+    sessionStorage.removeItem('nana_extend_log_id');
+    resetPainDraft();
+    return merged;
+  }
+
   const log = {
-    id: existingIndex >= 0 ? appState.painLogs[existingIndex].id : uid('pain'),
+    id: uid('pain'),
     childId: child?.id,
     childName: child?.name || 'Child',
-    created_at: existingIndex >= 0 ? appState.painLogs[existingIndex].created_at : new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    zones: [...(draft.zones || [])],
-    view: draft.view || 'front',
-    painType: draft.painType || '',
-    started: draft.started || '',
-    intensity: draft.intensity ?? null,
-    notes: draft.notes || '',
+    created_at: new Date().toISOString(),
+    ...draft,
   };
-  if (existingIndex >= 0) appState.painLogs[existingIndex] = log;
-  else appState.painLogs.unshift(log);
+  appState.painLogs.unshift(log);
   write(K.painLogs, appState.painLogs);
+  sessionStorage.removeItem('nana_extend_log_id');
   resetPainDraft();
   return log;
 }
+
 export function setRole(role) { appState.role = role; write(K.role, role); }

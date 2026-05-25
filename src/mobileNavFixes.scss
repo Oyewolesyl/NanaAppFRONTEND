@@ -1,1409 +1,249 @@
+/* FINAL MOBILE + NAV FIXES */
+
 :root {
-  --blue:       #a8d7ff;
-  --black:      #000000;
-  --outline:    #020202;
-  --yellow:     #ffe98a;
-  --neutral:    #f2e6d8;
-  --red:        #ff6f61;
-  --button-red: #ff776b;
-  --teal:       #4fb4a6;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { height: 100%; overflow-x: hidden; }
-body {
-  height: 100%; margin: 0; padding: 0;
-  background: var(--blue); color: var(--black);
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
-}
-
-#app {
-  width: 100%; min-height: 100%;
-  display: flex; justify-content: center; align-items: flex-start;
-}
-
-.screen {
-  width: 100%; max-width: 390px; min-height: 100svh;
-  background: var(--blue); position: relative;
-  display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto;
-}
-
-/* ── Status bar ── */
-.status-bar { position: absolute; top: 0; left: 0; width: 100%; height: 38px; z-index: 5; pointer-events: none; }
-.status-notch { position: absolute; top: 0; left: 50%; width: 164px; height: 30px; transform: translateX(-50%); display: block; }
-.status-time  { position: absolute; left: 28px; top: 14px; font-family: "Sora", sans-serif; font-size: 14px; font-weight: 600; line-height: 1; color: #000; }
-.status-right { position: absolute; right: 20px; top: 18px; width: 61.4px; height: 11.025px; display: block; }
-
-/* ── Back button ── */
-.top-bar { width: 100%; height: 44px; margin-top: 38px; display: flex; align-items: center; padding: 0 16px; position: relative; flex-shrink: 0; }
-.back-button {
-  width: 42px; height: 44px; border-radius: 12px; border: 0;
-  background: var(--yellow); display: grid; place-items: center; cursor: pointer;
-  transition: opacity 0.15s, transform 0.12s;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  flex-shrink: 0; z-index: 1;
-}
-.back-button:active { opacity: 0.7; transform: scale(0.93); }
-.back-button img { width: 20px; height: 34px; display: block; pointer-events: none; }
-.nav-page-title {
-  position: absolute; left: 0; right: 0;
-  text-align: center; pointer-events: none;
-  font-family: "Inter", sans-serif; font-size: 17px; font-weight: 600;
-  color: #020202; letter-spacing: -0.408px; line-height: 22px;
-}
-.nav-right-title {
-  margin-left: auto; flex-shrink: 0; z-index: 1;
-  font-family: "Actor", sans-serif; font-size: 17px; font-weight: 400;
-  color: #757575; letter-spacing: -0.408px; line-height: 22px;
-}
-
-/* ── Shared continue button ── */
-.continue-button {
-  display: block; width: 206px; height: 55px; border: 0; border-radius: 12px;
-  background: var(--button-red); color: var(--neutral);
-  font-family: "Sora", sans-serif; font-size: 20px; font-weight: 600;
-  letter-spacing: 0.05px; text-shadow: 0 1px 0 rgba(2,2,2,0.38);
-  cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.15s, transform 0.12s;
-}
-.continue-button:not(:disabled):active { opacity: 0.8; transform: scale(0.97); }
-.continue-button:disabled { opacity: 0.35; cursor: not-allowed; }
-
-/* ════════ GET STARTED ════════ */
-.get-started-screen { padding: 0 0 60px; align-items: center; }
-.get-started-screen > *:not(.bg-teddy) { position: relative; z-index: 1; }
-.bg-teddy { position: absolute; opacity: 0.36; pointer-events: none; display: block; z-index: 0; }
-.bg-teddy--top    { width: 452px; height: 488px; left: -258px; top: -64px; }
-.bg-teddy--bottom { width: 490px; height: 540px; right: -258px; bottom: 16px; transform: scaleX(-1); }
-.welcome-title {
-  margin-top: 130px; color: var(--red);
-  font-family: "Sora", sans-serif; font-size: clamp(2rem, 10.2vw, 2.5rem);
-  font-weight: 600; line-height: 1; letter-spacing: 0.2px; -webkit-text-stroke: 1px #5f577f;
-}
-.app-thumbnail {
-  margin-top: 34px; width: 151px; min-height: 183px;
-  border-radius: 30px; border: 0.59px solid var(--teal); background: #fff;
-  display: grid; place-items: center; padding: 24px 18px; gap: 18px; z-index: 1;
-}
-.thumbnail-mark { width: 100%; max-width: 113px; height: auto; display: block; object-fit: contain; }
-.thumbnail-text { width: 114.598px; height: 55.444px; display: block; object-fit: contain; }
-.get-started-button { margin-top: auto; }
-.tagline {
-  margin-top: 24px; color: var(--red); font-family: "Nunito", sans-serif;
-  font-size: clamp(0.92rem, 4vw, 1rem); font-style: italic; font-weight: 700;
-  line-height: 1; letter-spacing: 0.03px; text-transform: lowercase;
-  -webkit-text-stroke: 1px #5f577f; text-align: center;
-}
-
-/* ════════ SELECT ROLE ════════ */
-.select-role-screen { padding: 52px 24px 48px; }
-.screen-title {
-  margin: 20px 0 24px; text-align: center;
-  font-family: "Nunito", sans-serif; font-size: clamp(2rem, 8.2vw, 3.2rem);
-  font-weight: 700; line-height: 1; letter-spacing: 0.08px;
-  color: var(--red); -webkit-text-stroke: 1px #5f577f;
-}
-.role-options { width: min(244px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
-.role-option {
-  display: flex; flex-direction: column; align-items: center; gap: 14px; cursor: pointer;
-  border-radius: 16px; padding: 8px; transition: transform 0.12s;
-  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-}
-.role-option:active { transform: scale(0.97); }
-.role-icon    { display: flex; align-items: center; justify-content: center; background: transparent; pointer-events: none; }
-.role-icon--parent { width: 170px; height: 169px; }
-.role-icon--doctor { width: 167px; height: 167px; }
-.role-icon-image   { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-.role-icon--parent .role-icon-image { width: 100%; height: 100%; }
-.role-icon--doctor .role-icon-image { width: 100%; height: 100%; }
-.role-button {
-  width: min(244px, 100%); min-height: 56px; padding: 14px 20px;
-  border: 1.47px solid var(--outline); border-radius: 8.25px;
-  background: var(--yellow); color: var(--red);
-  font-family: "Nunito", sans-serif; font-size: clamp(1.25rem, 4.8vw, 1.9rem);
-  font-weight: 700; line-height: 1; letter-spacing: 0.05px;
-  text-shadow: 0 1px 0 rgba(2,2,2,0.22); cursor: pointer; pointer-events: none;
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-}
-.role-button--selected {
-  background: #fff; border: 2.5px solid var(--teal);
-  box-shadow: 0 0 0 4px rgba(79,180,166,0.22), 0 4px 12px rgba(0,0,0,0.10);
-}
-.role-option--selected .role-icon {
-  filter: drop-shadow(0 4px 10px rgba(79,180,166,0.35));
-  transform: translateY(-3px); transition: transform 0.15s, filter 0.15s;
-}
-.select-role-screen .continue-button { margin: 24px auto 0; }
-
-/* ════════ CHILDREN SCREENS ════════ */
-.children-screen { padding: 0 0 120px; }
-.children-header {
-  width: 100%; min-height: 97px; background: var(--neutral);
-  display: flex; align-items: flex-end; justify-content: space-between;
-  padding: 0 10px 10px; flex-shrink: 0;
-}
-.children-header--logo-only { justify-content: flex-start; }
-.children-header-logo        { width: 40.475px; height: 40.863px; display: block; }
-.children-header-logo--large { width: 50px; height: 50px; }
-.children-menu-button { width: 54px; height: 42px; border: 0; background: transparent; cursor: pointer; }
-.children-menu-button img { width: 100%; height: 100%; display: block; }
-.children-intro  { margin-top: 44px; text-align: center; color: var(--red); width: 100%; }
-.children-title  { font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700; line-height: 1; letter-spacing: 0.08px; -webkit-text-stroke: 1px #5f577f; }
-.children-title--small { font-size: 24px; font-weight: 600; }
-.children-subtitle { margin-top: 16px; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; line-height: 1; letter-spacing: 0.03px; }
-.children-add-section { margin-top: 42px; text-align: center; display: flex; flex-direction: column; align-items: center; flex: 1; width: 100%; }
-.children-add-title { color: var(--red); font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; line-height: 1; letter-spacing: 0.03px; -webkit-text-stroke: 1px #5f577f; }
-.children-add-button { margin-top: 16px; width: 100px; height: 100px; border: 0; background: transparent; cursor: pointer; }
-.children-add-button img, .children-add-button svg { width: 100%; height: 100%; display: block; }
-.bottom-nav {
-  position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 120px;
-  background: var(--yellow); display: flex; align-items: center;
-  justify-content: space-between; padding: 0 36px; z-index: 10;
-}
-.bottom-nav-item {
-  border: 0; background: transparent; cursor: pointer; display: grid; place-items: center;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.15s, transform 0.12s; border-radius: 12px;
-}
-.bottom-nav-item:active { opacity: 0.6; transform: scale(0.88); }
-.bottom-nav-item img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; pointer-events: none; }
-.bottom-nav-item--home     { width: 58px; height: 60px; }
-.bottom-nav-item--activity { width: 53px; height: 57px; }
-.bottom-nav-item--settings { width: 56px; height: 57px; }
-.bottom-nav-sprite          { display: block; background-image: url("https://www.figma.com/api/mcp/asset/2eb0d860-7f4f-4848-a7cf-60ce13556eb5"); background-repeat: no-repeat; }
-.bottom-nav-sprite--home     { width: 58px; height: 60px; background-size: 209px 117px; background-position: -16px -57px; }
-.bottom-nav-sprite--settings { width: 56px; height: 57px; background-size: 213px 121px; background-position: -148px -6px; }
-.child-added-intro { margin-top: 44px; display: flex; justify-content: center; }
-.child-card-list   { width: min(390px, 100%); margin-top: 40px; display: flex; justify-content: center; }
-.child-card { width: 271px; border: 1px solid var(--outline); border-radius: 14px; background: var(--yellow); overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-.child-card--compact { width: 162px; }
-.child-card-photo-wrap { width: 110px; height: 110px; margin: 20px 0; border-radius: 999px; border: 7px solid #8cc8ff; overflow: hidden; }
-.child-card-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-.child-card-divider { width: 100%; height: 1px; background: var(--outline); }
-.child-card-meta { width: 100%; padding: 12px 16px 10px; text-align: center; }
-.child-card-meta--compact { padding: 12px 8px 10px; }
-.child-name { font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; color: var(--red); letter-spacing: 0.04px; -webkit-text-stroke: 1px #5f577f; }
-.child-age  { margin-top: 12px; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; color: var(--outline); letter-spacing: 0.03px; }
-.child-open-map-btn {
-  margin: 13px 0 11px; width: 149.608px; height: 48.603px; border: 0; border-radius: 12.413px;
-  background: var(--teal); color: var(--neutral); font-family: "Nunito", sans-serif;
-  font-size: 18.14px; font-weight: 700; letter-spacing: 0.05px;
-  text-shadow: 0 1px 0 rgba(2,2,2,0.38); cursor: pointer;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s, transform 0.12s;
-}
-.child-open-map-btn:active { opacity: 0.75; transform: scale(0.96); }
-.child-open-map-btn--compact { margin: 26px 0 0; width: 162px; height: 48px; border-radius: 12.413px; font-size: 17.35px; }
-.floating-add-btn {
-  position: absolute; right: 16px; top: 632px; width: 54px; height: 54px;
-  border: 0; background: transparent; cursor: pointer;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform 0.12s;
-}
-.floating-add-btn:active { transform: scale(0.88); }
-.floating-add-btn--lower { top: 739px; }
-.floating-add-btn img, .floating-add-btn svg { width: 100%; height: 100%; display: block; pointer-events: none; }
-.child-card-list--two { width: 350px; justify-content: space-between; margin-left: auto; margin-right: auto; }
-.add-child-overlay { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; }
-.add-child-overlay[hidden] { display: none; }
-.add-child-backdrop { position: absolute; inset: 0; background: rgba(2,2,2,0.28); }
-.add-child-modal {
-  position: relative; width: 355px; max-width: calc(100vw - 24px); min-height: 683px;
-  border: 0.5px solid #000; border-radius: 12px; background: #a9dfbf;
-  padding: 60px 40px; display: flex; flex-direction: column; align-items: center; gap: 25px;
-}
-.add-image-card { width: 270px; height: 213px; border: 1px solid var(--outline); border-radius: 14px; background: var(--yellow); display: flex; flex-direction: column; justify-content: space-between; }
-.add-image-icon-wrap { position: relative; width: 110px; height: 110px; margin: 20px auto 0; }
-.add-image-circle { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.add-image-plus { position: absolute; width: 53px; height: 53px; left: 50%; top: 50%; transform: translate(-50%,-50%); }
-.add-image-action { border: 0; border-top: 1px solid var(--outline); background: transparent; color: var(--outline); font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.03px; height: 36px; cursor: pointer; width: 100%; }
-.child-name-field { width: 275px; height: 51px; display: block; }
-.child-name-field input { width: 100%; height: 100%; border: 1px solid var(--teal); border-radius: 12px; background: var(--yellow); color: rgba(2,2,2,0.7); font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.03px; padding: 9px 14px; outline: none; }
-.child-name-field input::placeholder { color: rgba(2,2,2,0.5); }
-.age-title { color: var(--red); font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; letter-spacing: 0.04px; -webkit-text-stroke: 1px #5f577f; }
-.age-wheel-shell { position: relative; width: 63px; height: 111px; border: 0.5px solid #000; border-radius: 12px; background: var(--yellow); overflow: hidden; }
-.age-wheel { list-style: none; height: 100%; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; }
-.age-wheel::-webkit-scrollbar { display: none; }
-.age-wheel-item, .age-wheel-spacer { height: 31px; display: grid; place-items: center; scroll-snap-align: center; }
-.age-wheel-item { font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; color: var(--teal); letter-spacing: 0.03px; }
-.age-wheel-item.is-selected { color: var(--red); }
-.age-wheel-fade { position: absolute; left: 0; width: 63px; pointer-events: none; }
-.age-wheel-fade--top    { top: 0;    height: 55px; background: linear-gradient(to bottom, rgba(115,115,115,.16), rgba(217,217,217,.09)); }
-.age-wheel-fade--bottom { bottom: 0; height: 56px; background: linear-gradient(to top,   rgba(115,115,115,.16), rgba(217,217,217,.09)); }
-.save-child-button { width: 206.358px; height: 55.336px; border: 0; border-radius: 12.413px; background: var(--button-red); color: var(--neutral); font-family: "Sora", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: 0.05px; text-shadow: 0 1px 0 rgba(2,2,2,0.38); cursor: pointer; }
-
-/* ════════ SHOW PAIN SCREEN ════════ */
-.show-pain-screen { padding: 0; overflow: hidden; }
-.show-pain-top-bar  { }
-.show-pain-title {
-  margin: 14px 0 0 16px; flex-shrink: 0;
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.body-toggle {
-  margin: 16px 19px 0; height: 32px; display: flex;
-  background: var(--teal); border: 1px solid #757575; border-radius: 9px; padding: 2px; flex-shrink: 0;
-}
-.body-toggle-btn {
-  flex: 1; height: 28px; border: none; border-radius: 7px; background: transparent;
-  font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700;
-  letter-spacing: 0.032px; color: #020202; cursor: pointer; touch-action: manipulation;
-  transition: background 0.15s, color 0.15s;
-}
-.body-toggle-btn--active { background: var(--red); border: 1px solid #757575; color: #fff; }
-.body-hint {
-  margin: 16px 0 0; flex-shrink: 0;
-  font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700;
-  letter-spacing: 0.032px; color: rgba(0,0,0,0.7); text-align: center;
-}
-.body-map-wrap   { margin: 16px auto 0; width: 220px; height: 396px; flex-shrink: 0; }
-.body-svg-wrap   { width: 100%; height: 100%; }
-.body-svg-wrap svg { width: 100%; height: 100%; display: block; }
-.zoom-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 12px auto 0; flex-shrink: 0; }
-.zoom-btn {
-  width: 60px; height: 58px; border-radius: 12px; font-family: "Inter", sans-serif;
-  font-size: 38px; font-weight: 600; line-height: 1; color: #fff; border: 1px solid #fff;
-  cursor: pointer; display: grid; place-items: center; touch-action: manipulation;
-  transition: opacity 0.15s; user-select: none; padding-bottom: 2px;
-}
-.zoom-btn:active   { opacity: 0.7; }
-.zoom-btn--minus   { background: var(--red); }
-.zoom-btn--plus    { background: var(--teal); border-color: #a9dfbf; }
-.zoom-label { font-family: "Nunito", sans-serif; font-size: 13px; font-weight: 700; color: rgba(0,0,0,0.5); min-width: 44px; text-align: center; }
-.show-pain-continue { margin: 12px auto 28px; }
-
-/* ════════ RESPONSIVE ════════ */
-@media (max-width: 360px) {
-  .role-icon--parent, .role-icon--doctor { transform: scale(0.9); }
-  .role-option { gap: 10px; }
-}
-
-/* ════════════════════════════════════════
-   PAIN TYPE SCREEN
-   ════════════════════════════════════════ */
-.pain-type-screen { padding: 0 0 48px; overflow-y: auto; }
-.pain-type-top-bar { }
-.pain-type-heading-wrap { padding: 0 21px; margin-top: 49px; flex-shrink: 0; }
-.pain-type-title {
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.pain-type-subtitle {
-  margin-top: 10px; font-family: "Nunito", sans-serif; font-size: 16px;
-  font-weight: 700; color: #1e1e1e; letter-spacing: 0.032px;
-}
-.pain-type-grid {
-  display: grid; grid-template-columns: 118px 118px; gap: 26px;
-  width: 262px; margin: 40px auto 0; flex-shrink: 0;
-}
-.pain-card {
-  width: 118px; height: 118px; border: 2px solid var(--red); border-radius: 22px;
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  transition: transform 0.12s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
-}
-.pain-card:active { transform: scale(0.95); }
-.pain-card--selected {
-  background: #FFF5F4; border-color: var(--red); border-width: 3px;
-  box-shadow: 0 4px 20px rgba(255,111,97,0.40); transform: scale(1.04);
-}
-.pain-card-icon { width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; }
-.pain-card-icon svg { width: 100%; height: 100%; display: block; overflow: visible; }
-
-/* Shared action row (Back / Next) — used by pain-type, when, pain-scale */
-.pain-type-actions {
-  display: flex; gap: 10px; width: 260px; margin: 40px auto 0; flex-shrink: 0;
-}
-.pain-type-back-btn {
-  flex: 1; height: 62px; border-radius: 14px;
-  border: 1.5px solid rgba(0,0,0,0.14); background: rgba(107,178,253,0.35);
-  color: rgba(2,2,2,0.7); font-family: "Nunito", sans-serif; font-size: 21px;
-  font-weight: 700; letter-spacing: 0.05px; cursor: pointer; touch-action: manipulation;
-  transition: opacity 0.15s;
-}
-.pain-type-back-btn:active { opacity: 0.7; }
-.pain-type-next-btn {
-  flex: 1; height: 62px; border-radius: 14px; border: 0;
-  background: var(--button-red); color: var(--neutral);
-  font-family: "Nunito", sans-serif; font-size: 21px; font-weight: 700;
-  letter-spacing: 0.05px; cursor: pointer; touch-action: manipulation;
-  transition: opacity 0.15s; text-shadow: 0 1px 0 rgba(2,2,2,0.28);
-}
-.pain-type-next-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.pain-type-next-btn:not(:disabled):active { opacity: 0.8; }
-
-/* ════════════════════════════════════════
-   WHEN DID IT START SCREEN
-   ════════════════════════════════════════ */
-.when-screen { padding: 0 0 48px; overflow-y: auto; }
-.when-top-bar { }
-.when-heading-wrap { padding: 0 21px; margin-top: 49px; flex-shrink: 0; }
-.when-title {
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.when-subtitle {
-  margin-top: 10px; font-family: "Nunito", sans-serif; font-size: 16px;
-  font-weight: 700; color: #1e1e1e; letter-spacing: 0.032px;
-}
-
-.when-grid {
-  display: grid;
-  grid-template-columns: 139px 139px;
-  gap: 26px;
-  width: 304px;
-  margin: 40px auto 0;
-  flex-shrink: 0;
-}
-
-.when-card {
-  width: 139px; border: none; background: transparent;
-  display: flex; flex-direction: column; align-items: flex-start;
-  cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  padding: 0;
-  transition: transform 0.14s cubic-bezier(.34,1.56,.64,1);
-}
-.when-card:active { transform: scale(0.94); }
-
-.when-card-illustration {
-  width: 139px; height: 96px;
-  background: #fff;
-  border: 2px solid var(--red);
-  border-radius: 18px 18px 0 0;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  transition: box-shadow 0.15s, border-width 0.1s, background 0.15s;
-}
-.when-card-illustration svg {
-  width: 110px; height: 78px; display: block; overflow: visible;
-}
-
-.when-card-underline {
-  width: 100%; height: 9px;
-  background: rgba(243,122,101,0.4);
-  border-radius: 0 0 10px 10px;
-  transition: background 0.15s, box-shadow 0.15s;
-}
-
-.when-card--selected .when-card-illustration {
-  background: #FFF5F4;
-  border-color: var(--red);
-  border-width: 2.5px;
-  box-shadow: 0 6px 18px rgba(255,111,97,0.28);
-}
-.when-card--selected .when-card-underline {
-  background: var(--red);
-  box-shadow: 0 3px 10px rgba(255,111,97,0.5);
-}
-
-.when-card-label {
-  margin-top: 10px;
-  font-family: "Nunito", sans-serif;
-  font-size: 22px; font-weight: 700;
-  color: var(--red); letter-spacing: 0.03px;
-  line-height: 1.2; -webkit-text-stroke: 0.5px #000; text-align: left;
-}
-.when-card--selected .when-card-label { -webkit-text-stroke: 1px #000; }
-
-/* ════════════════════════════════════════
-   PAIN SCALE SCREEN
-   ════════════════════════════════════════ */
-.pain-scale-screen { padding: 0 0 48px; overflow-y: auto; }
-.pain-scale-top-bar { }
-
-.pain-scale-body-wrap { width: 120px; height: 130px; margin: 24px auto 0; flex-shrink: 0; }
-.pain-scale-body-svg { width: 100%; height: 100%; }
-
-.pain-scale-heading-wrap { padding: 0 21px; margin-top: 16px; flex-shrink: 0; }
-.pain-scale-title {
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.pain-scale-subtitle {
-  margin-top: 10px; font-family: "Nunito", sans-serif; font-size: 16px;
-  font-weight: 700; color: #1e1e1e; letter-spacing: 0.032px;
-}
-
-/* Face card — white rounded card to elevate the emoji feel */
-.pain-scale-face-card {
-  width: 120px; height: 120px;
-  margin: 20px auto 0;
-  background: rgba(255,255,255,0.6);
-  border-radius: 24px;
-  border: 1.5px solid rgba(255,111,97,0.2);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 4px;
-  flex-shrink: 0;
-  transition: border-color 0.25s, background 0.25s;
-}
-.pain-scale-face { width: 80px; height: 80px; }
-.pain-scale-level-label {
-  font-family: "Nunito", sans-serif; font-size: 12px; font-weight: 700;
-  color: rgba(2,2,2,0.4); letter-spacing: 0.02px; text-align: center;
-}
-
-.pain-scale-slider-wrap { padding: 0 20px; margin-top: 20px; flex-shrink: 0; }
-
-.pain-slider {
-  -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 40px;
-  background: linear-gradient(to right, var(--red) var(--fill, 0%), var(--yellow) var(--fill, 0%));
-  outline: none; cursor: pointer;
-}
-.pain-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--red); cursor: pointer;
-  border: 3px solid #fff; box-shadow: 0 2px 8px rgba(255,111,97,0.5);
-  transition: transform 0.1s;
-}
-.pain-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
-.pain-slider::-moz-range-thumb {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--red); cursor: pointer;
-  border: 3px solid #fff; box-shadow: 0 2px 8px rgba(255,111,97,0.5);
-}
-.pain-slider-labels {
-  display: flex; justify-content: space-between; margin-top: 8px; padding: 0 4px;
-}
-.pain-slider-labels span {
-  font-family: "Nunito", sans-serif; font-size: 13px; font-weight: 700;
-  color: rgba(0,0,0,0.45); width: 20px; text-align: center;
-}
-
-/* Pain descriptor line */
-.pain-scale-descriptor {
-  margin-top: 8px; padding: 0 20px; flex-shrink: 0;
-  font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700;
-  color: rgba(2,2,2,0.45); text-align: center; letter-spacing: 0.02px;
-  min-height: 20px; transition: color 0.25s;
-}:root {
-  --blue:       #a8d7ff;
-  --black:      #000000;
-  --outline:    #020202;
-  --yellow:     #ffe98a;
-  --neutral:    #f2e6d8;
-  --red:        #ff6f61;
-  --button-red: #ff776b;
-  --teal:       #4fb4a6;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { height: 100%; overflow-x: hidden; }
-body {
-  height: 100%; margin: 0; padding: 0;
-  background: var(--blue); color: var(--black);
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
-}
-
-#app {
-  width: 100%; min-height: 100%;
-  display: flex; justify-content: center; align-items: flex-start;
-}
-
-.screen {
-  width: 100%; max-width: 390px; min-height: 100svh;
-  background: var(--blue); position: relative;
-  display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto;
-}
-
-/* ── Status bar ── */
-.status-bar { position: absolute; top: 0; left: 0; width: 100%; height: 38px; z-index: 5; pointer-events: none; }
-.status-notch { position: absolute; top: 0; left: 50%; width: 164px; height: 30px; transform: translateX(-50%); display: block; }
-.status-time  { position: absolute; left: 28px; top: 14px; font-family: "Sora", sans-serif; font-size: 14px; font-weight: 600; line-height: 1; color: #000; }
-.status-right { position: absolute; right: 20px; top: 18px; width: 61.4px; height: 11.025px; display: block; }
-
-/* ── Back button ── */
-.top-bar { width: 100%; height: 44px; margin-top: 38px; display: flex; align-items: center; padding: 0 16px; position: relative; flex-shrink: 0; }
-.back-button {
-  width: 42px; height: 44px; border-radius: 12px; border: 0;
-  background: var(--yellow); display: grid; place-items: center; cursor: pointer;
-  transition: opacity 0.15s, transform 0.12s;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  flex-shrink: 0; z-index: 1;
-}
-.back-button:active { opacity: 0.7; transform: scale(0.93); }
-.back-button img { width: 20px; height: 34px; display: block; pointer-events: none; }
-.nav-page-title {
-  position: absolute; left: 0; right: 0;
-  text-align: center; pointer-events: none;
-  font-family: "Inter", sans-serif; font-size: 17px; font-weight: 600;
-  color: #020202; letter-spacing: -0.408px; line-height: 22px;
-}
-.nav-right-title {
-  margin-left: auto; flex-shrink: 0; z-index: 1;
-  font-family: "Actor", sans-serif; font-size: 17px; font-weight: 400;
-  color: #757575; letter-spacing: -0.408px; line-height: 22px;
-}
-
-/* ── Shared continue button ── */
-.continue-button {
-  display: block; width: 206px; height: 55px; border: 0; border-radius: 12px;
-  background: var(--button-red); color: var(--neutral);
-  font-family: "Sora", sans-serif; font-size: 20px; font-weight: 600;
-  letter-spacing: 0.05px; text-shadow: 0 1px 0 rgba(2,2,2,0.38);
-  cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.15s, transform 0.12s;
-}
-.continue-button:not(:disabled):active { opacity: 0.8; transform: scale(0.97); }
-.continue-button:disabled { opacity: 0.35; cursor: not-allowed; }
-
-/* ════════ GET STARTED ════════ */
-.get-started-screen { padding: 0 0 60px; align-items: center; }
-.get-started-screen > *:not(.bg-teddy) { position: relative; z-index: 1; }
-.bg-teddy { position: absolute; opacity: 0.36; pointer-events: none; display: block; z-index: 0; }
-.bg-teddy--top    { width: 452px; height: 488px; left: -258px; top: -64px; }
-.bg-teddy--bottom { width: 490px; height: 540px; right: -258px; bottom: 16px; transform: scaleX(-1); }
-.welcome-title {
-  margin-top: 130px; color: var(--red);
-  font-family: "Sora", sans-serif; font-size: clamp(2rem, 10.2vw, 2.5rem);
-  font-weight: 600; line-height: 1; letter-spacing: 0.2px; -webkit-text-stroke: 1px #5f577f;
-}
-.app-thumbnail {
-  margin-top: 34px; width: 151px; min-height: 183px;
-  border-radius: 30px; border: 0.59px solid var(--teal); background: #fff;
-  display: grid; place-items: center; padding: 24px 18px; gap: 18px; z-index: 1;
-}
-.thumbnail-mark { width: 100%; max-width: 113px; height: auto; display: block; object-fit: contain; }
-.thumbnail-text { width: 114.598px; height: 55.444px; display: block; object-fit: contain; }
-.get-started-button { margin-top: auto; }
-.tagline {
-  margin-top: 24px; color: var(--red); font-family: "Nunito", sans-serif;
-  font-size: clamp(0.92rem, 4vw, 1rem); font-style: italic; font-weight: 700;
-  line-height: 1; letter-spacing: 0.03px; text-transform: lowercase;
-  -webkit-text-stroke: 1px #5f577f; text-align: center;
-}
-
-/* ════════ SELECT ROLE ════════ */
-.select-role-screen { padding: 52px 24px 48px; }
-.screen-title {
-  margin: 20px 0 24px; text-align: center;
-  font-family: "Nunito", sans-serif; font-size: clamp(2rem, 8.2vw, 3.2rem);
-  font-weight: 700; line-height: 1; letter-spacing: 0.08px;
-  color: var(--red); -webkit-text-stroke: 1px #5f577f;
-}
-.role-options { width: min(244px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
-.role-option {
-  display: flex; flex-direction: column; align-items: center; gap: 14px; cursor: pointer;
-  border-radius: 16px; padding: 8px; transition: transform 0.12s;
-  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-}
-.role-option:active { transform: scale(0.97); }
-.role-icon    { display: flex; align-items: center; justify-content: center; background: transparent; pointer-events: none; }
-.role-icon--parent { width: 170px; height: 169px; }
-.role-icon--doctor { width: 167px; height: 167px; }
-.role-icon-image   { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-.role-icon--parent .role-icon-image { width: 100%; height: 100%; }
-.role-icon--doctor .role-icon-image { width: 100%; height: 100%; }
-.role-button {
-  width: min(244px, 100%); min-height: 56px; padding: 14px 20px;
-  border: 1.47px solid var(--outline); border-radius: 8.25px;
-  background: var(--yellow); color: var(--red);
-  font-family: "Nunito", sans-serif; font-size: clamp(1.25rem, 4.8vw, 1.9rem);
-  font-weight: 700; line-height: 1; letter-spacing: 0.05px;
-  text-shadow: 0 1px 0 rgba(2,2,2,0.22); cursor: pointer; pointer-events: none;
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-}
-.role-button--selected {
-  background: #fff; border: 2.5px solid var(--teal);
-  box-shadow: 0 0 0 4px rgba(79,180,166,0.22), 0 4px 12px rgba(0,0,0,0.10);
-}
-.role-option--selected .role-icon {
-  filter: drop-shadow(0 4px 10px rgba(79,180,166,0.35));
-  transform: translateY(-3px); transition: transform 0.15s, filter 0.15s;
-}
-.select-role-screen .continue-button { margin: 24px auto 0; }
-
-/* ════════ CHILDREN SCREENS ════════ */
-.children-screen { padding: 0 0 120px; }
-.children-header {
-  width: 100%; min-height: 97px; background: var(--neutral);
-  display: flex; align-items: flex-end; justify-content: space-between;
-  padding: 0 10px 10px; flex-shrink: 0;
-}
-.children-header--logo-only { justify-content: flex-start; }
-.children-header-logo        { width: 40.475px; height: 40.863px; display: block; }
-.children-header-logo--large { width: 50px; height: 50px; }
-.children-menu-button { width: 54px; height: 42px; border: 0; background: transparent; cursor: pointer; }
-.children-menu-button img { width: 100%; height: 100%; display: block; }
-.children-intro  { margin-top: 44px; text-align: center; color: var(--red); width: 100%; }
-.children-title  { font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700; line-height: 1; letter-spacing: 0.08px; -webkit-text-stroke: 1px #5f577f; }
-.children-title--small { font-size: 24px; font-weight: 600; }
-.children-subtitle { margin-top: 16px; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; line-height: 1; letter-spacing: 0.03px; }
-.children-add-section { margin-top: 42px; text-align: center; display: flex; flex-direction: column; align-items: center; flex: 1; width: 100%; }
-.children-add-title { color: var(--red); font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; line-height: 1; letter-spacing: 0.03px; -webkit-text-stroke: 1px #5f577f; }
-.children-add-button { margin-top: 16px; width: 100px; height: 100px; border: 0; background: transparent; cursor: pointer; }
-.children-add-button img, .children-add-button svg { width: 100%; height: 100%; display: block; }
-.bottom-nav {
-  position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 120px;
-  background: var(--yellow); display: flex; align-items: center;
-  justify-content: space-between; padding: 0 36px; z-index: 10;
-}
-.bottom-nav-item {
-  border: 0; background: transparent; cursor: pointer; display: grid; place-items: center;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.15s, transform 0.12s; border-radius: 12px;
-}
-.bottom-nav-item:active { opacity: 0.6; transform: scale(0.88); }
-.bottom-nav-item img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; pointer-events: none; }
-.bottom-nav-item--home     { width: 58px; height: 60px; }
-.bottom-nav-item--activity { width: 53px; height: 57px; }
-.bottom-nav-item--settings { width: 56px; height: 57px; }
-.bottom-nav-sprite          { display: block; background-image: url("https://www.figma.com/api/mcp/asset/2eb0d860-7f4f-4848-a7cf-60ce13556eb5"); background-repeat: no-repeat; }
-.bottom-nav-sprite--home     { width: 58px; height: 60px; background-size: 209px 117px; background-position: -16px -57px; }
-.bottom-nav-sprite--settings { width: 56px; height: 57px; background-size: 213px 121px; background-position: -148px -6px; }
-.child-added-intro { margin-top: 44px; display: flex; justify-content: center; }
-.child-card-list   { width: min(390px, 100%); margin-top: 40px; display: flex; justify-content: center; }
-.child-card { width: 271px; border: 1px solid var(--outline); border-radius: 14px; background: var(--yellow); overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-.child-card--compact { width: 162px; }
-.child-card-photo-wrap { width: 110px; height: 110px; margin: 20px 0; border-radius: 999px; border: 7px solid #8cc8ff; overflow: hidden; }
-.child-card-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-.child-card-divider { width: 100%; height: 1px; background: var(--outline); }
-.child-card-meta { width: 100%; padding: 12px 16px 10px; text-align: center; }
-.child-card-meta--compact { padding: 12px 8px 10px; }
-.child-name { font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; color: var(--red); letter-spacing: 0.04px; -webkit-text-stroke: 1px #5f577f; }
-.child-age  { margin-top: 12px; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; color: var(--outline); letter-spacing: 0.03px; }
-.child-open-map-btn {
-  margin: 13px 0 11px; width: 149.608px; height: 48.603px; border: 0; border-radius: 12.413px;
-  background: var(--teal); color: var(--neutral); font-family: "Nunito", sans-serif;
-  font-size: 18.14px; font-weight: 700; letter-spacing: 0.05px;
-  text-shadow: 0 1px 0 rgba(2,2,2,0.38); cursor: pointer;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s, transform 0.12s;
-}
-.child-open-map-btn:active { opacity: 0.75; transform: scale(0.96); }
-.child-open-map-btn--compact { margin: 26px 0 0; width: 162px; height: 48px; border-radius: 12.413px; font-size: 17.35px; }
-.floating-add-btn {
-  position: absolute; right: 16px; top: 632px; width: 54px; height: 54px;
-  border: 0; background: transparent; cursor: pointer;
-  touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform 0.12s;
-}
-.floating-add-btn:active { transform: scale(0.88); }
-.floating-add-btn--lower { top: 739px; }
-.floating-add-btn img, .floating-add-btn svg { width: 100%; height: 100%; display: block; pointer-events: none; }
-.child-card-list--two { width: 350px; justify-content: space-between; margin-left: auto; margin-right: auto; }
-.add-child-overlay { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; }
-.add-child-overlay[hidden] { display: none; }
-.add-child-backdrop { position: absolute; inset: 0; background: rgba(2,2,2,0.28); }
-.add-child-modal {
-  position: relative; width: 355px; max-width: calc(100vw - 24px); min-height: 683px;
-  border: 0.5px solid #000; border-radius: 12px; background: #a9dfbf;
-  padding: 60px 40px; display: flex; flex-direction: column; align-items: center; gap: 25px;
-}
-.add-image-card { width: 270px; height: 213px; border: 1px solid var(--outline); border-radius: 14px; background: var(--yellow); display: flex; flex-direction: column; justify-content: space-between; }
-.add-image-icon-wrap { position: relative; width: 110px; height: 110px; margin: 20px auto 0; }
-.add-image-circle { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.add-image-plus { position: absolute; width: 53px; height: 53px; left: 50%; top: 50%; transform: translate(-50%,-50%); }
-.add-image-action { border: 0; border-top: 1px solid var(--outline); background: transparent; color: var(--outline); font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.03px; height: 36px; cursor: pointer; width: 100%; }
-.child-name-field { width: 275px; height: 51px; display: block; }
-.child-name-field input { width: 100%; height: 100%; border: 1px solid var(--teal); border-radius: 12px; background: var(--yellow); color: rgba(2,2,2,0.7); font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.03px; padding: 9px 14px; outline: none; }
-.child-name-field input::placeholder { color: rgba(2,2,2,0.5); }
-.age-title { color: var(--red); font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; letter-spacing: 0.04px; -webkit-text-stroke: 1px #5f577f; }
-.age-wheel-shell { position: relative; width: 63px; height: 111px; border: 0.5px solid #000; border-radius: 12px; background: var(--yellow); overflow: hidden; }
-.age-wheel { list-style: none; height: 100%; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; }
-.age-wheel::-webkit-scrollbar { display: none; }
-.age-wheel-item, .age-wheel-spacer { height: 31px; display: grid; place-items: center; scroll-snap-align: center; }
-.age-wheel-item { font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 600; color: var(--teal); letter-spacing: 0.03px; }
-.age-wheel-item.is-selected { color: var(--red); }
-.age-wheel-fade { position: absolute; left: 0; width: 63px; pointer-events: none; }
-.age-wheel-fade--top    { top: 0;    height: 55px; background: linear-gradient(to bottom, rgba(115,115,115,.16), rgba(217,217,217,.09)); }
-.age-wheel-fade--bottom { bottom: 0; height: 56px; background: linear-gradient(to top,   rgba(115,115,115,.16), rgba(217,217,217,.09)); }
-.save-child-button { width: 206.358px; height: 55.336px; border: 0; border-radius: 12.413px; background: var(--button-red); color: var(--neutral); font-family: "Sora", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: 0.05px; text-shadow: 0 1px 0 rgba(2,2,2,0.38); cursor: pointer; }
-
-/* ════════ SHOW PAIN SCREEN ════════ */
-.show-pain-screen { padding: 0; overflow: hidden; }
-.show-pain-top-bar  { }
-.show-pain-title {
-  margin: 14px 0 0 16px; flex-shrink: 0;
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.body-toggle {
-  margin: 16px 19px 0; height: 32px; display: flex;
-  background: var(--teal); border: 1px solid #757575; border-radius: 9px; padding: 2px; flex-shrink: 0;
-}
-.body-toggle-btn {
-  flex: 1; height: 28px; border: none; border-radius: 7px; background: transparent;
-  font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700;
-  letter-spacing: 0.032px; color: #020202; cursor: pointer; touch-action: manipulation;
-  transition: background 0.15s, color 0.15s;
-}
-.body-toggle-btn--active { background: var(--red); border: 1px solid #757575; color: #fff; }
-.body-hint {
-  margin: 16px 0 0; flex-shrink: 0;
-  font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 700;
-  letter-spacing: 0.032px; color: rgba(0,0,0,0.7); text-align: center;
-}
-.body-map-wrap   { margin: 16px auto 0; width: 220px; height: 396px; flex-shrink: 0; }
-.body-svg-wrap   { width: 100%; height: 100%; }
-.body-svg-wrap svg { width: 100%; height: 100%; display: block; }
-.zoom-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 12px auto 0; flex-shrink: 0; }
-.zoom-btn {
-  width: 60px; height: 58px; border-radius: 12px; font-family: "Inter", sans-serif;
-  font-size: 38px; font-weight: 600; line-height: 1; color: #fff; border: 1px solid #fff;
-  cursor: pointer; display: grid; place-items: center; touch-action: manipulation;
-  transition: opacity 0.15s; user-select: none; padding-bottom: 2px;
-}
-.zoom-btn:active   { opacity: 0.7; }
-.zoom-btn--minus   { background: var(--red); }
-.zoom-btn--plus    { background: var(--teal); border-color: #a9dfbf; }
-.zoom-label { font-family: "Nunito", sans-serif; font-size: 13px; font-weight: 700; color: rgba(0,0,0,0.5); min-width: 44px; text-align: center; }
-.show-pain-continue { margin: 12px auto 28px; }
-
-/* ════════ RESPONSIVE ════════ */
-@media (max-width: 360px) {
-  .role-icon--parent, .role-icon--doctor { transform: scale(0.9); }
-  .role-option { gap: 10px; }
-}
-
-/* ════════════════════════════════════════
-   PAIN TYPE SCREEN
-   ════════════════════════════════════════ */
-.pain-type-screen { padding: 0 0 48px; overflow-y: auto; }
-.pain-type-top-bar { }
-.pain-type-heading-wrap { padding: 0 21px; margin-top: 49px; flex-shrink: 0; }
-.pain-type-title {
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.pain-type-subtitle {
-  margin-top: 10px; font-family: "Nunito", sans-serif; font-size: 16px;
-  font-weight: 700; color: #1e1e1e; letter-spacing: 0.032px;
-}
-.pain-type-grid {
-  display: grid; grid-template-columns: 118px 118px; gap: 26px;
-  width: 262px; margin: 40px auto 0; flex-shrink: 0;
-}
-.pain-card {
-  width: 118px; height: 118px; border: 2px solid var(--red); border-radius: 22px;
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  transition: transform 0.12s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
-}
-.pain-card:active { transform: scale(0.95); }
-.pain-card--selected {
-  background: #FFF5F4; border-color: var(--red); border-width: 3px;
-  box-shadow: 0 4px 20px rgba(255,111,97,0.40); transform: scale(1.04);
-}
-.pain-card-icon { width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; }
-.pain-card-icon svg { width: 100%; height: 100%; display: block; overflow: visible; }
-
-/* Shared action row (Back / Next) — used by pain-type, when, pain-scale */
-.pain-type-actions {
-  display: flex; gap: 10px; width: 260px; margin: 40px auto 0; flex-shrink: 0;
-}
-.pain-type-back-btn {
-  flex: 1; height: 62px; border-radius: 14px;
-  border: 1.5px solid rgba(0,0,0,0.14); background: rgba(107,178,253,0.35);
-  color: rgba(2,2,2,0.7); font-family: "Nunito", sans-serif; font-size: 21px;
-  font-weight: 700; letter-spacing: 0.05px; cursor: pointer; touch-action: manipulation;
-  transition: opacity 0.15s;
-}
-.pain-type-back-btn:active { opacity: 0.7; }
-.pain-type-next-btn {
-  flex: 1; height: 62px; border-radius: 14px; border: 0;
-  background: var(--button-red); color: var(--neutral);
-  font-family: "Nunito", sans-serif; font-size: 21px; font-weight: 700;
-  letter-spacing: 0.05px; cursor: pointer; touch-action: manipulation;
-  transition: opacity 0.15s; text-shadow: 0 1px 0 rgba(2,2,2,0.28);
-}
-.pain-type-next-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.pain-type-next-btn:not(:disabled):active { opacity: 0.8; }
-
-/* ════════════════════════════════════════
-   WHEN DID IT START SCREEN
-   ════════════════════════════════════════ */
-.when-screen { padding: 0 0 48px; overflow-y: auto; }
-.when-top-bar { }
-.when-heading-wrap { padding: 0 21px; margin-top: 49px; flex-shrink: 0; }
-.when-title {
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.when-subtitle {
-  margin-top: 10px; font-family: "Nunito", sans-serif; font-size: 16px;
-  font-weight: 700; color: #1e1e1e; letter-spacing: 0.032px;
-}
-
-.when-grid {
-  display: grid;
-  grid-template-columns: 139px 139px;
-  gap: 26px;
-  width: 304px;
-  margin: 40px auto 0;
-  flex-shrink: 0;
-}
-
-.when-card {
-  width: 139px; border: none; background: transparent;
-  display: flex; flex-direction: column; align-items: flex-start;
-  cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  padding: 0;
-  transition: transform 0.14s cubic-bezier(.34,1.56,.64,1);
-}
-.when-card:active { transform: scale(0.94); }
-
-.when-card-illustration {
-  width: 139px; height: 96px;
-  background: #fff;
-  border: 2px solid var(--red);
-  border-radius: 18px 18px 0 0;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  transition: box-shadow 0.15s, border-width 0.1s, background 0.15s;
-}
-.when-card-illustration svg {
-  width: 110px; height: 78px; display: block; overflow: visible;
-}
-
-.when-card-underline {
-  width: 100%; height: 9px;
-  background: rgba(243,122,101,0.4);
-  border-radius: 0 0 10px 10px;
-  transition: background 0.15s, box-shadow 0.15s;
-}
-
-.when-card--selected .when-card-illustration {
-  background: #FFF5F4;
-  border-color: var(--red);
-  border-width: 2.5px;
-  box-shadow: 0 6px 18px rgba(255,111,97,0.28);
-}
-.when-card--selected .when-card-underline {
-  background: var(--red);
-  box-shadow: 0 3px 10px rgba(255,111,97,0.5);
-}
-
-.when-card-label {
-  margin-top: 10px;
-  font-family: "Nunito", sans-serif;
-  font-size: 22px; font-weight: 700;
-  color: var(--red); letter-spacing: 0.03px;
-  line-height: 1.2; -webkit-text-stroke: 0.5px #000; text-align: left;
-}
-.when-card--selected .when-card-label { -webkit-text-stroke: 1px #000; }
-
-/* ════════════════════════════════════════
-   PAIN SCALE SCREEN
-   ════════════════════════════════════════ */
-.pain-scale-screen { padding: 0 0 48px; overflow-y: auto; }
-.pain-scale-top-bar { }
-
-.pain-scale-body-wrap { width: 120px; height: 130px; margin: 24px auto 0; flex-shrink: 0; }
-.pain-scale-body-svg { width: 100%; height: 100%; }
-
-.pain-scale-heading-wrap { padding: 0 21px; margin-top: 16px; flex-shrink: 0; }
-.pain-scale-title {
-  font-family: "Nunito", sans-serif; font-size: 32px; font-weight: 700;
-  line-height: 44px; letter-spacing: 0.08px; color: var(--red); -webkit-text-stroke: 0.5px #000;
-}
-.pain-scale-subtitle {
-  margin-top: 10px; font-family: "Nunito", sans-serif; font-size: 16px;
-  font-weight: 700; color: #1e1e1e; letter-spacing: 0.032px;
-}
-
-/* Face card — white rounded card to elevate the emoji feel */
-.pain-scale-face-card {
-  width: 120px; height: 120px;
-  margin: 20px auto 0;
-  background: rgba(255,255,255,0.6);
-  border-radius: 24px;
-  border: 1.5px solid rgba(255,111,97,0.2);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 4px;
-  flex-shrink: 0;
-  transition: border-color 0.25s, background 0.25s;
-}
-.pain-scale-face { width: 80px; height: 80px; }
-.pain-scale-level-label {
-  font-family: "Nunito", sans-serif; font-size: 12px; font-weight: 700;
-  color: rgba(2,2,2,0.4); letter-spacing: 0.02px; text-align: center;
-}
-
-.pain-scale-slider-wrap { padding: 0 20px; margin-top: 20px; flex-shrink: 0; }
-
-.pain-slider {
-  -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 40px;
-  background: linear-gradient(to right, var(--red) var(--fill, 0%), var(--yellow) var(--fill, 0%));
-  outline: none; cursor: pointer;
-}
-.pain-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--red); cursor: pointer;
-  border: 3px solid #fff; box-shadow: 0 2px 8px rgba(255,111,97,0.5);
-  transition: transform 0.1s;
-}
-.pain-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
-.pain-slider::-moz-range-thumb {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--red); cursor: pointer;
-  border: 3px solid #fff; box-shadow: 0 2px 8px rgba(255,111,97,0.5);
-}
-.pain-slider-labels {
-  display: flex; justify-content: space-between; margin-top: 8px; padding: 0 4px;
-}
-.pain-slider-labels span {
-  font-family: "Nunito", sans-serif; font-size: 13px; font-weight: 700;
-  color: rgba(0,0,0,0.45); width: 20px; text-align: center;
-}
-
-/* Pain descriptor line */
-.pain-scale-descriptor {
-  margin-top: 8px; padding: 0 20px; flex-shrink: 0;
-  font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700;
-  color: rgba(2,2,2,0.45); text-align: center; letter-spacing: 0.02px;
-  min-height: 20px; transition: color 0.25s;
-}
-/* ───────────────── FINAL SURGICAL APP FIXES ───────────────── */
-.mini-header-title { margin: 0 auto; font-family: "Nunito", sans-serif; color: var(--red); font-size: 18px; font-weight: 800; -webkit-text-stroke: .4px #5f577f; }
-.auth-screen { align-items: center; gap: 18px; padding-top: 80px; }
-.auth-logo { width: 92px; height: auto; object-fit: contain; }
-.auth-copy { width: min(300px, 86vw); text-align: center; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 800; color: rgba(0,0,0,.68); }
-.app-thumbnail { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
-
-.child-context-pill { width: fit-content; max-width: 92%; margin: 10px auto 0; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--yellow); border: 1px solid var(--outline); font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 900; color: #020202; }
-.child-context-pill img { width: 28px; height: 28px; border-radius: 999px; object-fit: cover; border: 2px solid #8cc8ff; }
-.empty-state { font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 800; color: rgba(0,0,0,.58); text-align: center; padding: 18px; }
-
-.nana-menu-overlay[hidden], .add-child-overlay[hidden] { display: none !important; }
-.nana-menu-overlay { position: absolute; inset: 0; z-index: 80; }
-.nana-menu-backdrop { position: absolute; inset: 0; background: rgba(2,2,2,.25); }
-.nana-menu-panel { position: absolute; top: 0; right: 0; width: min(310px, 86vw); min-height: 100%; background: var(--neutral); border-left: 2px solid var(--outline); padding: 44px 20px 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: -8px 0 30px rgba(0,0,0,.18); }
-.nana-menu-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.nana-menu-top img { width: 54px; height: auto; }
-.nana-menu-top button { width: 42px; height: 42px; border-radius: 12px; border: 0; background: var(--yellow); font-size: 28px; font-weight: 900; }
-.nana-menu-context { font-family: "Nunito", sans-serif; font-weight: 900; color: var(--red); margin-bottom: 10px; }
-.nana-menu-panel > button { min-height: 52px; border-radius: 14px; border: 1.5px solid var(--outline); background: var(--yellow); color: var(--red); font-family: "Nunito", sans-serif; font-size: 18px; font-weight: 900; text-align: left; padding: 0 16px; }
-
-.children-screen { overflow-y: auto !important; padding-bottom: 132px !important; }
-.child-card-list, .child-card-list--two { width: 100%; display: grid !important; grid-template-columns: 1fr; justify-items: center; gap: 18px; padding: 0 16px; margin-top: 30px !important; }
-.child-card-list--two { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
-.child-card-list--two .child-card { width: min(162px, 42vw); }
-.child-card { max-width: 100%; }
-.child-name, .child-age { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.child-open-map-btn { background: var(--teal) !important; color: var(--neutral) !important; min-height: 48px; height: auto !important; padding: 8px 10px; line-height: 1.05; white-space: normal; overflow-wrap: anywhere; }
-.child-open-map-btn--compact { width: 100% !important; margin-top: 12px !important; font-size: 15px !important; }
-.floating-add-btn { position: fixed !important; right: max(16px, calc((100vw - 390px)/2 + 16px)) !important; bottom: 132px !important; top: auto !important; z-index: 50 !important; }
-.bottom-nav { position: fixed !important; max-width: 390px; margin: 0 auto; left: 0; right: 0; }
-
-.settings-content { width: 100%; padding: 28px 22px 150px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.settings-field { width: min(320px, 100%); font-family: "Nunito", sans-serif; color: var(--red); font-size: 15px; font-weight: 900; display: flex; flex-direction: column; gap: 7px; }
-.settings-field input { min-height: 52px; border-radius: 14px; border: 1px solid var(--teal); background: var(--yellow); color: #020202; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 800; padding: 0 14px; outline: none; }
-.settings-link { width: min(320px, 100%); min-height: 50px; border-radius: 14px; border: 1.5px solid var(--outline); background: var(--yellow); color: var(--red); font-family: "Nunito", sans-serif; font-size: 18px; font-weight: 900; }
-.settings-note { width: min(320px, 100%); text-align: center; font-family: "Nunito", sans-serif; font-weight: 800; color: rgba(0,0,0,.55); }
-.manage-list, .history-list { width: min(340px, 100%); display: grid; gap: 12px; }
-.manage-child-card, .history-card, .summary-card { background: var(--yellow); border: 1px solid var(--outline); border-radius: 18px; padding: 14px; font-family: "Nunito", sans-serif; box-shadow: 0 4px 0 rgba(0,0,0,.08); }
-.manage-child-card { display: grid; grid-template-columns: 58px 1fr; gap: 10px; align-items: center; }
-.manage-child-card img, .summary-child img { width: 58px; height: 58px; border-radius: 999px; object-fit: cover; border: 4px solid #8cc8ff; }
-.manage-child-card strong, .summary-child strong, .history-card strong { display: block; color: var(--red); font-size: 20px; font-weight: 900; -webkit-text-stroke: .4px #5f577f; }
-.manage-child-card span, .summary-child span, .history-card span { display: block; color: rgba(0,0,0,.62); font-weight: 900; }
-.manage-child-card button { min-height: 38px; border: 0; border-radius: 12px; background: var(--teal); color: #fff; font-family: "Nunito", sans-serif; font-weight: 900; }
-.manage-child-card button[data-remove-child] { background: var(--button-red); }
-.manage-add { width: min(260px, 100%) !important; }
-
-.body-toggle { position: relative; z-index: 20; }
-.body-toggle-btn { pointer-events: auto !important; touch-action: manipulation !important; }
-.body-map-wrap { width: min(230px, 58vw) !important; height: min(392px, 50svh) !important; }
-.show-pain-screen { overflow-y: auto !important; padding-bottom: 24px; }
-.show-pain-title { text-align: center; }
-
-.pain-type-grid--friendly { grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(320px, calc(100vw - 44px)); gap: 14px; margin-top: 26px; }
-.pain-card--friendly { width: 100%; height: 112px; border-radius: 22px; background: rgba(255,255,255,.72); flex-direction: column; gap: 5px; }
-.pain-card--friendly .pain-card-emoji { font-size: 40px; line-height: 1; width: auto; height: auto; transition: transform .18s; }
-.pain-card--friendly .pain-card-label { font-family: "Nunito", sans-serif; font-size: 15px; font-weight: 900; color: var(--red); -webkit-text-stroke: .35px #5f577f; }
-.pain-card--selected .pain-card-emoji { animation: selectedPainBounce .55s ease both; }
-@keyframes selectedPainBounce { 0% { transform: scale(1); } 45% { transform: scale(1.23) rotate(-4deg); } 100% { transform: scale(1); } }
-
-.mini-body-wrap { position: relative; width: 124px !important; height: 156px !important; border: 1.5px solid var(--teal); border-radius: 24px; background: rgba(255,255,255,.28); overflow: hidden; }
-.mini-body-canvas { width: 100%; height: 100%; display: block; }
-.mini-body-pin-count { position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); background: var(--yellow); border: 1px solid var(--outline); border-radius: 999px; padding: 2px 8px; font-family: "Nunito", sans-serif; font-size: 11px; font-weight: 900; color: #020202; white-space: nowrap; }
-.pain-scale-choice-row { width: min(340px, calc(100vw - 32px)); margin: 20px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.pain-face-choice { min-height: 86px; border: 2px solid var(--red); border-radius: 22px; background: rgba(255,255,255,.7); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-family: "Nunito", sans-serif; font-weight: 900; }
-.pain-face-choice span { font-size: 34px; line-height: 1; }
-.pain-face-choice small { color: var(--red); font-size: 16px; }
-.pain-face-choice--selected { background: #fff5f4; box-shadow: 0 5px 18px rgba(255,111,97,.32); transform: scale(1.04); }
-.pain-scale-simple-meter { width: min(320px, calc(100vw - 40px)); height: 14px; border-radius: 999px; margin: 18px auto 0; background: var(--yellow); border: 1px solid var(--outline); overflow: hidden; }
-.pain-scale-simple-meter span { display: block; height: 100%; background: var(--button-red); border-radius: inherit; transition: width .2s; }
-.summary-card { width: min(330px, calc(100vw - 32px)); margin: 18px auto 0; display: grid; gap: 10px; font-weight: 800; }
-.summary-child { display: flex; align-items: center; gap: 12px; }
-.confirmation-actions { width: min(320px, calc(100vw - 32px)); margin: 24px auto 0; display: grid; gap: 12px; }
-.confirmation-actions .continue-button, .confirmation-actions .pain-type-back-btn, .confirmation-actions .pain-type-next-btn { width: 100% !important; min-height: 56px; }
-
-@media (max-width: 360px) {
-  .child-card-list--two { grid-template-columns: 1fr; }
-  .child-card-list--two .child-card { width: 271px; }
-  .pain-scale-choice-row { grid-template-columns: repeat(2, 1fr); }
-  .bottom-nav { height: 104px; }
-}
-
-/* === Final user-stage responsive refinements === */
-.page-animate-in,
-.screen {
-  animation: nanaPageIn .26s ease both;
-}
-@keyframes nanaPageIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.final-get-started-screen {
-  padding: clamp(36px, 8svh, 76px) 20px 48px;
-  justify-content: flex-start;
-  gap: clamp(14px, 3svh, 24px);
-}
-.final-get-started-screen .welcome-title {
-  margin-top: 0;
-}
-.final-get-started-screen .app-thumbnail {
-  margin-top: 0;
-  width: clamp(112px, 34vw, 151px);
-  min-height: clamp(118px, 34vw, 165px);
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-.landing-body-stage {
-  position: relative;
-  width: min(260px, 72vw);
-  height: clamp(210px, 40svh, 320px);
-  margin: 0 auto;
-  display: grid;
-  place-items: center;
-}
-.landing-mini-body {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.landing-wink {
-  position: absolute;
-  top: 2px;
-  right: 18px;
-  z-index: 3;
-  font-size: clamp(24px, 9vw, 38px);
-  animation: nanaWink 2s ease-in-out infinite;
-}
-@keyframes nanaWink {
-  0%, 46%, 100% { transform: scale(1) rotate(0deg); opacity: .95; }
-  50% { transform: scale(.82) rotate(-8deg); opacity: .8; }
-  55% { transform: scale(1.06) rotate(6deg); opacity: 1; }
-}
-.final-get-started-screen .get-started-button {
-  margin-top: 0;
-}
-.final-get-started-screen .tagline {
-  margin-top: 0;
-  max-width: 290px;
-  line-height: 1.15;
-}
-
-.add-child-preview {
-  width: 110px;
-  height: 110px;
-  border-radius: 999px;
-  object-fit: cover;
-  display: block;
-  border: 7px solid #8cc8ff;
-  background: #fff;
-}
-.add-child-plus-icon {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.add-image-icon-wrap {
-  cursor: pointer;
-}
-
-.child-card {
-  position: relative;
-}
-.child-edit-profile-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  min-height: 30px;
-  padding: 0 10px;
-  border: 1px solid var(--outline);
-  border-radius: 999px;
-  background: var(--neutral);
-  color: var(--outline);
-  font-family: "Nunito", sans-serif;
-  font-weight: 900;
-  font-size: 12px;
-  z-index: 2;
-}
-.child-card-list,
-.child-card-list--two {
-  margin-top: clamp(18px, 5svh, 34px) !important;
-}
-.child-card-list--two {
-  width: min(350px, calc(100vw - 24px));
-}
-.floating-add-btn {
-  top: auto !important;
-  bottom: 132px !important;
-  right: clamp(14px, 5vw, 22px) !important;
-}
-.manage-child-card {
-  grid-template-columns: 58px 1fr;
-}
-.manage-child-card button[data-edit-child] {
-  background: var(--yellow);
-  color: var(--outline);
-  border: 1px solid var(--outline);
-}
-
-.history-timeline {
-  gap: 18px !important;
-  width: min(350px, calc(100vw - 24px)) !important;
-}
-.history-group {
-  display: grid;
-  gap: 10px;
-}
-.history-group h2 {
-  font-family: "Nunito", sans-serif;
-  font-size: 15px;
-  font-weight: 1000;
-  color: var(--red);
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  -webkit-text-stroke: .35px #5f577f;
-}
-.history-group-list {
-  display: grid;
-  gap: 12px;
-}
-.history-record-card {
-  display: grid;
-  gap: 8px;
-}
-.history-record-top,
-.history-record-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.history-record-meta span {
-  display: inline-flex;
-  min-height: 28px;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(79, 180, 166, .18);
-  color: var(--outline);
-  font-family: "Nunito", sans-serif;
-  font-size: 13px;
-  font-weight: 900;
-}
-.history-record-zones,
-.history-record-note {
-  font-family: "Nunito", sans-serif;
-  font-weight: 800;
-  line-height: 1.25;
-}
-.history-record-note {
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.35);
-}
-
-.body-hint {
-  max-width: 320px;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding: 0 16px;
-  line-height: 1.25;
-}
-.body-zone-label {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  background: var(--button-red);
-  color: #fff;
-  font-family: "Nunito", sans-serif;
-  font-size: 11px;
-  font-weight: 900;
-  line-height: 1;
-  max-width: 96px;
-  padding: 7px 9px;
-  border-radius: 999px;
-  border: 1.5px solid rgba(255,255,255,0.9);
-  white-space: nowrap;
-  pointer-events: auto;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
-.summary-note-field {
-  display: grid;
-  gap: 8px;
-  font-family: "Nunito", sans-serif;
-  font-weight: 900;
-}
-.summary-note-field textarea {
-  width: 100%;
-  resize: vertical;
-  min-height: 82px;
-  border: 1px solid var(--outline);
-  border-radius: 14px;
-  background: rgba(255,255,255,.55);
-  padding: 10px 12px;
-  font-family: "Nunito", sans-serif;
-  font-size: 15px;
-  font-weight: 800;
-  outline: none;
-}
-
-@media (max-width: 430px) {
-  .screen {
-    max-width: none;
-  }
-  .children-screen,
-  .history-screen,
-  .manage-screen,
-  .settings-screen {
-    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
-  }
-  .children-title--small {
-    font-size: clamp(22px, 6.5vw, 24px);
-  }
-  .child-card {
-    width: min(271px, calc(100vw - 44px));
-  }
-  .child-card--compact {
-    width: min(162px, 44vw);
-  }
-  .child-card-list--two {
-    gap: 12px;
-  }
-  .child-open-map-btn {
-    width: min(150px, 80%);
-  }
-  .add-child-modal {
-    width: min(355px, calc(100vw - 20px));
-    min-height: auto;
-    max-height: calc(100svh - 32px);
-    overflow-y: auto;
-    padding: clamp(28px, 7svh, 56px) clamp(18px, 8vw, 40px);
-  }
-  .body-map-wrap {
-    width: min(250px, 72vw) !important;
-    height: min(430px, 48svh) !important;
-  }
-  .show-pain-title {
-    font-size: clamp(26px, 8vw, 32px);
-    line-height: 1.15;
-  }
-  .pain-type-actions,
-  .confirmation-actions {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-
-@media (max-width: 360px) {
-  .continue-button {
-    width: min(206px, calc(100vw - 64px));
-  }
-  .bottom-nav {
-    padding-left: 28px;
-    padding-right: 28px;
-  }
-  .child-card-list--two {
-    grid-template-columns: 1fr !important;
-  }
-  .child-card--compact {
-    width: min(271px, calc(100vw - 44px));
-  }
-  .landing-body-stage {
-    height: 210px;
-  }
-}
-
-
-/* === FINAL MOBILE NAV + HISTORY FIXES === */
-:root {
-  --nana-bottom-nav-height: 112px;
+  --nana-bottom-nav-height: 104px;
 }
 
 html,
-body,
-#app {
+body {
   width: 100%;
   min-height: 100%;
-  margin: 0;
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
-.screen,
-.children-screen,
+#app {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.screen {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.mobile-fit-screen,
 .history-screen,
-.settings-screen,
-.manage-children-screen,
-.manage-screen {
-  width: 100% !important;
-  max-width: none !important;
-  min-height: 100dvh !important;
-  box-sizing: border-box !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  padding-bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 18px) !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+.settings-screen {
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.settings-content-fit,
+.history-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 18px calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 16px);
   -webkit-overflow-scrolling: touch;
 }
 
 .bottom-nav {
   position: fixed !important;
-  left: 0 !important;
-  right: 0 !important;
+  left: 50% !important;
+  right: auto !important;
   bottom: 0 !important;
-  width: 100vw !important;
-  max-width: none !important;
-  height: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
-  margin: 0 !important;
-  padding: 0 clamp(26px, 9vw, 42px) env(safe-area-inset-bottom, 0px) !important;
-  border-radius: 0 !important;
-  z-index: 999 !important;
-  box-sizing: border-box !important;
-}
-
-.settings-content,
-.history-content,
-.children-content,
-.manage-content {
+  transform: translateX(-50%);
   width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  padding-bottom: 22px !important;
+  max-width: 430px !important;
+  height: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 10px 36px calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  background: var(--yellow) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
 }
 
-.history-timeline,
-.history-list {
-  width: min(356px, calc(100vw - 24px)) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+.bottom-nav-item {
+  width: 74px !important;
+  height: 78px !important;
+  border: 0 !important;
+  background: transparent !important;
+  display: grid !important;
+  place-items: center !important;
+  opacity: 1 !important;
+  border-radius: 18px !important;
+  padding: 0 !important;
+}
+
+.bottom-nav-item img {
+  width: 52px !important;
+  height: 52px !important;
+  max-width: 52px !important;
+  max-height: 52px !important;
+  object-fit: contain !important;
+  display: block !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.bottom-nav-item--active {
+  background: rgba(255, 255, 255, 0.34) !important;
+  box-shadow: inset 0 0 0 1.5px rgba(2, 2, 2, 0.15);
+}
+
+.bottom-nav-item--inactive {
+  background: transparent !important;
+  opacity: .55 !important;
+}
+
+.children-header,
+.screen-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-page-title--header {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  text-align: center;
+}
+
+.get-started-screen {
+  justify-content: center;
+  align-items: center;
+  gap: clamp(20px, 5vh, 34px);
+  padding: 24px 18px 44px;
+}
+
+.get-started-screen .welcome-title {
+  margin-top: 0;
+}
+
+.get-started-screen .app-thumbnail {
+  margin-top: 0;
+}
+
+.get-started-screen .get-started-button {
+  margin-top: 0;
+}
+
+.get-started-screen .tagline {
+  margin-top: 0;
+  max-width: 300px;
+}
+
+.landing-body-stage,
+.landing-mini-body,
+.landing-wink,
+.final-get-started-screen .landing-body-stage {
+  display: none !important;
+}
+
+.auth-screen {
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow-y: auto;
+  padding-top: clamp(18px, 4vh, 38px);
+  padding-bottom: 28px;
+}
+
+.auth-logo,
+.nana-animated-face {
+  width: clamp(70px, 21vw, 96px);
+  height: clamp(70px, 21vw, 96px);
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.auth-screen .screen-title {
+  margin: 8px 0 10px;
+}
+
+.auth-copy {
+  text-align: center;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  margin: 0 auto 12px;
+}
+
+.auth-screen .settings-field {
+  margin-bottom: 10px;
+}
+
+.auth-compact-button {
+  width: min(100%, 220px);
+  height: 48px;
+  font-size: 17px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.auth-status {
+  min-height: 22px;
+  text-align: center;
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.child-context-card {
+  width: min(100%, 310px);
+  margin: 10px auto 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(2,2,2,.18);
+  border-radius: 14px;
+  background: rgba(255, 233, 138, .55);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.child-context-photo {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid #8cc8ff;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.child-context-details {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.child-context-details strong,
+.child-context-details span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Nunito", sans-serif;
+}
+
+.child-context-details strong {
+  color: var(--red);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.child-context-details span {
+  color: rgba(2,2,2,.65);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .history-record-card {
-  width: 100% !important;
-  box-sizing: border-box !important;
-  overflow: hidden;
-}
-
-.history-record-top {
   width: 100%;
-  align-items: flex-start !important;
-  justify-content: flex-start !important;
+  max-width: 100%;
 }
 
 .history-child-head {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
   min-width: 0;
 }
 
@@ -1417,6 +257,7 @@ body,
   background: #fff;
 }
 
+.history-child-meta,
 .history-child-head > div {
   min-width: 0;
 }
@@ -1430,314 +271,60 @@ body,
   white-space: nowrap;
 }
 
-.history-record-meta {
-  flex-wrap: wrap;
-  justify-content: flex-start !important;
-}
-
-.history-record-zones,
-.history-record-note {
-  overflow-wrap: anywhere;
-}
-
 @media (max-width: 380px) {
   :root {
-    --nana-bottom-nav-height: 102px;
-  }
-
-  .bottom-nav-item--home,
-  .bottom-nav-item--activity,
-  .bottom-nav-item--settings {
-    transform: scale(.88);
-    transform-origin: center;
-  }
-
-  .settings-content {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-}
-
-@media (min-width: 431px) {
-  .screen,
-  .children-screen,
-  .history-screen,
-  .settings-screen,
-  .manage-children-screen,
-  .manage-screen {
-    max-width: 430px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    --nana-bottom-nav-height: 96px;
   }
 
   .bottom-nav {
-    max-width: 430px !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%);
-  }
-}
-
-/* ════════ FINAL MOBILE FIT + GET STARTED CLEANUP ════════ */
-.final-get-started-screen,
-.landing-body-stage,
-.landing-mini-body,
-.landing-wink,
-.hero-body,
-.rotating-body,
-.body-preview,
-.wink-face,
-.wink-animation,
-.hero-animation {
-  display: none !important;
-}
-
-.get-started-screen {
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  padding: clamp(56px, 10dvh, 92px) 20px clamp(28px, 6dvh, 48px) !important;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(20px, 5dvh, 34px);
-  overflow: hidden;
-}
-
-.get-started-screen .welcome-title {
-  margin-top: 0 !important;
-}
-
-.get-started-screen .app-thumbnail {
-  margin-top: 0 !important;
-  flex-shrink: 0;
-}
-
-.get-started-screen .get-started-button {
-  margin-top: 0 !important;
-  flex-shrink: 0;
-}
-
-.get-started-screen .tagline {
-  margin-top: 0 !important;
-  max-width: 290px;
-  line-height: 1.2;
-  flex-shrink: 0;
-}
-
-.mobile-fit-screen {
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden !important;
-  padding-bottom: 0 !important;
-}
-
-.mobile-fit-screen .children-header,
-.mobile-fit-screen .top-bar,
-.mobile-fit-screen .screen-header,
-.mobile-fit-screen .page-header {
-  flex-shrink: 0;
-}
-
-.settings-content-fit,
-.history-content {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 22px 18px calc(120px + env(safe-area-inset-bottom, 0px)) !important;
-}
-
-.settings-screen .settings-content-fit {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.settings-screen .children-title {
-  margin-bottom: 4px;
-}
-
-.settings-screen .settings-field {
-  margin: 0;
-}
-
-.settings-screen .continue-button {
-  margin: 2px auto 0;
-  flex-shrink: 0;
-}
-
-.settings-screen .settings-link {
-  margin: 0 auto;
-  flex-shrink: 0;
-}
-
-.history-screen .children-title {
-  margin-bottom: 14px;
-}
-
-.history-timeline,
-.history-list,
-.history-group-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.history-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.history-group h2 {
-  font-family: "Nunito", sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--red);
-  -webkit-text-stroke: 0.35px #5f577f;
-  letter-spacing: 0.02px;
-}
-
-.history-record-card {
-  width: 100%;
-  border: 1px solid var(--outline);
-  border-radius: 16px;
-  background: var(--yellow);
-  padding: 12px;
-  box-shadow: 0 3px 0 rgba(2, 2, 2, 0.08);
-}
-
-.history-record-top,
-.history-child-head {
-  width: 100%;
-}
-
-.history-child-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.history-child-photo {
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  border: 4px solid #8cc8ff;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: #fff;
-}
-
-.history-child-meta {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.history-child-meta strong {
-  font-family: "Nunito", sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--red);
-  -webkit-text-stroke: 0.45px #5f577f;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.history-child-meta span {
-  font-family: "Nunito", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(2, 2, 2, 0.62);
-}
-
-.history-record-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 10px;
-  font-family: "Nunito", sans-serif;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--outline);
-}
-
-.history-record-zones,
-.history-record-note,
-.empty-state {
-  margin-top: 8px;
-  font-family: "Nunito", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
-  color: rgba(2, 2, 2, 0.72);
-}
-
-.bottom-nav {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  bottom: 0 !important;
-  transform: translateX(-50%);
-  width: 100% !important;
-  max-width: 390px !important;
-  height: 104px !important;
-  padding: 0 34px calc(env(safe-area-inset-bottom, 0px) * 0.5) !important;
-  z-index: 999 !important;
-  flex-shrink: 0;
-}
-
-@media (max-width: 430px) {
-  #app {
-    align-items: stretch;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
   }
 
-  .screen {
-    width: 100vw;
-    max-width: none;
+  .bottom-nav-item {
+    width: 64px !important;
+    height: 70px !important;
   }
 
-  .bottom-nav {
-    max-width: none !important;
-  }
-}
-
-@media (max-width: 360px) {
-  .get-started-screen {
-    gap: 18px;
-    padding-top: 42px !important;
-    padding-bottom: 24px !important;
-  }
-
-  .welcome-title {
-    font-size: 2rem;
-  }
-
-  .app-thumbnail {
-    width: 136px;
-    min-height: 164px;
-    padding: 20px 16px;
-  }
-
-  .continue-button {
-    width: 190px;
-    height: 52px;
-    font-size: 18px;
-  }
-
-  .bottom-nav {
-    height: 96px !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
+  .bottom-nav-item img {
+    width: 46px !important;
+    height: 46px !important;
+    max-width: 46px !important;
+    max-height: 46px !important;
   }
 
   .settings-content-fit,
   .history-content {
-    padding-bottom: 112px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .get-started-screen {
+    gap: 18px;
+    padding-top: 18px;
+    padding-bottom: 28px;
+  }
+
+  .get-started-screen .app-thumbnail {
+    min-height: 150px;
+    width: 134px;
+    padding: 20px 15px;
+  }
+
+  .auth-screen {
+    padding-top: 14px;
+  }
+
+  .auth-logo,
+  .nana-animated-face {
+    width: 68px;
+    height: 68px;
+  }
+
+  .auth-screen .settings-field input,
+  .auth-screen .settings-field select {
+    min-height: 42px;
   }
 }

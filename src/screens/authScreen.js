@@ -1,4 +1,3 @@
-import { ASSETS } from '../assets';
 import { appState } from '../appState';
 
 const API_URL =
@@ -17,9 +16,9 @@ export function renderAuthScreen(app) {
     'beforeend',
     `
       <img
-        src="${ASSETS.splashHeaderLogo}"
+        src="/ani1.svg"
         alt="Nana"
-        class="auth-logo nana-wink-logo"
+        class="auth-logo nana-animated-face"
       />
 
       <h1 class="screen-title">Welcome</h1>
@@ -88,6 +87,30 @@ export function renderAuthScreen(app) {
     `
   );
 
+  const logo = screen.querySelector('.nana-animated-face');
+
+  const frames = [
+    '/ani1.svg',
+    '/ani2.svg',
+    '/ani3.svg',
+    '/ani2.svg',
+    '/ani1.svg'
+  ];
+
+  let frame = 0;
+
+  const animation = setInterval(() => {
+    frame++;
+
+    if (frame >= frames.length) {
+      clearInterval(animation);
+      logo.src = '/ani1.svg';
+      return;
+    }
+
+    logo.src = frames[frame];
+  }, 180);
+
   const emailInput =
     screen.querySelector('.auth-email');
 
@@ -121,43 +144,36 @@ export function renderAuthScreen(app) {
           {
             method: 'POST',
             headers: {
-              'Content-Type':
-                'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               email: emailInput.value.trim(),
-              password:
-                passwordInput.value,
+              password: passwordInput.value,
               role: roleInput.value,
-              full_name:
-                nameInput.value.trim(),
+              full_name: nameInput.value.trim(),
             }),
           }
         );
 
-        const data =
-          await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
           throw new Error(
-            data.error ||
-              'Registration failed'
+            data.error || 'Registration failed'
           );
         }
 
         status.textContent =
           'Account created. Please login.';
       } catch (err) {
-        status.textContent =
-          err.message;
+        status.textContent = err.message;
       }
     });
 
   screen
     .querySelector('.auth-login')
     .addEventListener('click', async () => {
-      status.textContent =
-        'Signing in...';
+      status.textContent = 'Signing in...';
 
       try {
         const response = await fetch(
@@ -165,19 +181,16 @@ export function renderAuthScreen(app) {
           {
             method: 'POST',
             headers: {
-              'Content-Type':
-                'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               email: emailInput.value.trim(),
-              password:
-                passwordInput.value,
+              password: passwordInput.value,
             }),
           }
         );
 
-        const data =
-          await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
           throw new Error(
@@ -186,28 +199,22 @@ export function renderAuthScreen(app) {
         }
 
         localStorage.setItem(
-          'nana_access_token',
-          data.access_token
+          'nana_token',
+          data.token
         );
 
-        localStorage.setItem(
-          'nana_user',
-          JSON.stringify(data.user)
-        );
+        status.textContent =
+          'Login successful';
 
         goNext();
       } catch (err) {
-        status.textContent =
-          err.message;
+        status.textContent = err.message;
       }
     });
 
   screen
     .querySelector('.auth-skip')
-    .addEventListener(
-      'click',
-      goNext
-    );
+    .addEventListener('click', goNext);
 
   app.append(screen);
 }

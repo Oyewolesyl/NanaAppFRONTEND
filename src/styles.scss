@@ -139,9 +139,14 @@ body {
 /* ════════ CHILDREN SCREENS ════════ */
 .children-screen { padding: 0 0 120px; }
 .children-header {
-  width: 100%; min-height: 97px; background: var(--neutral);
-  display: flex; align-items: flex-end; justify-content: space-between;
-  padding: 0 10px 10px; flex-shrink: 0;
+  width: 100%;
+  min-height: 97px;
+  background: var(--neutral);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  flex-shrink: 0;
 }
 .children-header--logo-only { justify-content: flex-start; }
 .children-header-logo        { width: 40.475px; height: 40.863px; display: block; }
@@ -616,9 +621,14 @@ body {
 /* ════════ CHILDREN SCREENS ════════ */
 .children-screen { padding: 0 0 120px; }
 .children-header {
-  width: 100%; min-height: 97px; background: var(--neutral);
-  display: flex; align-items: flex-end; justify-content: space-between;
-  padding: 0 10px 10px; flex-shrink: 0;
+  width: 100%;
+  min-height: 97px;
+  background: var(--neutral);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  flex-shrink: 0;
 }
 .children-header--logo-only { justify-content: flex-start; }
 .children-header-logo        { width: 40.475px; height: 40.863px; display: block; }
@@ -1739,5 +1749,39 @@ body,
   .settings-content-fit,
   .history-content {
     padding-bottom: 112px !important;
+  }
+}
+
+
+/* === FINAL PATCH: vertically center top navigation/header content === */
+.children-header,
+.screen-header {
+  align-items: center !important;
+}
+
+.children-header {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+.children-menu-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.nav-page-title--header {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 375px) {
+  .children-header,
+  .screen-header {
+    min-height: 84px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    align-items: center !important;
   }
 }

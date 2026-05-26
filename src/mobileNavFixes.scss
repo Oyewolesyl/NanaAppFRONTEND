@@ -534,7 +534,8 @@
   .children-header,
   .screen-header {
     min-height: 84px !important;
-    padding: 0 10px 8px !important;
+    padding: 10px !important;
+    align-items: center !important;
   }
 
   .bottom-nav {
@@ -746,5 +747,39 @@
   .history-detail-grid p {
     grid-template-columns: 18px 48px 1fr !important;
     gap: 5px !important;
+  }
+}
+
+
+/* === FINAL PATCH: top nav vertical centering override === */
+.children-header,
+.screen-header {
+  align-items: center !important;
+}
+
+.children-header {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+.children-menu-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.nav-page-title--header {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 375px) {
+  .children-header,
+  .screen-header {
+    min-height: 84px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    align-items: center !important;
   }
 }

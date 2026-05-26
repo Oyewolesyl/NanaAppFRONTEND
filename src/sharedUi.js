@@ -93,6 +93,8 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
     btn.addEventListener('click', () => {
       overlay.resetForm?.();
       overlay.hidden = false;
+      overlay.classList.remove('add-child-overlay--closing');
+      overlay.classList.add('add-child-overlay--opening');
     });
   });
 
@@ -103,10 +105,21 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
       const child = appState.children.find(c => c.id === id);
       overlay.resetForm?.(child);
       overlay.hidden = false;
+      overlay.classList.remove('add-child-overlay--closing');
+      overlay.classList.add('add-child-overlay--opening');
     });
   });
 
-  overlay.querySelectorAll('[data-close-overlay="true"]').forEach((node) => node.addEventListener('click', () => { overlay.hidden = true; }));
+  overlay.querySelectorAll('[data-close-overlay="true"]').forEach((node) => {
+    node.addEventListener('click', () => {
+      overlay.classList.remove('add-child-overlay--opening');
+      overlay.classList.add('add-child-overlay--closing');
+      setTimeout(() => {
+        overlay.hidden = true;
+        overlay.classList.remove('add-child-overlay--closing');
+      }, 180);
+    });
+  });
 
   overlay.querySelector('.save-child-button')?.addEventListener('click', () => {
     const rawName = overlay.querySelector('[data-child-name]')?.value?.trim();
@@ -117,6 +130,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
     const photo_url = overlay.dataset.photoUrl || existing?.photo_url || ASSETS.inactiveChildPhoto;
     const saved = saveChild({ id: editingId || undefined, name, age, photo_url });
     overlay.hidden = true;
+    overlay.classList.remove('add-child-overlay--opening', 'add-child-overlay--closing');
     onSave?.(saved);
     window.dispatchEvent(new CustomEvent('nana:children-updated', { detail: saved }));
   });

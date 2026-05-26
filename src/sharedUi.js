@@ -67,15 +67,30 @@ export function attachMenu(root) {
   overlay.querySelectorAll('[data-menu-nav]').forEach((node) => node.addEventListener('click', () => { overlay.hidden = true; window.location.hash = node.dataset.menuNav; }));
 }
 
-export function childCardHtml(child, compact = false) {
+export function childCardHtml(child, compact = false, options = {}) {
+  const showEdit = Boolean(options.showEdit);
+  const childPhoto = child.photo_url || ASSETS.inactiveChildPhoto;
+  const childName = child.name || 'Child';
+  const childAge = child.age ? `${child.age} years old` : '';
+
   return `
     <article class="child-card ${compact ? 'child-card--compact' : ''}" data-child-id="${child.id}">
-      <button type="button" class="child-edit-profile-btn" data-edit-child aria-label="Edit ${child.name}">Edit</button>
-      <div class="child-card-photo-wrap"><img src="${child.photo_url || ASSETS.inactiveChildPhoto}" alt="${child.name}" class="child-card-photo" /></div>
-      <div class="child-card-divider"></div>
-      <div class="child-card-meta ${compact ? 'child-card-meta--compact' : ''}"><p class="child-name">${child.name}</p><p class="child-age">${child.age} years old</p></div>
-      <div class="child-card-divider"></div>
-      <button type="button" class="child-open-map-btn ${compact ? 'child-open-map-btn--compact' : ''}">Open Body Map</button>
+      ${showEdit ? `<button type="button" class="child-edit-profile-btn" data-edit-child aria-label="Edit ${childName}">Edit</button>` : ''}
+
+      <div class="child-card-photo-wrap">
+        <img src="${childPhoto}" alt="${childName}" class="child-card-photo" />
+      </div>
+
+      <div class="child-card-divider child-card-divider--after-photo"></div>
+
+      <div class="child-card-meta ${compact ? 'child-card-meta--compact' : ''}">
+        <p class="child-name">${childName}</p>
+        <p class="child-age">${childAge}</p>
+      </div>
+
+      <button type="button" class="child-open-map-btn ${compact ? 'child-open-map-btn--compact' : ''}">
+        Open Body Map
+      </button>
     </article>`;
 }
 

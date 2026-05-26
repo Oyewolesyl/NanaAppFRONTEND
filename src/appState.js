@@ -171,12 +171,18 @@ export function saveChild(child) {
 export function removeChild(id) {
   appState.children = appState.children.filter((c) => c.id !== id);
 
+  appState.painLogs = appState.painLogs.filter((log) => (
+    log.childId !== id &&
+    log.child_id !== id
+  ));
+
   if (appState.activeChildId === id) {
     appState.activeChildId = appState.children[0]?.id || null;
   }
 
   write(K.children, appState.children);
   write(K.activeChildId, appState.activeChildId);
+  write(K.painLogs, appState.painLogs);
 
   window.dispatchEvent(new CustomEvent('nana:children-updated'));
 }

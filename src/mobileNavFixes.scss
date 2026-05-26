@@ -783,3 +783,34 @@
     align-items: center !important;
   }
 }
+
+
+/* === FINAL PATCH: child card display cleanup === */
+.child-added-screen .child-edit-profile-btn {
+  display: none !important;
+}
+
+.child-card-divider + .child-open-map-btn,
+.child-card-divider--before-button {
+  border-top: 0 !important;
+}
+
+.child-card-meta + .child-card-divider {
+  display: none !important;
+}
+
+.child-card {
+  position: relative;
+}
+
+.child-card-meta {
+  padding-bottom: 4px !important;
+}
+
+.child-open-map-btn {
+  margin-top: 8px !important;
+}
+
+.child-open-map-btn--compact {
+  margin-top: 10px !important;
+}

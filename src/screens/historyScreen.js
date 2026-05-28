@@ -218,7 +218,7 @@ function renderGroups(container, logs, filter = 'all') {
     ? `
       ${groupHtml('Today', filteredGroups.today)}
       ${groupHtml('This Week', filteredGroups.week)}
-      ${groupHtml('Earlier', filteredGroups.earlier)}
+      ${groupHtml('Older Reports', filteredGroups.earlier)}
     `
     : '<p class="empty-state">No pain records found.</p>';
 
@@ -241,12 +241,12 @@ export function renderHistoryScreen(app) {
 
     <section class="settings-content settings-content-fit history-content">
       <h1 class="children-title children-title--small">Pain History</h1>
-      <p class="history-helper">See reports grouped by Today, This Week, Earlier and All.</p>
+      <p class="history-helper">Filter reports by All, Today, This Week or Older Reports.</p>
       <div class="history-group-tabs" aria-label="History groups">
         <button type="button" data-history-filter="all" class="history-group-tab is-active">All</button>
         <button type="button" data-history-filter="today" class="history-group-tab">Today</button>
         <button type="button" data-history-filter="week" class="history-group-tab">This Week</button>
-        <button type="button" data-history-filter="earlier" class="history-group-tab">Earlier</button>
+        <button type="button" data-history-filter="earlier" class="history-group-tab">Older</button>
       </div>
 
       <label class="history-search-wrap" aria-label="Search pain history">
@@ -262,7 +262,7 @@ export function renderHistoryScreen(app) {
       <div class="history-list history-timeline" data-history-list>
         ${
           logs.length
-            ? `${groupHtml('Today', groups.today)}${groupHtml('This Week', groups.week)}${groupHtml('Earlier', groups.earlier)}`
+            ? `${groupHtml('Today', groups.today)}${groupHtml('This Week', groups.week)}${groupHtml('Older Reports', groups.earlier)}`
             : '<p class="empty-state">No pain records yet. Submit a pain report and it will appear here.</p>'
         }
       </div>

@@ -55,38 +55,37 @@ const BADGES = ["#FF6F61"];
      Z: -0.062 → +0.221 (positive = front of body)
    ────────────────────────────────────────────────────────────────*/
 function getZoneFromPoint(pt, isFront) {
-  const x = pt.x;
-  const y = pt.y;
+  const x = pt.x, y = pt.y;
 
   // ── Head / neck
-  if (y > 0.89) return isFront ? "head" : "back-head";
-  if (y > 0.78 && Math.abs(x) < 0.18) return isFront ? "neck" : "back-neck";
+  if (y > 0.93)                          return isFront ? "head" : "back-head";
+  if (y > 0.82 && Math.abs(x) < 0.09)   return isFront ? "neck" : "back-neck";
 
   // ── Shoulders (outer upper torso / arm junction)
-  if (Math.abs(x) > 0.28 && y > 0.70) {
+  if (Math.abs(x) > 0.16 && y > 0.76) {
     return (x < 0 ? "left" : "right") + "-shoulder";
   }
 
   // ── Arms (outside torso, below shoulder)
   // Lower X threshold so narrow arm geometry is easier to tap
-  if (Math.abs(x) > 0.26) {
+  if (Math.abs(x) > 0.16) {
     const s = x < 0 ? "left" : "right";
-    if (y > 0.58) return `${s}-upper-arm`;
-    if (y > 0.34) return `${s}-forearm`;
+    if (y > 0.64) return `${s}-upper-arm`;
+    if (y > 0.44) return `${s}-forearm`;
     return `${s}-hand`;
   }
 
   // ── Torso centre
   // chest: upper torso, tighter — stops well above navel
-  if (y > 0.67) return isFront ? "chest"   : "upper-back";
+  if (y > 0.76) return isFront ? "chest"   : "upper-back";
   // tummy: mid torso, nudged up toward chest
-  if (y > 0.50) return isFront ? "tummy"   : "lower-back";
+  if (y > 0.60) return isFront ? "tummy"   : "lower-back";
 
   // ── Hip / groin / glute belt
   // groin sits just below tummy (0.46–0.60), nudged toward tummy not privates
-  if (y > 0.39) {
+  if (y > 0.46) {
     if (isFront) {
-      if (Math.abs(x) < 0.13) return "groin";
+      if (Math.abs(x) < 0.07) return "groin";
       return (x < 0 ? "left" : "right") + "-hip";
     }
     return (x < 0 ? "left" : "right") + "-glute";
@@ -94,9 +93,9 @@ function getZoneFromPoint(pt, isFront) {
 
   // ── Legs
   const s = x < 0 ? "left" : "right";
-  if (y > 0.25) return isFront ? `${s}-thigh`     : `${s}-hamstring`;
-  if (y > 0.17) return isFront ? `${s}-knee`      : `${s}-back-knee`;
-  if (y > 0.07) return isFront ? `${s}-shin`      : `${s}-calf`;
+  if (y > 0.28) return isFront ? `${s}-thigh`     : `${s}-hamstring`;
+  if (y > 0.21) return isFront ? `${s}-knee`      : `${s}-back-knee`;
+  if (y > 0.09) return isFront ? `${s}-shin`      : `${s}-calf`;
   if (y > 0.04) return `${s}-ankle`;
   return isFront ? `${s}-foot` : `${s}-heel`;
 }
@@ -150,15 +149,6 @@ const MODEL_LOCAL_Y_MAX  = 1.1005;
 const MODEL_LOCAL_HEIGHT = MODEL_LOCAL_Y_MAX - MODEL_LOCAL_Y_MIN;
 const MODEL_SCALE        = 1.8 / MODEL_LOCAL_HEIGHT;
 const MODEL_CENTRE_Y     = (MODEL_LOCAL_Y_MIN + MODEL_LOCAL_Y_MAX) / 2;
-const MODEL_LOCAL_X_HALF  = 0.341;
-
-function normalizeModelPoint(pt) {
-  return {
-    x: pt.x / MODEL_LOCAL_X_HALF,
-    y: (pt.y - MODEL_LOCAL_Y_MIN) / MODEL_LOCAL_HEIGHT,
-    z: pt.z,
-  };
-}
 
 export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) {
   app.innerHTML = "";
@@ -173,7 +163,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     </header>
     <h1 class="show-pain-title">Where does it hurt?</h1>
     ${childContextHtml()}
-    <p class="body-hint">Drag left or right to rotate. Zoom in, then drag up or down to inspect head, neck, torso, legs and feet.</p>
+    <p class="body-hint">Drag left or right to rotate. Drag up or down while zoomed to inspect the whole body.</p>
     <div class="body-map-wrap">
       <div class="body-svg-wrap" id="bodySvgWrap" style="position:relative;">
         <canvas id="bodyCanvas" style="width:100%;height:100%;display:block;touch-action:none;cursor:pointer;border-radius:16px;"></canvas>
@@ -324,14 +314,14 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
   function clampPan() {
     const zoomed = (CAM_MAX - camDist) / (CAM_MAX - CAM_MIN);
-    const limitX = 0.18 + zoomed * 0.42;
-    const limitY = 0.18 + zoomed * 0.78;
+    const limitX = 0.22 + zoomed * 0.22;
+    const limitY = 0.24 + zoomed * 0.34;
     cameraTarget.x = Math.max(-limitX, Math.min(limitX, cameraTarget.x));
     cameraTarget.y = Math.max(-limitY, Math.min(limitY, cameraTarget.y));
   }
 
   function panCamera(dx, dy) {
-    const panScale = camDist * 0.0018;
+    const panScale = camDist * 0.00135;
     cameraTarget.x -= dx * panScale;
     cameraTarget.y += dy * panScale;
     clampPan();
@@ -354,7 +344,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const zoneSideIsFront = origLocal.z >= 0;
     isFront = zoneSideIsFront;
 
-    const zone = getZoneFromPoint(normalizeModelPoint(origLocal), zoneSideIsFront);
+    const zone = getZoneFromPoint(origLocal, zoneSideIsFront);
     if (!zone) return;
 
     hasTapped = true;
@@ -402,8 +392,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         type: "single",
         startY: e.touches[0].clientY,
         startX: e.touches[0].clientX,
-        lastY: e.touches[0].clientY,
-        lastX: e.touches[0].clientX,
         startDist: camDist,
         moved: false,
       };
@@ -436,17 +424,13 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     } else if (touchState.type === "single" && e.touches.length === 1) {
       const dy = e.touches[0].clientY - touchState.startY;
       const dx = e.touches[0].clientX - touchState.startX;
-      const stepX = e.touches[0].clientX - touchState.lastX;
-      const stepY = e.touches[0].clientY - touchState.lastY;
       if (Math.abs(dx) > 8 || Math.abs(dy) > 8 || touchState.moved) {
         touchState.moved = true;
-        modelYaw += stepX * 0.006;
-        panCamera(0, stepY);
+        modelYaw += dx * 0.0035;
+        panCamera(0, dy * 0.025);
         if (model) model.rotation.y = modelYaw;
         updateBadges();
       }
-      touchState.lastX = e.touches[0].clientX;
-      touchState.lastY = e.touches[0].clientY;
     }
   }, { passive: false });
 

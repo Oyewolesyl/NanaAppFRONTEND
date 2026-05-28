@@ -15,11 +15,28 @@ export function renderSummaryScreen(app) {
     <div class="pain-scale-heading-wrap"><h1 class="pain-scale-title">Pain Summary</h1>${childContextHtml()}</div>
     <section class="summary-card">
       <div class="summary-child"><img src="${child?.photo_url || ASSETS.inactiveChildPhoto}" alt=""/><div><strong>${child?.name || 'Child'}</strong><span>${child?.age || '-'} years old</span></div></div>
-      <p><strong>Spots:</strong> ${formatZones(d.zones)}</p>
-      <p><strong>Feels like:</strong> ${d.painType || 'Not chosen'}</p>
-      <p><strong>Started:</strong> ${d.started || 'Not chosen'}</p>
-      <p><strong>Pain:</strong> ${d.intensity ?? '-'} / 10</p>
-      <label class="summary-note-field"><span>Add note</span><textarea data-pain-note rows="3" placeholder="Add any extra detail here">${d.notes || ''}</textarea></label>
+      <div class="summary-detail-grid">
+        <p>
+          <span class="history-icon history-icon--area" aria-hidden="true"></span>
+          <span><strong>Spots</strong><em>${formatZones(d.zones)}</em></span>
+        </p>
+        <p>
+          <span class="history-icon history-icon--type" aria-hidden="true"></span>
+          <span><strong>Feels like</strong><em>${d.painType || 'Not chosen'}</em></span>
+        </p>
+        <p>
+          <span class="history-icon history-icon--started" aria-hidden="true"></span>
+          <span><strong>Started</strong><em>${d.started || 'Not chosen'}</em></span>
+        </p>
+        <p>
+          <span class="summary-icon summary-icon--pain" aria-hidden="true">${d.intensity ?? '-'}</span>
+          <span><strong>Pain score</strong><em>${d.intensity ?? '-'} / 10</em></span>
+        </p>
+      </div>
+      <label class="summary-note-field">
+        <span><span class="history-icon history-icon--note" aria-hidden="true"></span>Add note</span>
+        <textarea data-pain-note rows="3" placeholder="Add any extra detail here">${d.notes || ''}</textarea>
+      </label>
     </section>
     <div class="pain-type-actions"><button type="button" class="pain-type-back-btn">Back</button><button type="button" class="pain-type-next-btn">Submit</button></div>
   `);

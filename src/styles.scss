@@ -1785,3 +1785,323 @@ body,
     align-items: center !important;
   }
 }
+
+/* === FINAL TESTER FIXES: history icons, readable score, note spacing, zoom usability === */
+.history-helper {
+  width: min(340px, 100%);
+  margin: 0 auto 10px;
+  color: rgba(2, 2, 2, 0.68);
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.history-group-tabs {
+  width: min(340px, 100%);
+  margin: 0 auto 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.history-group-tabs span,
+.history-group-tab {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border: 1px solid rgba(2, 2, 2, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.52);
+  color: var(--red);
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.history-group-tab {
+  border-color: rgba(2, 2, 2, 0.16);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.history-group-tab.is-active {
+  background: var(--yellow);
+  border-color: var(--outline);
+  color: var(--outline);
+  box-shadow: 0 3px 0 rgba(2, 2, 2, 0.10);
+}
+
+.history-search-wrap {
+  width: min(340px, 100%);
+  min-height: 44px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border: 1px solid rgba(2, 2, 2, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.history-search-icon,
+.history-icon {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.history-search-icon {
+  width: 17px;
+  height: 17px;
+  border: 3px solid var(--teal);
+  border-radius: 999px;
+}
+
+.history-search-icon::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  bottom: -5px;
+  width: 8px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--teal);
+  transform: rotate(45deg);
+}
+
+.history-search-input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--outline);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.history-pain-score,
+.score,
+.pain-scale {
+  background: var(--button-red) !important;
+  color: #fff !important;
+}
+
+.history-pain-score *,
+.score *,
+.pain-scale * {
+  color: #fff !important;
+}
+
+.history-pain-score {
+  width: 52px;
+  height: 52px;
+  margin-left: auto;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  line-height: 0.78;
+}
+
+.history-pain-score strong {
+  color: #fff !important;
+  font-size: 24px !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+.history-pain-score span {
+  color: #fff !important;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.history-detail-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.history-detail-grid p {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 22px 72px 1fr;
+  align-items: start;
+  gap: 8px;
+  padding: 8px 9px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.history-detail-grid strong {
+  color: var(--outline) !important;
+  font-size: 13px !important;
+  font-weight: 1000 !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+.history-detail-grid em {
+  color: rgba(2, 2, 2, 0.72);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.history-icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 6px;
+  background: var(--teal);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.45);
+}
+
+.history-icon--area {
+  border-radius: 999px;
+  background: var(--red);
+}
+
+.history-icon--area::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.history-icon--type {
+  background: linear-gradient(135deg, var(--red) 0 50%, var(--yellow) 50% 100%);
+}
+
+.history-icon--started {
+  border-radius: 999px;
+  background: var(--yellow);
+  border: 2px solid var(--teal);
+}
+
+.history-icon--started::before,
+.history-icon--started::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 3px;
+  width: 2px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--teal);
+  transform-origin: bottom center;
+}
+
+.history-icon--started::after {
+  height: 5px;
+  transform: rotate(90deg);
+}
+
+.history-icon--note::before,
+.history-icon--note::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  height: 2px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.history-icon--note::before { top: 6px; }
+.history-icon--note::after { top: 11px; }
+
+.summary-card p + .summary-note-field {
+  margin-top: 14px;
+}
+
+.summary-card p strong {
+  font-weight: 1000 !important;
+}
+
+.summary-card p {
+  font-weight: 750 !important;
+  line-height: 1.35;
+}
+
+/* === FINAL TESTER FIX: clean single add-child image button === */
+.add-image-card {
+  overflow: hidden;
+}
+
+.add-image-icon-wrap {
+  position: relative !important;
+  width: 110px !important;
+  height: 110px !important;
+  margin: 20px auto 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  display: block !important;
+  cursor: pointer;
+}
+
+.add-child-preview {
+  width: 110px !important;
+  height: 110px !important;
+  border-radius: 999px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border: 7px solid #8cc8ff !important;
+  background: #fff !important;
+}
+
+.add-child-plus-icon {
+  position: absolute !important;
+  right: -2px !important;
+  bottom: -2px !important;
+  left: auto !important;
+  top: auto !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 999px !important;
+  border: 3px solid var(--yellow) !important;
+  background: var(--button-red) !important;
+  transform: none !important;
+  pointer-events: none !important;
+  box-shadow: 0 2px 8px rgba(2, 2, 2, 0.18);
+}
+
+.add-child-plus-icon::before,
+.add-child-plus-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 4px;
+  border-radius: 999px;
+  background: #fff;
+  transform: translate(-50%, -50%);
+}
+
+.add-child-plus-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.add-child-plus-icon[hidden] {
+  display: none !important;
+}
+
+.add-image-action {
+  color: var(--outline) !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+}

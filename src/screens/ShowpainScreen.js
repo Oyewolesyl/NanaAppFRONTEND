@@ -163,7 +163,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     </header>
     <h1 class="show-pain-title">Where does it hurt?</h1>
     ${childContextHtml()}
-    <p class="body-hint">Drag the body to rotate. Tap the place that hurts.</p>
+    <p class="body-hint">Drag left or right to rotate. Drag up or down while zoomed to inspect the whole body.</p>
     <div class="body-map-wrap">
       <div class="body-svg-wrap" id="bodySvgWrap" style="position:relative;">
         <canvas id="bodyCanvas" style="width:100%;height:100%;display:block;touch-action:none;cursor:pointer;border-radius:16px;"></canvas>
@@ -196,8 +196,9 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
   // Continuous camera distance (zoom). Range: 0.7 (close) – 2.2 (far)
   let camDist = 2.0;
-  const CAM_MIN = 0.7;
-  const CAM_MAX = 2.2;
+  const CAM_MIN = 0.62;
+  const CAM_MAX = 2.25;
+  const cameraTarget = { x: 0, y: 0 };
 
   let renderer, camera, scene, model, raycaster;
   let bodyMeshes = [];
@@ -298,7 +299,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   function positionCamera() {
     if (!camera) return;
     camera.position.set(0, 0, camDist);
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(cameraTarget.x, cameraTarget.y, 0);
   }
 
   function clampDist(d) {
@@ -309,6 +310,22 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     // Map camDist range (2.2=100% → 0.7=300%) to a readable %
     const pct = Math.round(100 * CAM_MAX / camDist);
     zlbl.textContent = pct + "%";
+  }
+
+  function clampPan() {
+    const zoomed = (CAM_MAX - camDist) / (CAM_MAX - CAM_MIN);
+    const limitX = 0.22 + zoomed * 0.22;
+    const limitY = 0.24 + zoomed * 0.34;
+    cameraTarget.x = Math.max(-limitX, Math.min(limitX, cameraTarget.x));
+    cameraTarget.y = Math.max(-limitY, Math.min(limitY, cameraTarget.y));
+  }
+
+  function panCamera(dx, dy) {
+    const panScale = camDist * 0.00135;
+    cameraTarget.x -= dx * panScale;
+    cameraTarget.y += dy * panScale;
+    clampPan();
+    positionCamera();
   }
 
   // ── Hit detection ────────────────────────────────────────────
@@ -353,7 +370,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const dx = e.clientX - pointerDrag.x;
     const dy = e.clientY - pointerDrag.y;
     if (Math.abs(dx) > 4 || Math.abs(dy) > 4) pointerDrag.moved = true;
-    modelYaw = pointerDrag.yaw + dx * 0.012;
+    modelYaw = pointerDrag.yaw + dx * 0.01;
+    if (Math.abs(dy) > 2) panCamera(0, e.movementY || dy * 0.08);
     if (model) model.rotation.y = modelYaw;
     refreshOverlays();
     updateBadges();
@@ -398,6 +416,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       const spread = Math.hypot(dx, dy);
       // Larger spread = zoomed in = smaller camDist
       camDist = clampDist(touchState.startDist * (touchState.startSpread / spread));
+      clampPan();
       positionCamera();
       updateZoomLabel();
       updateBadges();
@@ -407,7 +426,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       const dx = e.touches[0].clientX - touchState.startX;
       if (Math.abs(dx) > 8 || Math.abs(dy) > 8 || touchState.moved) {
         touchState.moved = true;
-        modelYaw += dx * 0.004;
+        modelYaw += dx * 0.0035;
+        panCamera(0, dy * 0.025);
         if (model) model.rotation.y = modelYaw;
         updateBadges();
       }
@@ -428,6 +448,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   canvas.addEventListener("wheel", e => {
     e.preventDefault();
     camDist = clampDist(camDist + e.deltaY * 0.002);
+    clampPan();
     positionCamera();
     updateZoomLabel();
     updateBadges();
@@ -488,10 +509,16 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   const ZOOM_STEP = (CAM_MAX - CAM_MIN) * 0.22;
   screen.querySelector(".zoom-btn--minus").addEventListener("click", () => {
     camDist = clampDist(camDist + ZOOM_STEP);   // further away = zoom out
+    if (camDist > 1.7) {
+      cameraTarget.x = 0;
+      cameraTarget.y = 0;
+    }
+    clampPan();
     positionCamera(); updateZoomLabel(); updateBadges();
   });
   screen.querySelector(".zoom-btn--plus").addEventListener("click", () => {
     camDist = clampDist(camDist - ZOOM_STEP);   // closer = zoom in
+    clampPan();
     positionCamera(); updateZoomLabel(); updateBadges();
   });
 

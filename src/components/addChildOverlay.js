@@ -49,16 +49,12 @@ export function createAddChildOverlay() {
     <div class="add-child-backdrop" data-close-overlay="true"></div>
     <section class="add-child-modal" aria-label="Add or edit child">
       <div class="add-image-card">
-        <div class="add-image-icon-wrap">
+        <button type="button" class="add-image-icon-wrap" aria-label="Choose child image">
           <img class="add-child-preview" src="${ASSETS.inactiveChildPhoto}" alt="Child preview" />
-          <svg class="add-child-plus-icon" width="54" height="54" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="55" cy="55" r="55" fill="#D9D9D9"/>
-            <line x1="55" y1="30" x2="55" y2="80" stroke="white" stroke-width="10" stroke-linecap="round"/>
-            <line x1="30" y1="55" x2="80" y2="55" stroke="white" stroke-width="10" stroke-linecap="round"/>
-          </svg>
-        </div>
+          <span class="add-child-plus-icon" aria-hidden="true"></span>
+        </button>
         <input class="add-child-file" type="file" accept="image/*" hidden />
-        <button type="button" class="add-image-action">+ Add image from Gallery</button>
+        <button type="button" class="add-image-action">Add image from Gallery</button>
       </div>
       <label class="child-name-field">
         <input data-child-name type="text" placeholder="Child's Name" />
@@ -108,7 +104,7 @@ export function createAddChildOverlay() {
     reader.onload = () => {
       overlay.dataset.photoUrl = String(reader.result || '');
       preview.src = overlay.dataset.photoUrl;
-      plusIcon.style.display = 'none';
+      plusIcon.hidden = true;
     };
     reader.readAsDataURL(file);
   });
@@ -118,7 +114,7 @@ export function createAddChildOverlay() {
     overlay.dataset.photoUrl = child?.photo_url || '';
     overlay.querySelector('[data-child-name]').value = child?.name || '';
     preview.src = child?.photo_url || ASSETS.inactiveChildPhoto;
-    plusIcon.style.display = child?.photo_url ? 'none' : 'block';
+    plusIcon.hidden = Boolean(child?.photo_url);
     fileInput.value = '';
     selectAge(child?.age || 4);
   };

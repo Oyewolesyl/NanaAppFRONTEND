@@ -16,15 +16,25 @@ function loadLibs() {
   return loading;
 }
 
-export function mountMiniBody(container, { view = 'front', zones = [], rotate = true } = {}) {
+export function mountMiniBody(container, {
+  view = 'front',
+  zones = [],
+  rotate = true,
+  rotateSpeed = 0.006,
+  showLabel = true,
+  canvasClassName = '',
+} = {}) {
   const canvas = document.createElement('canvas');
-  canvas.className = 'mini-body-canvas';
+  canvas.className = `mini-body-canvas ${canvasClassName}`.trim();
   container.innerHTML = '';
   container.append(canvas);
-  const label = document.createElement('span');
-  label.className = 'mini-body-pin-count';
-  label.textContent = zones?.length ? `${zones.length} spot${zones.length > 1 ? 's' : ''}` : 'no spot';
-  container.append(label);
+  let label = null;
+  if (showLabel) {
+    label = document.createElement('span');
+    label.className = 'mini-body-pin-count';
+    label.textContent = zones?.length ? `${zones.length} spot${zones.length > 1 ? 's' : ''}` : 'no spot';
+    container.append(label);
+  }
   loadLibs().then(() => {
     const THREE = window.THREE;
     const rect = container.getBoundingClientRect();
@@ -52,10 +62,12 @@ export function mountMiniBody(container, { view = 'front', zones = [], rotate = 
       }
       function loop() {
         requestAnimationFrame(loop);
-        if (rotate) model.rotation.y += 0.006;
+        if (rotate) model.rotation.y += rotateSpeed;
         renderer.render(scene, camera);
       }
       loop();
-    }, undefined, () => { label.textContent = 'body model'; });
+    }, undefined, () => {
+      if (label) label.textContent = 'body model';
+    });
   });
 }

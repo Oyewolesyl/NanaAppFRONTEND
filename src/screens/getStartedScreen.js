@@ -1,4 +1,5 @@
 import { ASSETS } from "../assets";
+import { mountMiniBody } from "../miniBody3d";
 
 export function renderGetStartedScreen(app) {
   app.innerHTML = "";
@@ -13,6 +14,10 @@ export function renderGetStartedScreen(app) {
       <img src="${ASSETS.logoMark}" alt="Nana the app" class="thumbnail-mark" />
     </section>
 
+    <section class="welcome-body-preview" aria-label="Rotating body map preview">
+      <div class="welcome-body-orbit"></div>
+    </section>
+
     <button type="button" class="continue-button get-started-button">
       Get Started
     </button>
@@ -25,4 +30,14 @@ export function renderGetStartedScreen(app) {
   });
 
   app.append(screen);
+
+  const bodyPreview = screen.querySelector(".welcome-body-orbit");
+  if (bodyPreview) {
+    mountMiniBody(bodyPreview, {
+      rotate: true,
+      rotateSpeed: 0.0028,
+      showLabel: false,
+      canvasClassName: "welcome-body-canvas",
+    });
+  }
 }

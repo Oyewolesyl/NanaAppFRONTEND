@@ -143,6 +143,30 @@ const ZONE_BOUNDS_LOCAL = {
   "right-heel":        { x: 0.08,   y: 0.02,  z:-0.04,  w:0.09, h:0.05, d:0.10 },
 };
 
+const FRONT_ONLY_ZONES = new Set([
+  "head", "neck", "chest", "tummy", "groin",
+  "left-hip", "right-hip",
+  "left-thigh", "right-thigh",
+  "left-knee", "right-knee",
+  "left-shin", "right-shin",
+  "left-foot", "right-foot",
+]);
+
+const BACK_ONLY_ZONES = new Set([
+  "back-head", "back-neck", "upper-back", "lower-back",
+  "left-glute", "right-glute",
+  "left-hamstring", "right-hamstring",
+  "left-back-knee", "right-back-knee",
+  "left-calf", "right-calf",
+  "left-heel", "right-heel",
+]);
+
+function zoneMatchesSide(zone, isFront) {
+  if (isFront && BACK_ONLY_ZONES.has(zone)) return false;
+  if (!isFront && FRONT_ONLY_ZONES.has(zone)) return false;
+  return true;
+}
+
 // Model constants from GLB accessor
 const MODEL_LOCAL_Y_MIN  = 0.0008;
 const MODEL_LOCAL_Y_MAX  = 1.1005;
@@ -328,6 +352,34 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     positionCamera();
   }
 
+  function getNearestProjectedZone(clientX, clientY) {
+    if (!camera || !model) return "";
+    const THREE = window.THREE;
+    const rect = canvas.getBoundingClientRect();
+    const isFrontView = Math.cos(modelYaw) >= 0;
+    let bestZone = "";
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    Object.entries(ZONE_BOUNDS_LOCAL).forEach(([zone, b]) => {
+      if (!zoneMatchesSide(zone, isFrontView)) return;
+
+      const world = model.localToWorld(new THREE.Vector3(b.x, b.y, b.z || 0));
+      const projected = world.project(camera);
+      if (projected.z < -1 || projected.z > 1) return;
+
+      const px = rect.left + ((projected.x + 1) / 2) * rect.width;
+      const py = rect.top + ((-projected.y + 1) / 2) * rect.height;
+      const distance = Math.hypot(clientX - px, clientY - py);
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestZone = zone;
+      }
+    });
+
+    return bestDistance <= 46 ? bestZone : "";
+  }
+
   // ── Hit detection ────────────────────────────────────────────
   function handleTap(clientX, clientY) {
     if (!model) return;
@@ -337,14 +389,17 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const ny = -((clientY - rect.top)  / rect.height) * 2 + 1;
     raycaster.setFromCamera({ x: nx, y: ny }, camera);
     const hits = raycaster.intersectObject(model, true);
-    if (!hits.length) return;
+    let zone = "";
 
-    // Convert hit point into original model-local space, including rotation.
-    const origLocal = model.worldToLocal(hits[0].point.clone());
-    const zoneSideIsFront = origLocal.z >= 0;
-    isFront = zoneSideIsFront;
+    if (hits.length) {
+      const origLocal = model.worldToLocal(hits[0].point.clone());
+      const zoneSideIsFront = origLocal.z >= 0;
+      isFront = zoneSideIsFront;
+      zone = getZoneFromPoint(origLocal, zoneSideIsFront);
+    } else {
+      zone = getNearestProjectedZone(clientX, clientY);
+    }
 
-    const zone = getZoneFromPoint(origLocal, zoneSideIsFront);
     if (!zone) return;
 
     hasTapped = true;
@@ -392,6 +447,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         type: "single",
         startY: e.touches[0].clientY,
         startX: e.touches[0].clientX,
+        lastY: e.touches[0].clientY,
+        lastX: e.touches[0].clientX,
         startDist: camDist,
         moved: false,
       };
@@ -424,10 +481,14 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     } else if (touchState.type === "single" && e.touches.length === 1) {
       const dy = e.touches[0].clientY - touchState.startY;
       const dx = e.touches[0].clientX - touchState.startX;
+      const stepY = e.touches[0].clientY - touchState.lastY;
+      const stepX = e.touches[0].clientX - touchState.lastX;
       if (Math.abs(dx) > 8 || Math.abs(dy) > 8 || touchState.moved) {
         touchState.moved = true;
-        modelYaw += dx * 0.0035;
-        panCamera(0, dy * 0.025);
+        modelYaw += stepX * 0.0035;
+        panCamera(0, stepY * 0.6);
+        touchState.lastX = e.touches[0].clientX;
+        touchState.lastY = e.touches[0].clientY;
         if (model) model.rotation.y = modelYaw;
         updateBadges();
       }

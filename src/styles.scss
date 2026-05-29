@@ -2375,6 +2375,367 @@ body,
   }
 }
 
+/* === AUTH SCREEN BALANCED MOBILE LAYOUT === */
+@media (max-width: 430px) {
+  .auth-screen {
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    padding: 26px 22px 28px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: clamp(9px, 1.8dvh, 13px) !important;
+  }
+
+  .auth-screen .auth-logo {
+    width: clamp(58px, 17vw, 72px) !important;
+    height: auto !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .auth-screen .screen-title {
+    margin: 0 !important;
+    font-size: clamp(31px, 9vw, 39px) !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .auth-screen .auth-copy {
+    margin: 0 0 4px !important;
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .auth-screen .settings-field {
+    width: min(296px, calc(100vw - 58px)) !important;
+    margin: 0 !important;
+    gap: 4px !important;
+    font-size: 14px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .auth-screen .settings-field input {
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 14px !important;
+    border-radius: 14px !important;
+    font-size: 16px !important;
+  }
+
+  .auth-screen .auth-compact-button {
+    width: min(226px, 64vw) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 4px 0 0 !important;
+    border-radius: 14px !important;
+    font-size: 19px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .auth-screen .auth-login {
+    margin-top: 5px !important;
+  }
+
+  .auth-screen .auth-skip {
+    width: min(300px, calc(100vw - 58px)) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 5px 0 0 !important;
+    border-radius: 14px !important;
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .auth-screen {
+    padding-top: 20px !important;
+    padding-bottom: 22px !important;
+    gap: 7px !important;
+  }
+
+  .auth-screen .auth-logo {
+    width: 50px !important;
+  }
+
+  .auth-screen .screen-title {
+    font-size: 29px !important;
+  }
+
+  .auth-screen .auth-copy {
+    font-size: 13px !important;
+  }
+
+  .auth-screen .settings-field {
+    width: min(288px, calc(100vw - 64px)) !important;
+    font-size: 13px !important;
+  }
+
+  .auth-screen .settings-field input,
+  .auth-screen .auth-compact-button,
+  .auth-screen .auth-skip {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .auth-screen .auth-compact-button {
+    font-size: 18px !important;
+  }
+}
+
+/* === FINAL CHILD CARD PROPORTION FIX === */
+@media (max-width: 430px) {
+  .child-added-screen .child-added-intro {
+    margin-top: 28px !important;
+  }
+
+  .child-added-screen .child-card-list {
+    margin-top: 24px !important;
+  }
+
+  .child-added-screen .child-card {
+    width: min(250px, calc(100vw - 78px)) !important;
+    min-height: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  .child-added-screen .child-card-photo-wrap {
+    width: 94px !important;
+    height: 94px !important;
+    margin: 12px 0 13px !important;
+    border-width: 7px !important;
+  }
+
+  .child-added-screen .child-card-photo {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .child-added-screen .child-card-meta {
+    padding: 10px 14px 0 !important;
+  }
+
+  .child-added-screen .child-name {
+    margin: 0 0 7px !important;
+    font-size: 24px !important;
+    line-height: 1.05 !important;
+  }
+
+  .child-added-screen .child-age {
+    margin: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.15 !important;
+  }
+
+  .child-added-screen .child-open-map-btn {
+    width: 148px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    margin: 12px 0 12px !important;
+    padding: 6px 12px !important;
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+  }
+
+  .child-added-screen .floating-add-btn {
+    width: 50px !important;
+    height: 50px !important;
+    right: 20px !important;
+    bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 116px) !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .child-added-screen .child-added-intro {
+    margin-top: 26px !important;
+  }
+
+  .child-added-screen .child-card-list {
+    margin-top: 22px !important;
+  }
+
+  .child-added-screen .child-card {
+    width: 248px !important;
+  }
+
+  .child-added-screen .child-card-photo-wrap {
+    width: 90px !important;
+    height: 90px !important;
+    margin: 11px 0 12px !important;
+  }
+
+  .child-added-screen .child-card-photo {
+    width: 76px !important;
+    height: 76px !important;
+  }
+
+  .child-added-screen .child-open-map-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+    margin-bottom: 11px !important;
+  }
+}
+
+/* === CHILD HOME MOBILE SPACING RESET === */
+@media (max-width: 430px) {
+  .child-added-screen,
+  .homepage-new-user-screen {
+    min-height: 100svh !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
+    overflow: hidden !important;
+  }
+
+  .child-added-screen .children-header,
+  .homepage-new-user-screen .children-header {
+    min-height: 70px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .child-added-screen .children-content,
+  .homepage-new-user-screen .children-content {
+    min-height: calc(100svh - 70px - var(--nana-bottom-nav-height)) !important;
+    display: grid !important;
+    grid-template-rows: auto auto 1fr !important;
+    align-content: start !important;
+    justify-items: center !important;
+    padding: 0 16px !important;
+  }
+
+  .child-added-screen .child-added-intro,
+  .homepage-new-user-screen .child-added-intro {
+    margin-top: clamp(24px, 5.6svh, 42px) !important;
+  }
+
+  .child-added-screen .children-title--small,
+  .homepage-new-user-screen .children-title--small {
+    font-size: clamp(25px, 7vw, 30px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .child-added-screen .child-card-list,
+  .homepage-new-user-screen .child-card-list {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin-top: clamp(22px, 4.8svh, 34px) !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  .child-added-screen .child-card,
+  .homepage-new-user-screen .child-card {
+    width: min(268px, calc(100vw - 70px)) !important;
+    min-height: 0 !important;
+  }
+
+  .child-added-screen .child-card-photo-wrap,
+  .homepage-new-user-screen .child-card-photo-wrap {
+    width: 104px !important;
+    height: 104px !important;
+    margin: 12px 0 14px !important;
+    border-width: 7px !important;
+  }
+
+  .child-added-screen .child-card-photo,
+  .homepage-new-user-screen .child-card-photo {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  .child-added-screen .child-card-meta,
+  .homepage-new-user-screen .child-card-meta {
+    padding: 12px 16px 12px !important;
+  }
+
+  .child-added-screen .child-name,
+  .homepage-new-user-screen .child-name {
+    margin-bottom: 6px !important;
+    font-size: clamp(22px, 6.2vw, 27px) !important;
+  }
+
+  .child-added-screen .child-open-map-btn,
+  .homepage-new-user-screen .child-open-map-btn {
+    width: 150px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    margin: 14px auto 0 !important;
+    font-size: 16px !important;
+  }
+
+  .child-added-screen .floating-add-btn,
+  .homepage-new-user-screen .floating-add-btn {
+    width: 54px !important;
+    height: 54px !important;
+    right: 18px !important;
+    bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 76px) !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .child-added-screen .children-header,
+  .homepage-new-user-screen .children-header {
+    min-height: 66px !important;
+  }
+
+  .child-added-screen .children-content,
+  .homepage-new-user-screen .children-content {
+    min-height: calc(100svh - 66px - var(--nana-bottom-nav-height)) !important;
+  }
+
+  .child-added-screen .child-added-intro,
+  .homepage-new-user-screen .child-added-intro {
+    margin-top: 30px !important;
+  }
+
+  .child-added-screen .child-card-list,
+  .homepage-new-user-screen .child-card-list {
+    margin-top: 24px !important;
+  }
+
+  .child-added-screen .child-card,
+  .homepage-new-user-screen .child-card {
+    width: 252px !important;
+  }
+
+  .child-added-screen .child-card-photo-wrap,
+  .homepage-new-user-screen .child-card-photo-wrap {
+    width: 96px !important;
+    height: 96px !important;
+    margin: 10px 0 12px !important;
+  }
+
+  .child-added-screen .child-card-photo,
+  .homepage-new-user-screen .child-card-photo {
+    width: 82px !important;
+    height: 82px !important;
+  }
+
+  .child-added-screen .child-card-meta,
+  .homepage-new-user-screen .child-card-meta {
+    padding: 10px 14px 10px !important;
+  }
+
+  .child-added-screen .child-open-map-btn,
+  .homepage-new-user-screen .child-open-map-btn {
+    width: 148px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    margin-top: 12px !important;
+  }
+
+  .child-added-screen .floating-add-btn,
+  .homepage-new-user-screen .floating-add-btn {
+    width: 50px !important;
+    height: 50px !important;
+    right: 20px !important;
+    bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 70px) !important;
+  }
+}
+
 @media (max-width: 380px), (max-height: 700px) {
   .auth-screen {
     padding-top: 14px !important;
@@ -2435,4 +2796,509 @@ body,
   .confirmation-actions {
     gap: 8px !important;
   }
+}
+
+/* === TRUE IPHONE SE / SMALL MOBILE SCALING PASS === */
+@media (max-width: 430px) {
+  :root {
+    --nana-bottom-nav-height: 92px;
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+
+  .screen,
+  .children-screen,
+  .history-screen,
+  .settings-screen,
+  .manage-children-screen,
+  .manage-screen {
+    min-height: 100dvh !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 10px) !important;
+  }
+
+  .children-header,
+  .screen-header,
+  .top-bar,
+  .page-header {
+    min-height: 72px !important;
+    padding: 10px 18px !important;
+  }
+
+  .children-header-logo {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .children-menu-button {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .children-menu-button img {
+    width: 36px !important;
+    height: auto !important;
+  }
+
+  .bottom-nav {
+    height: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 0 34px env(safe-area-inset-bottom, 0px) !important;
+  }
+
+  .bottom-nav-item {
+    transform: scale(.82);
+    transform-origin: center;
+  }
+
+  .bottom-nav-item--active {
+    transform: scale(.86);
+  }
+
+  .children-title,
+  .screen-title,
+  .pain-scale-title {
+    font-size: clamp(28px, 8.2vw, 36px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .continue-button,
+  .pain-type-back-btn,
+  .pain-type-next-btn,
+  .settings-link,
+  .save-child-button,
+  .child-open-map-btn {
+    min-height: 48px !important;
+    height: 48px !important;
+    border-radius: 13px !important;
+    font-size: clamp(16px, 4.8vw, 19px) !important;
+    line-height: 1.1 !important;
+    padding: 8px 14px !important;
+  }
+
+  .children-content,
+  .history-content,
+  .settings-content,
+  .settings-content-fit,
+  .manage-content {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .child-card {
+    width: min(255px, calc(100vw - 52px)) !important;
+    min-height: auto !important;
+  }
+
+  .child-card-photo-wrap {
+    margin-top: 10px !important;
+  }
+
+  .child-card-photo {
+    width: 82px !important;
+    height: 82px !important;
+  }
+
+  .child-name {
+    font-size: clamp(22px, 6.5vw, 28px) !important;
+  }
+
+  .child-age {
+    font-size: 15px !important;
+  }
+
+  .history-helper,
+  .history-search-wrap,
+  .history-list,
+  .settings-field,
+  .settings-link,
+  .summary-card,
+  .manage-list {
+    width: min(320px, calc(100vw - 34px)) !important;
+  }
+
+  .history-card {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .history-card-header {
+    gap: 8px !important;
+  }
+
+  .history-pain-score {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .add-child-modal {
+    width: min(330px, calc(100vw - 22px)) !important;
+    max-height: calc(100svh - 28px) !important;
+    padding: clamp(20px, 4.4svh, 34px) 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .add-image-card {
+    width: min(246px, calc(100vw - 84px)) !important;
+    height: 176px !important;
+    margin: 0 auto !important;
+  }
+
+  .add-image-icon-wrap,
+  .add-child-preview {
+    width: 92px !important;
+    height: 92px !important;
+  }
+
+  .add-image-action {
+    min-height: 44px !important;
+    font-size: 17px !important;
+  }
+
+  .child-name-field input {
+    height: 52px !important;
+    min-height: 52px !important;
+    font-size: 18px !important;
+  }
+
+  .age-title {
+    font-size: clamp(30px, 8vw, 38px) !important;
+    margin: 12px 0 8px !important;
+  }
+
+  .age-wheel-shell {
+    width: 132px !important;
+    height: 126px !important;
+  }
+
+  .save-child-button {
+    width: min(230px, 68vw) !important;
+    margin-top: 12px !important;
+  }
+
+  .body-map-wrap {
+    width: min(236px, 68vw) !important;
+    height: min(390px, 45svh) !important;
+  }
+
+  .show-pain-screen {
+    padding-top: 14px !important;
+    gap: 8px !important;
+  }
+
+  .show-pain-title {
+    font-size: clamp(26px, 7.6vw, 32px) !important;
+  }
+
+  .body-hint {
+    max-width: 280px !important;
+    font-size: 15px !important;
+    line-height: 1.22 !important;
+  }
+
+  .zoom-row {
+    margin-top: 8px !important;
+  }
+
+  .pain-scale-screen {
+    padding-top: 18px !important;
+    gap: 10px !important;
+  }
+
+  .pain-scale-choice-row {
+    width: min(312px, calc(100vw - 38px)) !important;
+    gap: 8px !important;
+  }
+
+  .pain-face-choice {
+    min-height: 76px !important;
+    border-radius: 18px !important;
+  }
+
+  .pain-face-choice span {
+    font-size: 28px !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  :root {
+    --nana-bottom-nav-height: 86px;
+  }
+
+  .children-header,
+  .screen-header,
+  .top-bar,
+  .page-header {
+    min-height: 62px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .back-button {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .bottom-nav {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+
+  .bottom-nav-item {
+    transform: scale(.76);
+  }
+
+  .get-started-screen {
+    padding-top: 28px !important;
+    gap: 12px !important;
+  }
+
+  .welcome-title {
+    font-size: 30px !important;
+  }
+
+  .app-thumbnail {
+    width: 104px !important;
+    min-height: 124px !important;
+  }
+
+  .welcome-body-preview {
+    height: 106px !important;
+  }
+
+  .auth-screen {
+    gap: 6px !important;
+  }
+
+  .auth-logo {
+    width: 50px !important;
+  }
+
+  .auth-screen .settings-field input {
+    height: 42px !important;
+    min-height: 42px !important;
+  }
+
+  .auth-compact-button,
+  .auth-skip {
+    height: 42px !important;
+    min-height: 42px !important;
+  }
+
+  .add-child-modal {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+  }
+
+  .add-image-card {
+    height: 160px !important;
+  }
+
+  .age-wheel-shell {
+    height: 112px !important;
+  }
+
+  .body-map-wrap {
+    height: min(350px, 42svh) !important;
+  }
+
+  .confirmation-screen .mini-body-wrap {
+    width: 112px !important;
+    height: 142px !important;
+  }
+
+  .confirmation-actions .continue-button,
+  .confirmation-actions .pain-type-back-btn,
+  .confirmation-actions .pain-type-next-btn {
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+}
+
+/* === FINAL OVERRIDE: CHILD CARD BUTTON MUST NOT TOUCH CARD EDGE === */
+@media (max-width: 430px) {
+  .child-added-screen .child-card-divider {
+    opacity: 0.65 !important;
+  }
+
+  .child-added-screen .child-card {
+    box-sizing: border-box !important;
+    width: 248px !important;
+    max-width: 248px !important;
+    min-width: 0 !important;
+    height: 242px !important;
+    max-height: 242px !important;
+    padding-bottom: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    overflow: hidden !important;
+  }
+
+  .child-added-screen .child-card-photo-wrap {
+    width: 86px !important;
+    height: 86px !important;
+    min-width: 86px !important;
+    min-height: 86px !important;
+    max-width: 86px !important;
+    max-height: 86px !important;
+    margin: 10px 0 10px !important;
+    border-width: 6px !important;
+    flex: 0 0 86px !important;
+  }
+
+  .child-added-screen .child-card-photo {
+    width: 74px !important;
+    height: 74px !important;
+    min-width: 74px !important;
+    min-height: 74px !important;
+    max-width: 74px !important;
+    max-height: 74px !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  .child-added-screen .child-card-divider {
+    flex: 0 0 1px !important;
+  }
+
+  .child-added-screen .child-card-meta {
+    padding: 9px 14px 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  .child-added-screen .child-name {
+    margin: 0 0 5px !important;
+    font-size: 23px !important;
+    line-height: 1 !important;
+  }
+
+  .child-added-screen .child-age {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+
+  .child-added-screen .child-open-map-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 148px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    margin: 12px auto 0 !important;
+    padding: 6px 12px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .child-added-screen .child-card {
+    width: 246px !important;
+    max-width: 246px !important;
+    height: 236px !important;
+    max-height: 236px !important;
+    padding-bottom: 13px !important;
+  }
+
+  .child-added-screen .child-card-photo-wrap {
+    width: 82px !important;
+    height: 82px !important;
+    min-width: 82px !important;
+    min-height: 82px !important;
+    max-width: 82px !important;
+    max-height: 82px !important;
+    flex-basis: 82px !important;
+    margin: 9px 0 9px !important;
+  }
+
+  .child-added-screen .child-card-photo {
+    width: 70px !important;
+    height: 70px !important;
+    min-width: 70px !important;
+    min-height: 70px !important;
+    max-width: 70px !important;
+    max-height: 70px !important;
+  }
+
+  .child-added-screen .child-open-map-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+    margin-top: 12px !important;
+  }
+}
+
+/* === HARD RESET: CHILD-ADDED CARD IMAGE SIZE === */
+.child-added-screen .child-card {
+  box-sizing: border-box !important;
+  width: 248px !important;
+  max-width: 248px !important;
+  min-width: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  padding-bottom: 14px !important;
+  overflow: hidden !important;
+}
+
+.child-added-screen .child-card-photo-wrap {
+  width: 76px !important;
+  height: 76px !important;
+  min-width: 76px !important;
+  min-height: 76px !important;
+  max-width: 76px !important;
+  max-height: 76px !important;
+  margin: 12px 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  flex: 0 0 76px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+}
+
+.child-added-screen .child-card-photo {
+  width: 76px !important;
+  height: 76px !important;
+  min-width: 76px !important;
+  min-height: 76px !important;
+  max-width: 76px !important;
+  max-height: 76px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.child-added-screen .child-card-divider {
+  opacity: 0.65 !important;
+  flex: 0 0 1px !important;
+}
+
+.child-added-screen .child-card-meta {
+  padding: 9px 14px 0 !important;
+}
+
+.child-added-screen .child-name {
+  margin: 0 0 5px !important;
+  font-size: 23px !important;
+  line-height: 1 !important;
+}
+
+.child-added-screen .child-age {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.15 !important;
+}
+
+.child-added-screen .child-open-map-btn {
+  width: 148px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 12px auto 0 !important;
+  padding: 6px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }

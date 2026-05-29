@@ -52,14 +52,6 @@ export function renderAuthScreen(app) {
         />
       </label>
 
-      <label class="settings-field">
-        Role
-        <select class="auth-role">
-          <option value="parent">Parent / Guardian</option>
-          <option value="doctor">Doctor</option>
-        </select>
-      </label>
-
       <button
         type="button"
         class="continue-button auth-register auth-compact-button"
@@ -100,7 +92,6 @@ export function renderAuthScreen(app) {
   const emailInput = screen.querySelector('.auth-email');
   const passwordInput = screen.querySelector('.auth-password');
   const nameInput = screen.querySelector('.auth-name');
-  const roleInput = screen.querySelector('.auth-role');
   const status = screen.querySelector('.auth-status');
 
   const goNext = () => {
@@ -126,7 +117,7 @@ export function renderAuthScreen(app) {
             body: JSON.stringify({
               email: emailInput.value.trim(),
               password: passwordInput.value,
-              role: roleInput.value,
+              role: 'parent',
               full_name: nameInput.value.trim(),
             }),
           }

@@ -71,10 +71,10 @@ export function mountMiniBody(container, {
   container.innerHTML = '';
   container.append(canvas);
   let label = null;
-  if (showLabel) {
+  if (showLabel && zones?.length) {
     label = document.createElement('span');
     label.className = 'mini-body-pin-count';
-    label.textContent = zones?.length ? `${zones.length} spot${zones.length > 1 ? 's' : ''}` : 'no spot';
+    label.textContent = `${zones.length} spot${zones.length > 1 ? 's' : ''}`;
     container.append(label);
   }
   loadLibs().then(() => {

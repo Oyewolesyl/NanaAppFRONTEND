@@ -51,7 +51,6 @@ export function createAddChildOverlay() {
       <div class="add-image-card">
         <button type="button" class="add-image-icon-wrap" aria-label="Choose child image">
           <img class="add-child-preview" src="${ASSETS.inactiveChildPhoto}" alt="Child preview" />
-          <span class="add-child-plus-icon" aria-hidden="true"></span>
         </button>
         <input class="add-child-file" type="file" accept="image/*" hidden />
         <button type="button" class="add-image-action">Add image from Gallery</button>
@@ -94,7 +93,6 @@ export function createAddChildOverlay() {
 
   const fileInput = overlay.querySelector('.add-child-file');
   const preview = overlay.querySelector('.add-child-preview');
-  const plusIcon = overlay.querySelector('.add-child-plus-icon');
   overlay.querySelector('.add-image-action')?.addEventListener('click', () => fileInput.click());
   overlay.querySelector('.add-image-icon-wrap')?.addEventListener('click', () => fileInput.click());
   fileInput.addEventListener('change', () => {
@@ -104,7 +102,6 @@ export function createAddChildOverlay() {
     reader.onload = () => {
       overlay.dataset.photoUrl = String(reader.result || '');
       preview.src = overlay.dataset.photoUrl;
-      plusIcon.hidden = true;
     };
     reader.readAsDataURL(file);
   });
@@ -114,7 +111,6 @@ export function createAddChildOverlay() {
     overlay.dataset.photoUrl = child?.photo_url || '';
     overlay.querySelector('[data-child-name]').value = child?.name || '';
     preview.src = child?.photo_url || ASSETS.inactiveChildPhoto;
-    plusIcon.hidden = Boolean(child?.photo_url);
     fileInput.value = '';
     selectAge(child?.age || 4);
   };

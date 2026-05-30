@@ -3302,3 +3302,743 @@ body,
   align-items: center !important;
   justify-content: center !important;
 }
+
+/* === HARD FIX: ADD IMAGE CARD IS ONE CLEAN BUTTON === */
+.add-child-overlay .add-image-card {
+  box-sizing: border-box !important;
+  width: 270px !important;
+  max-width: 100% !important;
+  height: 150px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 1px solid var(--outline) !important;
+  border-radius: 14px !important;
+  background: var(--yellow) !important;
+  color: var(--outline) !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: grid !important;
+  grid-template-rows: 1fr 40px !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  overflow: hidden !important;
+  font-family: "Nunito", sans-serif !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+}
+
+.add-child-overlay .add-image-icon-wrap {
+  width: 82px !important;
+  height: 82px !important;
+  min-width: 82px !important;
+  min-height: 82px !important;
+  max-width: 82px !important;
+  max-height: 82px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+.add-child-overlay .add-child-preview {
+  width: 82px !important;
+  height: 82px !important;
+  min-width: 82px !important;
+  min-height: 82px !important;
+  max-width: 82px !important;
+  max-height: 82px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+.add-child-overlay .add-image-action {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.65) !important;
+  border-radius: 0 !important;
+  background: var(--yellow) !important;
+  color: var(--outline) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-family: "Nunito", sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+/* === FINAL MOBILE LAYOUT REPAIR: real spacing, card gutters, overlay fit === */
+@media (max-width: 430px) {
+  .children-screen,
+  .history-screen,
+  .settings-screen,
+  .manage-screen,
+  .manage-children-screen {
+    overflow-x: hidden !important;
+  }
+
+  .children-intro,
+  .child-added-intro {
+    margin-top: clamp(26px, 5svh, 42px) !important;
+    padding-inline: 18px !important;
+  }
+
+  .child-card-list,
+  .child-card-list--two {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 430px !important;
+    margin: clamp(26px, 5svh, 38px) auto 0 !important;
+    padding: 0 18px !important;
+    display: grid !important;
+    justify-items: center !important;
+    align-items: start !important;
+  }
+
+  .child-card-list--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .child-card-list--two .child-card,
+  .child-card--compact {
+    width: 100% !important;
+    max-width: 162px !important;
+    min-width: 0 !important;
+  }
+
+  .child-card,
+  .child-added-screen .child-card,
+  .homepage-new-user-screen .child-card {
+    box-sizing: border-box !important;
+    border-radius: 14px !important;
+  }
+
+  .child-card-photo-wrap,
+  .child-added-screen .child-card-photo-wrap,
+  .homepage-new-user-screen .child-card-photo-wrap {
+    box-sizing: border-box !important;
+    width: 94px !important;
+    height: 94px !important;
+    min-width: 94px !important;
+    min-height: 94px !important;
+    max-width: 94px !important;
+    max-height: 94px !important;
+    margin: 14px auto 14px !important;
+    padding: 0 !important;
+    border: 6px solid #8cc8ff !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    overflow: hidden !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .child-card-photo,
+  .child-added-screen .child-card-photo,
+  .homepage-new-user-screen .child-card-photo {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+  }
+
+  .child-card-list--two .child-card-photo-wrap {
+    width: 82px !important;
+    height: 82px !important;
+    min-width: 82px !important;
+    min-height: 82px !important;
+    max-width: 82px !important;
+    max-height: 82px !important;
+    border-width: 5px !important;
+    margin-top: 16px !important;
+  }
+
+  .child-card-list--two .child-name {
+    font-size: clamp(24px, 7vw, 30px) !important;
+    line-height: 1 !important;
+  }
+
+  .child-card-list--two .child-age {
+    font-size: clamp(15px, 4.5vw, 19px) !important;
+    margin-top: 8px !important;
+  }
+
+  .child-card-list--two .child-open-map-btn {
+    width: calc(100% - 28px) !important;
+    min-height: 52px !important;
+    margin: 14px auto 16px !important;
+    padding: 8px 10px !important;
+    font-size: clamp(16px, 4.6vw, 22px) !important;
+    line-height: 1.05 !important;
+    overflow: hidden !important;
+  }
+
+  .floating-add-btn {
+    width: 58px !important;
+    height: 58px !important;
+    right: max(22px, env(safe-area-inset-right, 0px) + 22px) !important;
+    bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 76px) !important;
+    z-index: 25 !important;
+  }
+
+  .floating-add-btn svg {
+    width: 58px !important;
+    height: 58px !important;
+    display: block !important;
+  }
+
+  .manage-content {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    padding: 28px 22px calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 28px) !important;
+  }
+
+  .manage-list {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    margin-inline: auto !important;
+    display: grid !important;
+    gap: 18px !important;
+  }
+
+  .manage-child-card {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin-inline: auto !important;
+    padding: 18px 16px !important;
+    border-radius: 18px !important;
+  }
+
+  .nana-menu-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2000 !important;
+  }
+
+  .nana-menu-panel {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: min(332px, calc(100vw - 36px)) !important;
+    min-height: 100dvh !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 24px) !important;
+    overflow-y: auto !important;
+    z-index: 2001 !important;
+  }
+
+  .add-child-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2100 !important;
+    align-items: start !important;
+    justify-items: center !important;
+    padding: max(14px, env(safe-area-inset-top, 0px) + 10px) 12px calc(env(safe-area-inset-bottom, 0px) + 18px) !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .add-child-modal {
+    box-sizing: border-box !important;
+    width: min(354px, calc(100vw - 24px)) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: clamp(18px, 3.2svh, 26px) 18px !important;
+    gap: clamp(12px, 2.2svh, 18px) !important;
+  }
+
+  .add-image-card {
+    width: min(310px, 100%) !important;
+    height: clamp(132px, 24svh, 178px) !important;
+    display: grid !important;
+    grid-template-rows: 1fr auto !important;
+    place-items: center !important;
+  }
+
+  .add-image-icon-wrap {
+    width: 96px !important;
+    height: 96px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .add-child-preview {
+    box-sizing: border-box !important;
+    width: 96px !important;
+    height: 96px !important;
+    min-width: 96px !important;
+    min-height: 96px !important;
+    max-width: 96px !important;
+    max-height: 96px !important;
+    border-radius: 999px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+  }
+
+  .add-image-action {
+    min-height: 48px !important;
+    display: grid !important;
+    place-items: center !important;
+    text-align: center !important;
+  }
+
+  .child-name-field {
+    width: min(310px, 100%) !important;
+  }
+
+  .child-name-field input {
+    height: 56px !important;
+    min-height: 56px !important;
+  }
+
+  .age-title {
+    margin: 0 !important;
+    font-size: clamp(28px, 8vw, 36px) !important;
+    line-height: 1 !important;
+  }
+
+  .age-wheel-shell {
+    width: 132px !important;
+    height: clamp(112px, 18svh, 142px) !important;
+    min-height: 112px !important;
+  }
+
+  .save-child-button {
+    width: min(260px, 78vw) !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    margin-top: 2px !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .child-card-list,
+  .child-card-list--two {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .child-card-list--two {
+    gap: 12px !important;
+  }
+
+  .child-card-list--two .child-card {
+    max-width: 158px !important;
+  }
+
+  .child-card-list--two .child-open-map-btn {
+    width: calc(100% - 22px) !important;
+    min-height: 48px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .add-child-modal {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    gap: 11px !important;
+  }
+
+  .add-image-card {
+    height: 132px !important;
+  }
+
+  .add-image-icon-wrap,
+  .add-child-preview {
+    width: 82px !important;
+    height: 82px !important;
+    min-width: 82px !important;
+    min-height: 82px !important;
+    max-width: 82px !important;
+    max-height: 82px !important;
+  }
+
+  .child-name-field input {
+    height: 50px !important;
+    min-height: 50px !important;
+  }
+
+  .age-wheel-shell {
+    height: 104px !important;
+  }
+
+  .save-child-button {
+    height: 52px !important;
+    min-height: 52px !important;
+  }
+}
+
+/* === FINAL REPAIR: ADD-CHILD OVERLAY SHOULD FIT, NOT SQUASH === */
+@media (max-width: 430px) {
+  body.nana-add-child-open .floating-add-btn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .add-child-overlay {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 12px calc(env(safe-area-inset-bottom, 0px) + 10px) !important;
+    overflow-y: auto !important;
+  }
+
+  .add-child-overlay[hidden] {
+    display: none !important;
+  }
+
+  .add-child-modal {
+    width: min(354px, calc(100vw - 28px)) !important;
+    max-height: calc(100dvh - 24px - env(safe-area-inset-bottom, 0px)) !important;
+    margin: auto !important;
+    padding: 22px 18px 20px !important;
+    gap: 14px !important;
+    overflow: visible !important;
+  }
+
+  .add-image-card {
+    width: min(306px, 100%) !important;
+    height: 150px !important;
+    min-height: 150px !important;
+  }
+
+  .add-image-icon-wrap,
+  .add-child-preview {
+    width: 86px !important;
+    height: 86px !important;
+    min-width: 86px !important;
+    min-height: 86px !important;
+    max-width: 86px !important;
+    max-height: 86px !important;
+  }
+
+  .add-image-action {
+    min-height: 40px !important;
+    height: 40px !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+  }
+
+  .child-name-field input {
+    height: 52px !important;
+    min-height: 52px !important;
+    font-size: 20px !important;
+  }
+
+  .age-title {
+    font-size: 30px !important;
+  }
+
+  .age-wheel-shell {
+    width: 118px !important;
+    height: 118px !important;
+  }
+
+  .age-wheel-item {
+    height: 42px !important;
+    font-size: 28px !important;
+  }
+
+  .save-child-button {
+    width: min(232px, 72vw) !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    font-size: 24px !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .add-child-modal {
+    padding: 16px 16px 15px !important;
+    gap: 10px !important;
+  }
+
+  .add-image-card {
+    height: 134px !important;
+    min-height: 134px !important;
+  }
+
+  .add-image-icon-wrap,
+  .add-child-preview {
+    width: 76px !important;
+    height: 76px !important;
+    min-width: 76px !important;
+    min-height: 76px !important;
+    max-width: 76px !important;
+    max-height: 76px !important;
+  }
+
+  .child-name-field input {
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .age-title {
+    font-size: 27px !important;
+  }
+
+  .age-wheel-shell {
+    height: 102px !important;
+  }
+
+  .save-child-button {
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+}
+
+/* === FINAL REPAIR: SCALE ADD-CHILD MODAL AS ONE PIECE === */
+@media (max-width: 430px) {
+  .add-child-overlay {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    z-index: 2100 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 82px 12px calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+  }
+
+  .add-child-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(2, 2, 2, 0.38) !important;
+  }
+
+  .add-child-overlay[hidden] {
+    display: none !important;
+  }
+
+  .add-child-modal {
+    box-sizing: border-box !important;
+    width: min(330px, calc(100vw - 28px)) !important;
+    max-width: min(330px, calc(100vw - 28px)) !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: calc(100dvh - 82px - var(--nana-bottom-nav-height, 92px) - env(safe-area-inset-bottom, 0px) - 24px) !important;
+    margin: auto !important;
+    padding: 16px 17px 15px !important;
+    gap: 9px !important;
+    overflow: hidden !important;
+    transform: none !important;
+  }
+
+  .add-image-card {
+    box-sizing: border-box !important;
+    width: min(282px, 100%) !important;
+    height: 128px !important;
+    min-height: 128px !important;
+    display: grid !important;
+    grid-template-rows: 1fr 38px !important;
+    align-items: center !important;
+    justify-items: center !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: var(--yellow) !important;
+    cursor: pointer !important;
+  }
+
+  .add-image-icon-wrap {
+    width: 74px !important;
+    height: 74px !important;
+    min-width: 74px !important;
+    min-height: 74px !important;
+    max-width: 74px !important;
+    max-height: 74px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .add-child-preview {
+    width: 74px !important;
+    height: 74px !important;
+    min-width: 74px !important;
+    min-height: 74px !important;
+    max-width: 74px !important;
+    max-height: 74px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .add-image-action {
+    width: 100% !important;
+    max-width: none !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 10px !important;
+    font-size: 17px !important;
+    font-family: "Nunito", sans-serif !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.65) !important;
+    border-radius: 0 !important;
+    background: var(--yellow) !important;
+    color: var(--outline) !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+  }
+
+  .child-name-field {
+    width: min(282px, 100%) !important;
+  }
+
+  .child-name-field input {
+    height: 46px !important;
+    min-height: 46px !important;
+    font-size: 19px !important;
+  }
+
+  .age-title {
+    margin: 0 !important;
+    font-size: 27px !important;
+    line-height: 1 !important;
+  }
+
+  .age-wheel-shell {
+    width: 96px !important;
+    height: 96px !important;
+    min-height: 96px !important;
+  }
+
+  .age-wheel-item {
+    height: 36px !important;
+    font-size: 26px !important;
+  }
+
+  .save-child-button {
+    width: min(214px, 68vw) !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    margin: 0 !important;
+    font-size: 22px !important;
+  }
+}
+
+/* === ABSOLUTE LAST WORD: ADD IMAGE PICKER LAYOUT === */
+.add-child-overlay .add-image-card {
+  box-sizing: border-box !important;
+  width: 270px !important;
+  max-width: 100% !important;
+  height: 154px !important;
+  min-height: 154px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 1px solid var(--outline) !important;
+  border-radius: 14px !important;
+  background: var(--yellow) !important;
+  color: var(--outline) !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 112px 42px !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  overflow: hidden !important;
+  font-family: "Nunito", sans-serif !important;
+  cursor: pointer !important;
+}
+
+.add-child-overlay .add-image-icon-wrap {
+  position: static !important;
+  grid-row: 1 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 112px !important;
+  min-width: 0 !important;
+  min-height: 112px !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.add-child-overlay .add-child-preview {
+  width: 82px !important;
+  height: 82px !important;
+  min-width: 82px !important;
+  min-height: 82px !important;
+  max-width: 82px !important;
+  max-height: 82px !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+.add-child-overlay .add-image-action {
+  position: static !important;
+  grid-row: 2 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.65) !important;
+  border-radius: 0 !important;
+  background: var(--yellow) !important;
+  color: var(--outline) !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-family: "Nunito", sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}

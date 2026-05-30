@@ -104,12 +104,32 @@ export function wireChildCards(root) {
 }
 
 export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
+  document.querySelectorAll('body > .add-child-overlay').forEach((node) => {
+    if (node !== overlay) node.remove();
+  });
+
+  if (overlay.parentElement !== document.body) {
+    document.body.append(overlay);
+  }
+
+  function openOverlay(child = null) {
+    overlay.resetForm?.(child);
+    document.body.classList.add('nana-add-child-open');
+    overlay.hidden = false;
+    overlay.classList.remove('add-child-overlay--closing');
+    overlay.classList.add('add-child-overlay--opening');
+  }
+
+  function hideOverlay(removeFromDom = false) {
+    document.body.classList.remove('nana-add-child-open');
+    overlay.hidden = true;
+    overlay.classList.remove('add-child-overlay--opening', 'add-child-overlay--closing');
+    if (removeFromDom) overlay.remove();
+  }
+
   root.querySelectorAll('.children-add-button,.floating-add-btn,[data-add-child]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      overlay.resetForm?.();
-      overlay.hidden = false;
-      overlay.classList.remove('add-child-overlay--closing');
-      overlay.classList.add('add-child-overlay--opening');
+      openOverlay();
     });
   });
 
@@ -118,10 +138,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
       event.stopPropagation();
       const id = btn.closest('[data-child-id]')?.dataset.childId;
       const child = appState.children.find(c => c.id === id);
-      overlay.resetForm?.(child);
-      overlay.hidden = false;
-      overlay.classList.remove('add-child-overlay--closing');
-      overlay.classList.add('add-child-overlay--opening');
+      openOverlay(child);
     });
   });
 
@@ -130,8 +147,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
       overlay.classList.remove('add-child-overlay--opening');
       overlay.classList.add('add-child-overlay--closing');
       setTimeout(() => {
-        overlay.hidden = true;
-        overlay.classList.remove('add-child-overlay--closing');
+        hideOverlay();
       }, 180);
     });
   });
@@ -144,8 +160,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
     const age = Number(overlay.querySelector('.age-wheel-item.is-selected')?.dataset.age || existing?.age || '4');
     const photo_url = overlay.dataset.photoUrl || existing?.photo_url || ASSETS.inactiveChildPhoto;
     const saved = saveChild({ id: editingId || undefined, name, age, photo_url });
-    overlay.hidden = true;
-    overlay.classList.remove('add-child-overlay--opening', 'add-child-overlay--closing');
+    hideOverlay(true);
     onSave?.(saved);
     window.dispatchEvent(new CustomEvent('nana:children-updated', { detail: saved }));
   });

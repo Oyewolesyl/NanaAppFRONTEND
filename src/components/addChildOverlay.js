@@ -48,13 +48,13 @@ export function createAddChildOverlay() {
   overlay.innerHTML = `
     <div class="add-child-backdrop" data-close-overlay="true"></div>
     <section class="add-child-modal" aria-label="Add or edit child">
-      <div class="add-image-card">
-        <button type="button" class="add-image-icon-wrap" aria-label="Choose child image">
+      <button type="button" class="add-image-card" aria-label="Choose child image">
+        <span class="add-image-icon-wrap">
           <img class="add-child-preview" src="${ASSETS.inactiveChildPhoto}" alt="Child preview" />
-        </button>
-        <input class="add-child-file" type="file" accept="image/*" hidden />
-        <button type="button" class="add-image-action">Add image from Gallery</button>
-      </div>
+        </span>
+        <span class="add-image-action" aria-hidden="true">Add image from Gallery</span>
+      </button>
+      <input class="add-child-file" type="file" accept="image/*" hidden />
       <label class="child-name-field">
         <input data-child-name type="text" placeholder="Child's Name" />
       </label>
@@ -93,8 +93,7 @@ export function createAddChildOverlay() {
 
   const fileInput = overlay.querySelector('.add-child-file');
   const preview = overlay.querySelector('.add-child-preview');
-  overlay.querySelector('.add-image-action')?.addEventListener('click', () => fileInput.click());
-  overlay.querySelector('.add-image-icon-wrap')?.addEventListener('click', () => fileInput.click());
+  overlay.querySelector('.add-image-card')?.addEventListener('click', () => fileInput.click());
   fileInput.addEventListener('change', () => {
     const file = fileInput.files?.[0];
     if (!file) return;

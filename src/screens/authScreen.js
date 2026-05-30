@@ -1,4 +1,5 @@
 import { appState } from '../appState';
+import { showToast } from '../toast';
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
@@ -180,10 +181,12 @@ export function renderAuthScreen(app) {
 
         status.textContent =
           'Account created. Please login.';
+        showToast('Account created. Please login.');
         setAuthMode('login');
       } catch (err) {
         status.textContent =
           err?.message || 'Registration failed';
+        showToast(status.textContent, 'error');
       }
     });
 
@@ -222,16 +225,21 @@ export function renderAuthScreen(app) {
           JSON.stringify(data.user)
         );
 
+        showToast('Signed in');
         goNext();
       } catch (err) {
         status.textContent =
           err?.message || 'Login failed';
+        showToast(status.textContent, 'error');
       }
     });
 
   screen
     .querySelector('.auth-skip')
-    .addEventListener('click', goNext);
+    .addEventListener('click', () => {
+      showToast('Testing mode opened');
+      goNext();
+    });
 
   app.append(screen);
 }

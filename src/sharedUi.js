@@ -1,5 +1,6 @@
 import { ASSETS } from './assets';
 import { appState, getActiveChild, setActiveChild, saveChild } from './appState';
+import { showToast } from './toast';
 
 function getCurrentRoute() {
   return window.location.hash || '#child-added';
@@ -155,6 +156,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
   overlay.querySelector('.save-child-button')?.addEventListener('click', () => {
     const rawName = overlay.querySelector('[data-child-name]')?.value?.trim();
     const editingId = overlay.dataset.editChildId || '';
+    const isEditing = Boolean(editingId);
     const existing = editingId ? appState.children.find(c => c.id === editingId) : null;
     const name = rawName || existing?.name || `Child ${appState.children.length + 1}`;
     const age = Number(overlay.querySelector('.age-wheel-item.is-selected')?.dataset.age || existing?.age || '4');
@@ -162,6 +164,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
     const saved = saveChild({ id: editingId || undefined, name, age, photo_url });
     hideOverlay(true);
     onSave?.(saved);
+    showToast(isEditing ? 'Child profile updated' : 'Child added');
     window.dispatchEvent(new CustomEvent('nana:children-updated', { detail: saved }));
   });
 }

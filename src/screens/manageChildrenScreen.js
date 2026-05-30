@@ -2,6 +2,7 @@ import { createAddChildOverlay } from '../components/addChildOverlay';
 import { appState, removeChild, setActiveChild } from '../appState';
 import { headerHtml, bottomNavHtml, wireBottomNav, attachMenu, wireAddChildOverlay } from '../sharedUi';
 import { ASSETS } from '../assets';
+import { showToast } from '../toast';
 
 function card(child) {
   return `<article class="manage-child-card" data-child-id="${child.id}">
@@ -38,6 +39,7 @@ export function renderManageChildrenScreen(app) {
   screen.querySelectorAll('[data-remove-child]').forEach(btn => btn.addEventListener('click', () => {
     removeChild(btn.closest('[data-child-id]').dataset.childId);
     renderManageChildrenScreen(app);
+    showToast('Child removed');
   }));
   app.append(screen);
 }

@@ -2,6 +2,7 @@ import { ASSETS } from '../assets';
 import { appState, getActiveChild, savePainLog, updatePainDraft } from '../appState';
 import { childContextHtml, formatZones } from '../sharedUi';
 import { mountMiniBody } from '../miniBody3d';
+import { showToast } from '../toast';
 
 export function renderSummaryScreen(app) {
   app.innerHTML = '';
@@ -49,6 +50,7 @@ export function renderSummaryScreen(app) {
     updatePainDraft({ notes: note.value });
     const log = savePainLog();
     sessionStorage.setItem('nana_last_log_id', log.id);
+    showToast('Pain report saved');
     window.location.hash = '#confirmation';
   });
   app.append(screen);

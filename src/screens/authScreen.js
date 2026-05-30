@@ -22,8 +22,17 @@ export function renderAuthScreen(app) {
       <h1 class="screen-title">Welcome</h1>
 
       <p class="auth-copy">
-        Create an account or sign in.
+        Create your account to start using Nana.
       </p>
+
+      <div class="auth-mode-switch" aria-label="Choose authentication mode">
+        <button type="button" class="auth-mode-button auth-mode-button--active" data-auth-mode="signup">
+          Sign up
+        </button>
+        <button type="button" class="auth-mode-button" data-auth-mode="login">
+          Login
+        </button>
+      </div>
 
       <label class="settings-field">
         Full Name
@@ -62,6 +71,7 @@ export function renderAuthScreen(app) {
       <button
         type="button"
         class="continue-button auth-login auth-compact-button"
+        hidden
       >
         Login
       </button>
@@ -92,7 +102,34 @@ export function renderAuthScreen(app) {
   const emailInput = screen.querySelector('.auth-email');
   const passwordInput = screen.querySelector('.auth-password');
   const nameInput = screen.querySelector('.auth-name');
+  const nameField = nameInput.closest('.settings-field');
   const status = screen.querySelector('.auth-status');
+  const copy = screen.querySelector('.auth-copy');
+  const registerButton = screen.querySelector('.auth-register');
+  const loginButton = screen.querySelector('.auth-login');
+  const modeButtons = screen.querySelectorAll('.auth-mode-button');
+  let authMode = 'signup';
+
+  function setAuthMode(mode) {
+    authMode = mode;
+    const isLogin = mode === 'login';
+
+    screen.dataset.authMode = mode;
+    nameField.hidden = isLogin;
+    registerButton.hidden = isLogin;
+    loginButton.hidden = !isLogin;
+    copy.textContent = isLogin
+      ? 'Welcome back. Sign in to continue.'
+      : 'Create your account to start using Nana.';
+    status.textContent = '';
+
+    modeButtons.forEach((button) => {
+      button.classList.toggle(
+        'auth-mode-button--active',
+        button.dataset.authMode === mode
+      );
+    });
+  }
 
   const goNext = () => {
     window.location.hash =
@@ -101,9 +138,21 @@ export function renderAuthScreen(app) {
         : '#homepage-newuser';
   };
 
-  screen
-    .querySelector('.auth-register')
+  modeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      setAuthMode(button.dataset.authMode);
+    });
+  });
+
+  setAuthMode(authMode);
+
+  registerButton
     .addEventListener('click', async () => {
+      if (!nameInput.value.trim()) {
+        status.textContent = 'Please enter your full name.';
+        return;
+      }
+
       status.textContent = 'Creating account...';
 
       try {
@@ -131,14 +180,14 @@ export function renderAuthScreen(app) {
 
         status.textContent =
           'Account created. Please login.';
+        setAuthMode('login');
       } catch (err) {
         status.textContent =
           err?.message || 'Registration failed';
       }
     });
 
-  screen
-    .querySelector('.auth-login')
+  loginButton
     .addEventListener('click', async () => {
       status.textContent = 'Signing in...';
 

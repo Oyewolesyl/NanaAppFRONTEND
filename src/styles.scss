@@ -1001,6 +1001,40 @@ body {
 .auth-screen { align-items: center; gap: 18px; padding-top: 80px; }
 .auth-logo { width: 92px; height: auto; object-fit: contain; }
 .auth-copy { width: min(300px, 86vw); text-align: center; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 800; color: rgba(0,0,0,.68); }
+.auth-mode-switch {
+  width: min(300px, 84vw);
+  min-height: 46px;
+  padding: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  border: 1px solid var(--teal);
+  border-radius: 16px;
+  background: rgba(255, 233, 139, .72);
+}
+.auth-mode-button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: rgba(2, 2, 2, .58);
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+}
+.auth-mode-button--active {
+  background: var(--button-red);
+  color: var(--neutral);
+  box-shadow: 0 4px 12px rgba(255, 111, 97, .28);
+}
+.auth-screen .settings-field[hidden],
+.auth-screen .continue-button[hidden] {
+  display: none !important;
+}
+.auth-screen .auth-register,
+.auth-screen .auth-login {
+  margin-top: 14px !important;
+}
 .auth-compact-button {
   width: min(260px, 72vw) !important;
   height: 52px !important;

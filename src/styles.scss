@@ -2409,6 +2409,56 @@ body,
   }
 }
 
+/* === TRUE FIXED NAV: NAV LIVES ON BODY, NOT INSIDE A SCROLLING SCREEN === */
+body > .bottom-nav {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 0 !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
+  width: 100vw !important;
+  max-width: 430px !important;
+  height: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 0 34px env(safe-area-inset-bottom, 0px) !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: var(--yellow) !important;
+  z-index: 2147483000 !important;
+}
+
+body > .bottom-nav .bottom-nav-item {
+  flex: 0 0 auto !important;
+}
+
+body > .floating-add-btn {
+  position: fixed !important;
+  left: auto !important;
+  right: max(18px, calc((100vw - 430px) / 2 + 18px)) !important;
+  bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 20px) !important;
+  width: 54px !important;
+  height: 54px !important;
+  z-index: 2147483001 !important;
+}
+
+/* === ABSOLUTE FINAL: ADD CHILD PLUS STAYS 20PX ABOVE BOTTOM NAV === */
+@media (max-width: 430px) {
+  .floating-add-btn,
+  .child-added-screen .floating-add-btn,
+  .homepage-new-user-screen .floating-add-btn {
+    position: fixed !important;
+    right: max(18px, calc((100vw - 430px) / 2 + 18px)) !important;
+    bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 20px) !important;
+    width: 54px !important;
+    height: 54px !important;
+    z-index: 2147483001 !important;
+  }
+}
+
 /* === AUTH SCREEN BALANCED MOBILE LAYOUT === */
 @media (max-width: 430px) {
   .auth-screen {
@@ -3414,6 +3464,183 @@ body,
   white-space: nowrap !important;
 }
 
+/* === FINAL OVERRIDE: CHILD-ADDED PAGE NAV MUST STAY VISIBLE === */
+@media (max-width: 430px) {
+  .child-added-screen {
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    max-width: 430px !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) var(--nana-bottom-nav-height, 92px) !important;
+    overflow: hidden !important;
+  }
+
+  .child-added-screen .children-header {
+    grid-row: 1 !important;
+    position: relative !important;
+    z-index: 5 !important;
+    min-height: 68px !important;
+  }
+
+  .child-added-screen .child-added-intro {
+    grid-row: 2 !important;
+    margin: 26px 0 20px !important;
+    padding: 0 16px !important;
+  }
+
+  .child-added-screen .child-card-list {
+    grid-row: 3 !important;
+    box-sizing: border-box !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two {
+    padding-bottom: 24px !important;
+  }
+
+  .child-added-screen .bottom-nav {
+    grid-row: 4 !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: var(--nana-bottom-nav-height, 92px) !important;
+    min-height: var(--nana-bottom-nav-height, 92px) !important;
+    margin: 0 !important;
+    padding: 0 34px env(safe-area-inset-bottom, 0px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 1000 !important;
+  }
+
+  .child-added-screen .floating-add-btn {
+    position: absolute !important;
+    right: 18px !important;
+    bottom: calc(var(--nana-bottom-nav-height, 92px) + 20px) !important;
+    z-index: 20 !important;
+  }
+}
+
+/* === FINAL OVERRIDE: CHILDREN HOME MUST STAY TWO CARDS PER ROW === */
+@media (max-width: 430px) {
+  .child-added-screen {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 430px !important;
+    margin: clamp(24px, 4svh, 34px) auto 0 !important;
+    padding: 0 16px calc(var(--nana-bottom-nav-height) + 36px) !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 16px !important;
+    align-items: start !important;
+    justify-items: stretch !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 248px !important;
+    max-height: none !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-card-photo-wrap {
+    width: clamp(74px, 20vw, 92px) !important;
+    height: clamp(74px, 20vw, 92px) !important;
+    min-width: clamp(74px, 20vw, 92px) !important;
+    min-height: clamp(74px, 20vw, 92px) !important;
+    margin: 16px auto 15px !important;
+    border-width: 6px !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-card-photo {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-card-meta {
+    padding: 10px 8px 12px !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-name {
+    max-width: 100% !important;
+    margin: 0 0 7px !important;
+    font-size: clamp(25px, 7vw, 31px) !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-age {
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: clamp(16px, 4.6vw, 19px) !important;
+    line-height: 1.1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-open-map-btn {
+    width: calc(100% - 20px) !important;
+    height: 54px !important;
+    min-height: 54px !important;
+    margin: 14px auto 16px !important;
+    padding: 6px 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: clamp(15px, 4.3vw, 18px) !important;
+    line-height: 1.05 !important;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .child-added-screen .floating-add-btn {
+    right: 18px !important;
+    bottom: calc(var(--nana-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 86px) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .child-added-screen .child-card-list.child-card-list--two {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    gap: 14px 12px !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-open-map-btn {
+    width: calc(100% - 16px) !important;
+    font-size: 14px !important;
+  }
+}
+
 .nana-toast {
   position: fixed;
   left: 50%;
@@ -3459,6 +3686,139 @@ body,
 
 body.nana-add-child-open .nana-toast {
   bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+}
+
+/* === ABSOLUTE LAST WORD: CHILDREN PAGE SCROLLS, NAV STAYS FIXED === */
+@media (max-width: 430px) {
+  .child-added-screen {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100vw !important;
+    max-width: 430px !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 0 0 calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 22px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .child-added-screen .children-header {
+    position: relative !important;
+    min-height: 68px !important;
+    z-index: 5 !important;
+  }
+
+  .child-added-screen .child-added-intro {
+    margin: 26px 0 24px !important;
+    padding: 0 16px !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 430px !important;
+    margin: 0 auto !important;
+    padding: 0 16px 96px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 16px !important;
+    align-items: start !important;
+    justify-items: stretch !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two .child-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 248px !important;
+    max-height: none !important;
+  }
+
+  .child-added-screen .bottom-nav {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: 0 !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    max-width: 430px !important;
+    height: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    padding: 0 34px env(safe-area-inset-bottom, 0px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 10000 !important;
+  }
+
+  .child-added-screen .floating-add-btn {
+    position: fixed !important;
+    right: max(18px, calc((100vw - 430px) / 2 + 18px)) !important;
+    bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 22px) !important;
+    z-index: 10001 !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .child-added-screen .child-card-list.child-card-list--two {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    gap: 14px 12px !important;
+  }
+}
+
+/* === ABSOLUTE FINAL: BOTTOM NAV IS FIXED TO THE VIEWPORT BOTTOM === */
+@media (max-width: 430px) {
+  .screen,
+  .children-screen,
+  .child-added-screen,
+  .homepage-new-user-screen,
+  .history-screen,
+  .settings-screen,
+  .manage-screen {
+    padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 24px) !important;
+  }
+
+  .bottom-nav {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: 0 !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    max-width: 430px !important;
+    height: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    padding: 0 34px env(safe-area-inset-bottom, 0px) !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: var(--yellow) !important;
+    z-index: 2147483000 !important;
+  }
+
+  .child-added-screen .child-card-list.child-card-list--two {
+    padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 34px) !important;
+    overflow: visible !important;
+  }
+
+  .floating-add-btn {
+    position: fixed !important;
+    right: max(18px, calc((100vw - 430px) / 2 + 18px)) !important;
+    bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 22px) !important;
+    z-index: 2147483001 !important;
+  }
 }
 
 /* === FINAL MOBILE LAYOUT REPAIR: real spacing, card gutters, overlay fit === */

@@ -36,7 +36,19 @@ export function bottomNavHtml(active = '') {
 }
 
 export function wireBottomNav(root) {
-  root.querySelectorAll('[data-nav]').forEach((btn) => {
+  const nav = root.querySelector('.bottom-nav');
+
+  if (nav) {
+    document.querySelectorAll('body > .bottom-nav').forEach((node) => {
+      if (node !== nav) node.remove();
+    });
+
+    if (nav.parentElement !== document.body) {
+      document.body.append(nav);
+    }
+  }
+
+  document.querySelectorAll('.bottom-nav [data-nav]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const destination = btn.dataset.nav;
       if (destination) window.location.hash = destination;

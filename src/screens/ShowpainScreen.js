@@ -194,10 +194,10 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   let cidx      = 0;
   let hasTapped = false;   // pulse stops after first successful tap
 
-  // Continuous camera distance (zoom). Range: 0.7 (close) – 2.2 (far)
-  let camDist = 2.0;
+  // Continuous camera distance (zoom). Start farther back so the full body is visible.
+  let camDist = 2.45;
   const CAM_MIN = 0.62;
-  const CAM_MAX = 2.25;
+  const CAM_MAX = 2.45;
   const cameraTarget = { x: 0, y: 0 };
 
   let renderer, camera, scene, model, raycaster;

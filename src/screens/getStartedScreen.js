@@ -35,7 +35,7 @@ export function renderGetStartedScreen(app) {
   if (bodyPreview) {
     mountMiniBody(bodyPreview, {
       rotate: true,
-      rotateSpeed: 0.0028,
+      rotateSpeed: 0.0065,
       showLabel: false,
       canvasClassName: "welcome-body-canvas",
     });

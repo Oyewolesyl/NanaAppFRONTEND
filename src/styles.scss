@@ -5154,8 +5154,10 @@ body[data-route="child-added"] .child-card.child-card--compact {
 
 @media (max-width: 430px) {
   body[data-route="child-added"] .child-card-list.child-card-list--two {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 16px 12px !important;
+    grid-template-columns: minmax(0, min(270px, 78vw)) !important;
+    justify-content: center !important;
+    justify-items: center !important;
+    gap: 16px !important;
     padding-left: 14px !important;
     padding-right: 14px !important;
   }
@@ -5163,7 +5165,7 @@ body[data-route="child-added"] .child-card.child-card--compact {
   body[data-route="child-added"] .child-card-list.child-card-list--two .child-card,
   body[data-route="child-added"] .child-card-list.child-card-list--two .child-card--compact {
     width: 100% !important;
-    max-width: none !important;
+    max-width: min(270px, 78vw) !important;
     margin: 0 !important;
   }
 }

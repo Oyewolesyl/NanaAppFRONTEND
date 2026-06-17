@@ -5532,3 +5532,43 @@ body[data-route="homepage-newuser"] .child-card button:not(.child-edit-button):n
     margin-top: 8px !important;
   }
 }
+
+/* === REAL DEVICE QA: remove dead vertical space inside child cards === */
+body[data-route="child-added"] .child-card,
+body[data-route="child-added"] .child-card.child-card--compact,
+body[data-route="homepage-newuser"] .child-card,
+body[data-route="homepage-newuser"] .child-card.child-card--compact {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-top: 14px !important;
+  padding-bottom: 12px !important;
+  gap: 8px !important;
+  justify-content: flex-start !important;
+}
+
+body[data-route="child-added"] .child-card-meta,
+body[data-route="child-added"] .child-card-meta--compact,
+body[data-route="homepage-newuser"] .child-card-meta,
+body[data-route="homepage-newuser"] .child-card-meta--compact {
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 8px !important;
+  gap: 3px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+body[data-route="child-added"] .child-open-map-btn,
+body[data-route="child-added"] .child-open-map-btn--compact,
+body[data-route="child-added"] .open-body-map-button,
+body[data-route="child-added"] .child-card button:not(.child-edit-button):not(.child-delete-button),
+body[data-route="homepage-newuser"] .child-open-map-btn,
+body[data-route="homepage-newuser"] .child-open-map-btn--compact,
+body[data-route="homepage-newuser"] .open-body-map-button,
+body[data-route="homepage-newuser"] .child-card button:not(.child-edit-button):not(.child-delete-button) {
+  margin-top: 8px !important;
+  margin-bottom: 0 !important;
+}

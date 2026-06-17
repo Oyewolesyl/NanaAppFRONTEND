@@ -5139,6 +5139,10 @@ body[data-route="child-added"] .child-card-divider--before-button {
 body[data-route="child-added"] .child-card-list,
 body[data-route="child-added"] .child-card-list.child-card-list--two {
   display: grid !important;
+  grid-template-columns: minmax(0, min(270px, 78vw)) !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  gap: 16px !important;
   align-items: start !important;
   overflow: visible !important;
 }
@@ -5148,6 +5152,9 @@ body[data-route="child-added"] .child-card.child-card--compact {
   left: auto !important;
   right: auto !important;
   transform: none !important;
+  width: 100% !important;
+  max-width: min(270px, 78vw) !important;
+  margin: 0 !important;
   min-width: 0 !important;
   overflow: hidden !important;
 }

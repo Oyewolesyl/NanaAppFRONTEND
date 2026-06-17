@@ -4573,8 +4573,8 @@ body[data-route="child-added"] .child-open-map-btn--compact {
 
 /* === FINAL SHIP FIXES: tester feedback, no overlap, no hidden continue buttons === */
 .app-thumbnail {
-  background: rgba(255, 255, 255, 0.22) !important;
-  border-color: rgba(2, 2, 2, 0.08) !important;
+  background: transparent !important;
+  border-color: transparent !important;
   box-shadow: none !important;
 }
 

@@ -77,6 +77,12 @@ function historyCard(log) {
     log.child_name ||
     'Child';
 
+  const childAge =
+    child?.age ||
+    log.childAge ||
+    log.child_age ||
+    '';
+
   const childPhoto =
     child?.photo_url ||
     child?.photoUrl ||
@@ -121,6 +127,7 @@ function historyCard(log) {
 
           <div class="history-child-meta">
             <strong>${safeText(childName)}</strong>
+            ${childAge ? `<small>${safeText(`${childAge} years old`)}</small>` : ''}
             <span>${date.toLocaleString([], {
               month: 'short',
               day: 'numeric',

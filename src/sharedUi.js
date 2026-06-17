@@ -94,8 +94,6 @@ export function childCardHtml(child, compact = false, options = {}) {
         <img src="${childPhoto}" alt="${childName}" class="child-card-photo" />
       </div>
 
-      <div class="child-card-divider child-card-divider--after-photo"></div>
-
       <div class="child-card-meta ${compact ? 'child-card-meta--compact' : ''}">
         <p class="child-name">${childName}</p>
         <p class="child-age">${childAge}</p>

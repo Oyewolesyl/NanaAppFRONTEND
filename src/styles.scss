@@ -5193,3 +5193,20 @@ body[data-route="child-added"] .child-card.child-card--compact {
     margin: 0 !important;
   }
 }
+
+/* === TOP NAV SCROLL GUARD === */
+.children-header,
+.screen-header,
+.page-header,
+.top-bar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 90 !important;
+  flex-shrink: 0 !important;
+}
+
+.children-header,
+.screen-header,
+.page-header {
+  background: var(--neutral) !important;
+}

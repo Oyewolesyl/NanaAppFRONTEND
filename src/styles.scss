@@ -5236,3 +5236,43 @@ body[data-route="child-added"] .child-card button:not(.child-edit-button):not(.c
   overflow-wrap: normal !important;
   word-break: normal !important;
 }
+
+body > .children-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  width: min(100%, 430px) !important;
+  max-width: 430px !important;
+  min-height: 70px !important;
+  z-index: 160 !important;
+}
+
+.screen--body-header {
+  padding-top: 70px !important;
+}
+
+body > .nana-menu-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 3000 !important;
+  overflow: visible !important;
+}
+
+body > .nana-menu-overlay .nana-menu-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+body > .nana-menu-overlay .nana-menu-panel {
+  position: fixed !important;
+  top: 0 !important;
+  right: max(0px, calc((100vw - 430px) / 2)) !important;
+  bottom: 0 !important;
+  width: min(310px, 86vw) !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-y: auto !important;
+  padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 24px) !important;
+}

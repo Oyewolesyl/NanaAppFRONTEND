@@ -59,6 +59,20 @@ export function wireBottomNav(root) {
 export function attachMenu(root) {
   const btn = root.querySelector('.children-menu-button');
   if (!btn) return;
+  const header = btn.closest('.children-header');
+
+  if (header) {
+    document.querySelectorAll('body > .children-header').forEach((node) => {
+      if (node !== header) node.remove();
+    });
+
+    root.classList.add('screen--body-header');
+
+    if (header.parentElement !== document.body) {
+      document.body.append(header);
+    }
+  }
+
   const overlay = document.createElement('div');
   overlay.className = 'nana-menu-overlay';
   overlay.hidden = true;
@@ -74,7 +88,8 @@ export function attachMenu(root) {
       <button type="button" data-menu-nav="#settings">Caregiver Settings</button>
       <button type="button" data-menu-nav="#select-role">Switch Role</button>
     </aside>`;
-  root.append(overlay);
+  document.querySelectorAll('body > .nana-menu-overlay').forEach((node) => node.remove());
+  document.body.append(overlay);
   btn.addEventListener('click', () => { overlay.hidden = false; });
   overlay.querySelectorAll('[data-close-menu]').forEach((node) => node.addEventListener('click', () => { overlay.hidden = true; }));
   overlay.querySelectorAll('[data-menu-nav]').forEach((node) => node.addEventListener('click', () => { overlay.hidden = true; window.location.hash = node.dataset.menuNav; }));

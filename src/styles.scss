@@ -5210,3 +5210,18 @@ body[data-route="child-added"] .child-card.child-card--compact {
 .page-header {
   background: var(--neutral) !important;
 }
+
+body[data-route="child-added"] .children-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  width: min(100%, 430px) !important;
+  max-width: 430px !important;
+  z-index: 120 !important;
+}
+
+body[data-route="child-added"] .child-added-screen {
+  padding-top: 70px !important;
+}

@@ -5379,3 +5379,156 @@ body[data-route="homepage-newuser"] .child-card .child-name {
     font-size: clamp(23px, 6.4vw, 32px) !important;
   }
 }
+
+/* === REAL DEVICE QA: child cards must feel compact and contained === */
+body[data-route="child-added"] .child-added-intro,
+body[data-route="homepage-newuser"] .child-added-intro {
+  margin: clamp(18px, 3.2svh, 28px) 0 clamp(16px, 2.6svh, 22px) !important;
+}
+
+body[data-route="child-added"] .child-card-list,
+body[data-route="child-added"] .child-card-list.child-card-list--two,
+body[data-route="homepage-newuser"] .child-card-list,
+body[data-route="homepage-newuser"] .child-card-list.child-card-list--two {
+  gap: clamp(18px, 3svh, 24px) !important;
+  padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 58px) !important;
+}
+
+body[data-route="child-added"] .child-card,
+body[data-route="child-added"] .child-card.child-card--compact,
+body[data-route="homepage-newuser"] .child-card,
+body[data-route="homepage-newuser"] .child-card.child-card--compact {
+  width: min(300px, calc(100vw - 72px)) !important;
+  max-width: 300px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 16px 14px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  overflow: hidden !important;
+  border-radius: 18px !important;
+}
+
+body[data-route="child-added"] .child-card-photo-panel,
+body[data-route="homepage-newuser"] .child-card-photo-panel {
+  display: contents !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+}
+
+body[data-route="child-added"] .child-card-photo-wrap,
+body[data-route="child-added"] .child-card-photo-frame,
+body[data-route="homepage-newuser"] .child-card-photo-wrap,
+body[data-route="homepage-newuser"] .child-card-photo-frame {
+  width: clamp(82px, 24vw, 104px) !important;
+  height: clamp(82px, 24vw, 104px) !important;
+  min-width: clamp(82px, 24vw, 104px) !important;
+  min-height: clamp(82px, 24vw, 104px) !important;
+  max-width: 104px !important;
+  max-height: 104px !important;
+  margin: 0 auto 4px !important;
+  border-width: 6px !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+  flex: 0 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+body[data-route="child-added"] .child-card-photo,
+body[data-route="child-added"] .child-card-photo-wrap img,
+body[data-route="child-added"] .child-card-photo-frame img,
+body[data-route="homepage-newuser"] .child-card-photo,
+body[data-route="homepage-newuser"] .child-card-photo-wrap img,
+body[data-route="homepage-newuser"] .child-card-photo-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+body[data-route="child-added"] .child-card-meta,
+body[data-route="child-added"] .child-card-meta--compact,
+body[data-route="homepage-newuser"] .child-card-meta,
+body[data-route="homepage-newuser"] .child-card-meta--compact {
+  width: 100% !important;
+  padding: 0 8px !important;
+  text-align: center !important;
+  flex: 0 0 auto !important;
+}
+
+body[data-route="child-added"] .child-name,
+body[data-route="child-added"] .child-card .child-name,
+body[data-route="homepage-newuser"] .child-name,
+body[data-route="homepage-newuser"] .child-card .child-name {
+  margin: 0 0 4px !important;
+  font-size: clamp(24px, 7.3vw, 33px) !important;
+  line-height: 1.02 !important;
+}
+
+body[data-route="child-added"] .child-age,
+body[data-route="child-added"] .child-card-age,
+body[data-route="homepage-newuser"] .child-age,
+body[data-route="homepage-newuser"] .child-card-age {
+  margin: 0 !important;
+  font-size: clamp(15px, 4.4vw, 19px) !important;
+  line-height: 1.12 !important;
+  color: #020202 !important;
+  font-weight: 1000 !important;
+}
+
+body[data-route="child-added"] .child-open-map-btn,
+body[data-route="child-added"] .child-open-map-btn--compact,
+body[data-route="child-added"] .open-body-map-button,
+body[data-route="child-added"] .child-card button:not(.child-edit-button):not(.child-delete-button),
+body[data-route="homepage-newuser"] .child-open-map-btn,
+body[data-route="homepage-newuser"] .child-open-map-btn--compact,
+body[data-route="homepage-newuser"] .open-body-map-button,
+body[data-route="homepage-newuser"] .child-card button:not(.child-edit-button):not(.child-delete-button) {
+  width: 100% !important;
+  max-width: 238px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  margin: 10px auto 0 !important;
+  padding: 0 14px !important;
+  border-radius: 13px !important;
+  flex: 0 0 auto !important;
+  font-size: clamp(15px, 4.2vw, 18px) !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 375px), (max-height: 720px) {
+  body[data-route="child-added"] .child-card,
+  body[data-route="child-added"] .child-card.child-card--compact,
+  body[data-route="homepage-newuser"] .child-card,
+  body[data-route="homepage-newuser"] .child-card.child-card--compact {
+    width: min(286px, calc(100vw - 54px)) !important;
+    padding: 14px 12px 12px !important;
+    gap: 8px !important;
+  }
+
+  body[data-route="child-added"] .child-card-photo-wrap,
+  body[data-route="child-added"] .child-card-photo-frame,
+  body[data-route="homepage-newuser"] .child-card-photo-wrap,
+  body[data-route="homepage-newuser"] .child-card-photo-frame {
+    width: 82px !important;
+    height: 82px !important;
+    min-width: 82px !important;
+    min-height: 82px !important;
+  }
+
+  body[data-route="child-added"] .child-open-map-btn,
+  body[data-route="child-added"] .child-open-map-btn--compact,
+  body[data-route="homepage-newuser"] .child-open-map-btn,
+  body[data-route="homepage-newuser"] .child-open-map-btn--compact {
+    max-width: 220px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    margin-top: 8px !important;
+  }
+}

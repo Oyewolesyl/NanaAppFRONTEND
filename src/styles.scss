@@ -5276,3 +5276,106 @@ body > .nana-menu-overlay .nana-menu-panel {
   overflow-y: auto !important;
   padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 24px) !important;
 }
+
+/* === REAL DEVICE QA: role screen, card names, body labels === */
+body[data-route="select-role"] .select-role-screen {
+  min-height: 100svh !important;
+  min-height: 100dvh !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  padding:
+    calc(10px + env(safe-area-inset-top, 0px))
+    clamp(16px, 5vw, 24px)
+    calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  gap: clamp(8px, 1.4svh, 14px) !important;
+}
+
+body[data-route="select-role"] .select-role-screen .top-bar {
+  height: 46px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+}
+
+body[data-route="select-role"] .select-role-screen .screen-title {
+  margin: 0 !important;
+  font-size: clamp(40px, 12vw, 64px) !important;
+  line-height: 0.98 !important;
+}
+
+body[data-route="select-role"] .role-options {
+  flex: 0 0 auto !important;
+  width: min(100%, 330px) !important;
+  gap: clamp(10px, 1.7svh, 16px) !important;
+  justify-content: flex-start !important;
+}
+
+body[data-route="select-role"] .role-icon--parent,
+body[data-route="select-role"] .role-icon--doctor {
+  width: clamp(116px, 30svh, 170px) !important;
+  height: clamp(116px, 30svh, 170px) !important;
+}
+
+body[data-route="select-role"] .role-button {
+  width: min(100%, 320px) !important;
+  min-height: clamp(52px, 8svh, 66px) !important;
+  padding: 8px 14px !important;
+  font-size: clamp(25px, 7vw, 38px) !important;
+  line-height: 1.02 !important;
+  color: #e84845 !important;
+  -webkit-text-stroke: 0.35px #5f577f !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+}
+
+body[data-route="select-role"] .select-role-screen > .continue-button {
+  width: min(100%, 290px) !important;
+  min-height: 52px !important;
+  margin: 0 auto !important;
+  flex: 0 0 auto !important;
+}
+
+body[data-route="child-added"] .child-name,
+body[data-route="child-added"] .child-card .child-name,
+body[data-route="homepage-newuser"] .child-name,
+body[data-route="homepage-newuser"] .child-card .child-name {
+  color: #d9423f !important;
+  -webkit-text-stroke: 0.75px #342d50 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 2px 3px rgba(2, 2, 2, 0.16) !important;
+  font-weight: 1000 !important;
+}
+
+.body-zone-label,
+.body-zone-label[style] {
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #e84845 !important;
+  -webkit-text-stroke: 0.35px #5f577f !important;
+  text-shadow:
+    0 1px 0 #fff,
+    1px 0 0 #fff,
+    0 -1px 0 #fff,
+    -1px 0 0 #fff,
+    0 2px 4px rgba(2, 2, 2, 0.18) !important;
+}
+
+@media (max-height: 760px) {
+  body[data-route="select-role"] .select-role-screen {
+    gap: 8px !important;
+  }
+
+  body[data-route="select-role"] .role-icon--parent,
+  body[data-route="select-role"] .role-icon--doctor {
+    width: clamp(104px, 28svh, 142px) !important;
+    height: clamp(104px, 28svh, 142px) !important;
+  }
+
+  body[data-route="select-role"] .role-button {
+    min-height: 50px !important;
+    font-size: clamp(23px, 6.4vw, 32px) !important;
+  }
+}

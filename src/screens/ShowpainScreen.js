@@ -463,21 +463,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   }
 
   function refreshOverlays() {
-    const THREE = window.THREE;
     overlays.forEach(m => m.parent?.remove(m));
     overlays.length = 0;
-    sel.forEach((ci, zone) => {
-      const b = ZONE_BOUNDS_LOCAL[zone]; if (!b || !model) return;
-      const rgb = FILLS[ci].match(/[\d.]+/g);
-      const color = new THREE.Color(+rgb[0]/255, +rgb[1]/255, +rgb[2]/255);
-      const mesh = new THREE.Mesh(
-        new THREE.BoxGeometry(b.w, b.h, b.d),
-        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45, depthWrite: false })
-      );
-      mesh.position.set(b.x, b.y, b.z || 0);
-      model.add(mesh);
-      overlays.push(mesh);
-    });
   }
 
   // ── Badge labels ─────────────────────────────────────────────

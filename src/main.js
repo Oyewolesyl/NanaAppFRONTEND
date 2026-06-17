@@ -26,7 +26,7 @@ function renderApp() {
 
   const route = window.location.hash || '#get-started';
   document.body.dataset.route = route.replace('#', '');
-  document.querySelectorAll('body > .children-header, body > .nana-menu-overlay').forEach((node) => node.remove());
+  document.querySelectorAll('body > .children-header, body > .nana-menu-overlay, body > .bottom-nav, body > .floating-add-btn').forEach((node) => node.remove());
 
   if (route === '#select-role') return renderSelectRoleScreen(app);
   if (route === '#auth') return renderAuthScreen(app);

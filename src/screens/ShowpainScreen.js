@@ -224,6 +224,47 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     });
   }
 
+  function activateBodyFallback(message) {
+    canvas.style.display = "none";
+    loadingEl.style.display = "none";
+    loadingEl.classList.remove("body-loading--error");
+    badgesEl.innerHTML = "";
+    wrap.querySelector(".body-fallback-map")?.remove();
+
+    const fallback = document.createElement("div");
+    fallback.className = "body-fallback-map";
+    fallback.innerHTML = `
+      <p>${message}</p>
+      <img src="${ASSETS.bodyFront}" alt="Body map fallback" />
+      <button type="button" data-zone="head" style="left:50%;top:12%;">Head</button>
+      <button type="button" data-zone="chest" style="left:50%;top:30%;">Chest</button>
+      <button type="button" data-zone="tummy" style="left:50%;top:44%;">Tummy</button>
+      <button type="button" data-zone="left-upper-arm" style="left:23%;top:36%;">Arm</button>
+      <button type="button" data-zone="right-upper-arm" style="left:77%;top:36%;">Arm</button>
+      <button type="button" data-zone="left-thigh" style="left:40%;top:67%;">Leg</button>
+      <button type="button" data-zone="right-thigh" style="left:60%;top:67%;">Leg</button>
+    `;
+
+    fallback.querySelectorAll("[data-zone]").forEach((button) => {
+      const zone = button.dataset.zone;
+      button.classList.toggle("is-selected", sel.has(zone));
+      button.addEventListener("click", () => {
+        if (sel.has(zone)) {
+          sel.delete(zone);
+        } else {
+          sel.set(zone, 0);
+        }
+
+        updatePainDraft({ zones: [...sel.keys()], view: "fallback" });
+        fallback.querySelectorAll("[data-zone]").forEach((item) => {
+          item.classList.toggle("is-selected", sel.has(item.dataset.zone));
+        });
+      });
+    });
+
+    wrap.append(fallback);
+  }
+
   function loadScript(src, message) {
     setBodyLoading(message);
 
@@ -277,7 +318,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     try {
       await loadLibs();
     } catch (err) {
-      setBodyLoadError("The 3D body map is taking too long to load.");
+      activateBodyFallback("3D is taking too long. Use the body map below.");
       console.error("3D library load error:", err);
       return;
     }
@@ -355,7 +396,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       })();
 
     }, undefined, err => {
-      setBodyLoadError("Body map asset could not be loaded.");
+      activateBodyFallback("Body map asset could not be loaded. Use this map.");
       console.error("GLB load error:", err);
     });
   }

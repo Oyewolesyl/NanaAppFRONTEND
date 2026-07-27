@@ -26,7 +26,7 @@ Nana is a mobile-first child pain communication app for parents, caregivers, and
 | Repository | URL |
 |---|---|
 | Frontend | https://github.com/Oyewolesyl/NanaAppFRONTEND.git |
-| Backend | PASTE_BACKEND_GIT_URL_HERE |
+| Backend | https://github.com/Oyewolesyl/NanaAppBACKEND.git |
 
 ## Main Features
 
@@ -40,9 +40,22 @@ Nana is a mobile-first child pain communication app for parents, caregivers, and
 - Pain start-time selection
 - Optional notes
 - Pain summary
+- Nana AI care insight with urgency cues, caregiver next steps, and a doctor-ready handoff note
 - Pain history grouped by Today, This Week, and Earlier
+- Nana AI history summary for recent report attention and high-pain counts
 - Mobile-first responsive UI for different mobile device sizes
 - Skip/testing flow so the app can be tested without requiring authentication
+
+## Nana AI Feature
+
+Nana AI is an explainable care-support feature added to the pain reporting flow. After a report is saved, the app reviews the pain score, selected body areas, start time, pain type, and caregiver note. It then creates:
+
+- an attention level such as Low urgency, Keep watching, or High attention
+- practical next steps for the caregiver
+- a doctor-ready handoff note that can be shared during a medical conversation
+- a history summary that highlights recent reports and high-pain counts
+
+The feature is intentionally designed as decision support, not diagnosis. It keeps the app safe for a child-care context while still showing how AI can add value to Nana's core function.
 
 ## Setup
 

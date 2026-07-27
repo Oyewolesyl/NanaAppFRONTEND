@@ -6,6 +6,7 @@ import {
   attachMenu,
   formatZones
 } from '../sharedUi';
+import { createCareInsight } from '../aiCareAssistant';
 
 function isSameDay(a, b) {
   return (
@@ -213,6 +214,30 @@ function filterLogs(logs, query) {
   });
 }
 
+function aiHistorySummaryHtml(logs) {
+  if (!logs.length) return '';
+
+  const latest = logs[0];
+  const insight = createCareInsight(latest);
+  const intenseReports = logs.filter((log) => Number(log.intensity ?? log.pain_scale ?? 0) >= 7).length;
+  const uniqueChildren = new Set(logs.map((log) => log.childId || log.child_id || log.childName || log.child_name).filter(Boolean)).size;
+
+  return `
+    <section class="ai-care-card ai-care-card--${insight.tone} history-ai-summary" aria-label="Nana AI history insight">
+      <div class="ai-care-card__top">
+        <span class="ai-care-badge">Nana AI</span>
+        <strong>${safeText(insight.level)}</strong>
+      </div>
+      <p>${safeText(insight.summary)}</p>
+      <div class="history-ai-stats">
+        <span><strong>${logs.length}</strong><em>reports saved</em></span>
+        <span><strong>${intenseReports}</strong><em>high pain reports</em></span>
+        <span><strong>${uniqueChildren || 1}</strong><em>child profile${uniqueChildren === 1 ? '' : 's'}</em></span>
+      </div>
+    </section>
+  `;
+}
+
 function renderGroups(container, logs, filter = 'all') {
   const groups = groupLogs(logs);
   const filteredGroups = {
@@ -265,6 +290,8 @@ export function renderHistoryScreen(app) {
           autocomplete="off"
         />
       </label>
+
+      ${aiHistorySummaryHtml(logs)}
 
       <div class="history-list history-timeline" data-history-list>
         ${

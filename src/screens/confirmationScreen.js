@@ -2,6 +2,7 @@ import { ASSETS } from '../assets';
 import { appState, getActiveChild, loadPainDraftFromLog } from '../appState';
 import { mountMiniBody } from '../miniBody3d';
 import { formatZones } from '../sharedUi';
+import { careInsightHtml } from '../aiCareAssistant';
 
 export function renderConfirmationScreen(app) {
   app.innerHTML = '';
@@ -42,6 +43,7 @@ export function renderConfirmationScreen(app) {
         </p>` : ''}
       </div>
     </section>
+    ${log ? careInsightHtml(log) : ''}
     <div class="confirmation-actions"><button type="button" class="continue-button" data-add-spot>Add Another Pain Spot</button><button type="button" class="pain-type-back-btn" data-history>History</button><button type="button" class="pain-type-next-btn" data-finish>Finish</button></div>
   `);
   mountMiniBody(screen.querySelector('.mini-body-wrap'), { view: log?.view || 'rotatable', zones: log?.zones || [], rotate: true });

@@ -7803,6 +7803,164 @@ body[data-route="get-started"] .tagline {
   }
 }
 
+/* Landing step hints: the feature cards explain the flow before navigating. */
+.landing-hint-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: grid;
+  place-items: end center;
+  padding: 18px 16px calc(var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 18px);
+}
+
+.landing-hint-overlay[hidden] {
+  display: none !important;
+}
+
+.landing-hint-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 61, 82, 0.28);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.landing-hint-panel {
+  position: relative;
+  width: min(354px, calc(100vw - 32px));
+  max-height: calc(100svh - var(--nana-mobile-browser-offset, 0px) - env(safe-area-inset-bottom, 0px) - 36px);
+  overflow-y: auto;
+  border-radius: 30px;
+  padding: 22px;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(255, 216, 78, 0.42), transparent 30%),
+    linear-gradient(145deg, rgba(239, 251, 255, 0.98), rgba(255, 246, 185, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: 0 30px 80px rgba(51, 88, 111, 0.34), inset 0 1px 0 rgba(255,255,255,0.86);
+  font-family: "Nunito", sans-serif;
+  color: #111827;
+}
+
+.landing-hint-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #4b5563;
+  font-size: 18px;
+  font-weight: 1000;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82), 0 10px 22px rgba(41, 80, 105, 0.14);
+}
+
+.landing-hint-eyebrow {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 12px;
+  background: rgba(50, 199, 182, 0.16);
+  color: #16a394;
+  font-size: 12px;
+  font-weight: 1000;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.landing-hint-title {
+  width: calc(100% - 36px);
+  margin: 14px 0 8px;
+  color: #ff4f5c;
+  font-size: clamp(28px, 8vw, 36px);
+  font-weight: 1000;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.landing-hint-body {
+  margin: 0;
+  color: rgba(17, 24, 39, 0.78);
+  font-size: 16px;
+  font-weight: 850;
+  line-height: 1.28;
+}
+
+.landing-hint-steps {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.landing-hint-steps p {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: rgba(17, 24, 39, 0.78);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.landing-hint-steps span {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 999px;
+  background: #ff6660;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 1000;
+  box-shadow: 0 10px 18px rgba(255, 102, 96, 0.22);
+}
+
+.landing-hint-action {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ff7b75 0%, #ff5f59 100%);
+  color: #fff;
+  font-family: "Nunito", sans-serif;
+  font-size: 18px;
+  font-weight: 1000;
+  box-shadow: 0 16px 34px rgba(255, 95, 89, 0.24), inset 0 1px 0 rgba(255,255,255,0.34);
+}
+
+.landing-hint-action:focus-visible,
+.landing-hint-close:focus-visible,
+.landing-feature-card:focus-visible,
+.landing-install-link:focus-visible {
+  outline: 3px solid rgba(50, 199, 182, 0.42);
+  outline-offset: 3px;
+}
+
+@media (max-height: 700px) and (max-width: 430px) {
+  .landing-hint-panel {
+    padding: 18px;
+    border-radius: 26px;
+  }
+
+  .landing-hint-title {
+    font-size: 27px;
+  }
+
+  .landing-hint-body {
+    font-size: 14px;
+  }
+
+  .landing-hint-steps {
+    gap: 8px;
+    margin: 14px 0;
+  }
+}
+
 @media (max-width: 430px) {
   body > .bottom-nav,
   body[data-route="child-added"] .bottom-nav,

@@ -1,6 +1,6 @@
 import { ASSETS } from "../assets";
 import { getActiveChild, updatePainDraft, appState } from "../appState";
-import { childContextHtml } from "../sharedUi";
+import { childContextHtml, painProgressHtml } from "../sharedUi";
 
 /* ── Labels (child-friendly + clinically accurate) ─────────────── */
 const LABELS = {
@@ -161,6 +161,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         <img src="${ASSETS.backChevron}" alt=""/>
       </button>
     </header>
+    ${painProgressHtml(1)}
     <h1 class="show-pain-title">Where does it hurt?</h1>
     ${childContextHtml()}
     <p class="body-hint">Drag left or right to rotate. Drag up or down while zoomed to inspect the whole body.</p>

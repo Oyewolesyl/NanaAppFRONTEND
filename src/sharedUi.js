@@ -10,6 +10,7 @@ function getBottomNavActive(active) {
   if (active) return active;
   const route = getCurrentRoute();
   if (route === '#history') return 'history';
+  if (route === '#assistant') return 'assistant';
   if (route === '#settings' || route === '#manage-children') return 'settings';
   return 'home';
 }
@@ -30,6 +31,7 @@ export function bottomNavHtml(active = '') {
     <nav class="bottom-nav" aria-label="Main navigation" data-active="${current}">
       <button type="button" class="bottom-nav-item bottom-nav-item--home ${current === 'home' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#child-added" aria-label="Home" aria-current="${current === 'home' ? 'page' : 'false'}"><img src="${ASSETS.navHome}" alt="" /></button>
       <button type="button" class="bottom-nav-item bottom-nav-item--activity ${current === 'history' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#history" aria-label="History" aria-current="${current === 'history' ? 'page' : 'false'}"><img src="${current === 'history' ? ASSETS.navHistoryActive : ASSETS.navClock}" alt="" /></button>
+      <button type="button" class="bottom-nav-item bottom-nav-item--assistant ${current === 'assistant' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#assistant" aria-label="Nana Assistant" aria-current="${current === 'assistant' ? 'page' : 'false'}"><span aria-hidden="true">AI</span></button>
       <button type="button" class="bottom-nav-item bottom-nav-item--settings ${current === 'settings' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#settings" aria-label="Settings" aria-current="${current === 'settings' ? 'page' : 'false'}"><img src="${current === 'settings' ? ASSETS.navSettingsActive : ASSETS.navSettingsInactive}" alt="" /></button>
     </nav>
   `;
@@ -83,6 +85,7 @@ export function attachMenu(root) {
       <div class="nana-menu-top"><img src="${ASSETS.splashHeaderLogo}" alt="Nana" /><button type="button" data-close-menu aria-label="Close menu">×</button></div>
       <p class="nana-menu-context">${child ? `Current child: ${child.name}` : 'Manage Nana'}</p>
       <button type="button" data-menu-nav="#child-added">Home</button>
+      <button type="button" data-menu-nav="#assistant">Nana Assistant</button>
       <button type="button" data-menu-nav="#manage-children">Manage Children</button>
       <button type="button" data-menu-nav="#history">History</button>
       <button type="button" data-menu-nav="#settings">Caregiver Settings</button>
@@ -206,4 +209,18 @@ export function prettyZone(zone = '') {
 
 export function formatZones(zones = []) {
   return zones.length ? zones.map(prettyZone).join(', ') : 'No spot selected';
+}
+
+export function painProgressHtml(activeStep = 1) {
+  const steps = ['Spot', 'Feel', 'Time', 'Level', 'Review'];
+
+  return `
+    <nav class="pain-progress" aria-label="Pain report progress">
+      ${steps.map((label, index) => {
+        const step = index + 1;
+        const state = step < activeStep ? 'is-complete' : step === activeStep ? 'is-active' : '';
+        return `<span class="${state}"><i>${step}</i><em>${label}</em></span>`;
+      }).join('')}
+    </nav>
+  `;
 }

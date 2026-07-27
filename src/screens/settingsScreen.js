@@ -13,6 +13,11 @@ export function renderSettingsScreen(app) {
 
     <section class="settings-content settings-content-fit">
       <h1 class="children-title children-title--small">Caregiver Profile</h1>
+      <section class="settings-summary-card">
+        <span>Launch profile</span>
+        <strong>${c.name || 'Caregiver'}</strong>
+        <p>${appState.children.length} child profile${appState.children.length === 1 ? '' : 's'} connected. ${appState.painLogs.length} pain report${appState.painLogs.length === 1 ? '' : 's'} saved.</p>
+      </section>
 
       <label class="settings-field">
         Name
@@ -30,6 +35,7 @@ export function renderSettingsScreen(app) {
       </label>
 
       <button type="button" class="continue-button save-settings">Save Profile</button>
+      <button type="button" class="settings-link settings-link--assistant" data-go-assistant>Nana Assistant</button>
       <button type="button" class="settings-link" data-go-manage>Manage Children</button>
       <button type="button" class="settings-link" data-go-history>View History</button>
     </section>
@@ -52,6 +58,10 @@ export function renderSettingsScreen(app) {
 
   screen.querySelector('[data-go-manage]').addEventListener('click', () => {
     window.location.hash = '#manage-children';
+  });
+
+  screen.querySelector('[data-go-assistant]').addEventListener('click', () => {
+    window.location.hash = '#assistant';
   });
 
   screen.querySelector('[data-go-history]').addEventListener('click', () => {

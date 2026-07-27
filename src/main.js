@@ -16,9 +16,52 @@ import { renderConfirmationScreen } from './screens/confirmationScreen';
 import { renderHistoryScreen } from './screens/historyScreen';
 import { renderSettingsScreen } from './screens/settingsScreen';
 import { renderManageChildrenScreen } from './screens/manageChildrenScreen';
+import { renderAssistantScreen } from './screens/assistantScreen';
 import { appState } from './appState';
 
 let previousHash = '#get-started';
+let assetObserverInstalled = false;
+
+function prepareAsset(node) {
+  if (!(node instanceof HTMLImageElement) || node.dataset.assetReady) return;
+
+  node.dataset.assetReady = 'pending';
+  node.classList.add('asset-loading');
+
+  const finish = () => {
+    node.dataset.assetReady = 'true';
+    node.classList.remove('asset-loading');
+    node.classList.add('asset-loaded');
+  };
+
+  if (node.complete && node.naturalWidth > 0) {
+    finish();
+    return;
+  }
+
+  node.addEventListener('load', finish, { once: true });
+  node.addEventListener('error', () => {
+    node.dataset.assetReady = 'error';
+    node.classList.remove('asset-loading');
+    node.classList.add('asset-error');
+  }, { once: true });
+}
+
+function installAssetLoadingObserver() {
+  if (assetObserverInstalled) return;
+  assetObserverInstalled = true;
+
+  document.querySelectorAll('img').forEach(prepareAsset);
+
+  new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        prepareAsset(node);
+        node.querySelectorAll?.('img').forEach(prepareAsset);
+      });
+    });
+  }).observe(document.body, { childList: true, subtree: true });
+}
 
 function renderApp() {
   const app = document.querySelector('#app');
@@ -35,6 +78,7 @@ function renderApp() {
   if (route === '#second-child-added') return renderSecondChildAddedScreen(app);
   if (route === '#manage-children') return renderManageChildrenScreen(app);
   if (route === '#history') return renderHistoryScreen(app);
+  if (route === '#assistant') return renderAssistantScreen(app);
   if (route === '#settings') return renderSettingsScreen(app);
 
   if (route === '#body-map') {
@@ -63,4 +107,5 @@ window.addEventListener('nana:rerender', renderApp);
 
 if (!window.location.hash) window.location.hash = '#get-started';
 
+installAssetLoadingObserver();
 renderApp();

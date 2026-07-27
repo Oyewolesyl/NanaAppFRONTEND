@@ -37,7 +37,10 @@ export function renderManageChildrenScreen(app) {
     window.location.hash = '#body-map';
   }));
   screen.querySelectorAll('[data-remove-child]').forEach(btn => btn.addEventListener('click', () => {
-    removeChild(btn.closest('[data-child-id]').dataset.childId);
+    const cardNode = btn.closest('[data-child-id]');
+    const child = appState.children.find((item) => item.id === cardNode.dataset.childId);
+    if (!window.confirm(`Remove ${child?.name || 'this child'} and their pain history from this device?`)) return;
+    removeChild(cardNode.dataset.childId);
     renderManageChildrenScreen(app);
     showToast('Child removed');
   }));

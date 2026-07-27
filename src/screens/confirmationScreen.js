@@ -2,7 +2,8 @@ import { ASSETS } from '../assets';
 import { appState, getActiveChild, loadPainDraftFromLog } from '../appState';
 import { mountMiniBody } from '../miniBody3d';
 import { formatZones } from '../sharedUi';
-import { careInsightHtml } from '../aiCareAssistant';
+import { careInsightHtml, wireCareInsightActions } from '../aiCareAssistant';
+import { showToast } from '../toast';
 
 export function renderConfirmationScreen(app) {
   app.innerHTML = '';
@@ -57,5 +58,8 @@ export function renderConfirmationScreen(app) {
   });
   screen.querySelector('[data-history]').addEventListener('click', () => { window.location.hash = '#history'; });
   screen.querySelector('[data-finish]').addEventListener('click', () => { window.location.hash = '#child-added'; });
+  wireCareInsightActions(screen, {
+    onCopied: () => showToast('Handoff copied'),
+  });
   app.append(screen);
 }

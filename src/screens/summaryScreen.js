@@ -1,6 +1,6 @@
 import { ASSETS } from '../assets';
 import { appState, getActiveChild, savePainLog, updatePainDraft } from '../appState';
-import { childContextHtml, formatZones } from '../sharedUi';
+import { childContextHtml, formatZones, painProgressHtml } from '../sharedUi';
 import { mountMiniBody } from '../miniBody3d';
 import { showToast } from '../toast';
 
@@ -12,6 +12,7 @@ export function renderSummaryScreen(app) {
   screen.className = 'screen pain-scale-screen summary-screen page-animate-in';
   screen.insertAdjacentHTML('beforeend', `
     <header class="top-bar pain-scale-top-bar"><button class="back-button" type="button" aria-label="Go back"><img src="${ASSETS.backChevron}" alt=""/></button></header>
+    ${painProgressHtml(5)}
     <div class="pain-scale-body-wrap mini-body-wrap"></div>
     <div class="pain-scale-heading-wrap"><h1 class="pain-scale-title">Pain Summary</h1>${childContextHtml()}</div>
     <section class="summary-card">

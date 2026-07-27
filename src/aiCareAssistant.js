@@ -3,8 +3,9 @@ import { formatZones } from './sharedUi';
 const HIGH_INTENSITY = 8;
 const MODERATE_INTENSITY = 5;
 const WATCH_WORDS = ['fever', 'vomit', 'vomiting', 'bleeding', 'dizzy', 'faint', 'swelling', 'breathing'];
+const RED_FLAG_KEYS = ['fever', 'injury', 'breathing', 'gettingWorse'];
 
-function safeText(value, fallback = '') {
+export function safeText(value, fallback = '') {
   return String(value ?? fallback)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -61,6 +62,26 @@ function getUrgency(log = {}) {
   };
 }
 
+function getAnsweredRedFlags(answers = {}) {
+  return RED_FLAG_KEYS.filter((key) => answers[key] === 'yes');
+}
+
+function getTrend(logs = []) {
+  const usable = logs
+    .filter((log) => log.created_at)
+    .slice(0, 5)
+    .map((log) => getIntensity(log));
+
+  if (usable.length < 2) return 'Not enough reports yet to compare trends.';
+
+  const newest = usable[0];
+  const previous = usable.slice(1).reduce((sum, value) => sum + value, 0) / (usable.length - 1);
+
+  if (newest >= previous + 2) return 'Pain is higher than recent reports.';
+  if (newest <= previous - 2) return 'Pain is lower than recent reports.';
+  return 'Pain is similar to recent reports.';
+}
+
 export function createCareInsight(log = {}) {
   const intensity = getIntensity(log);
   const painType = getPainType(log);
@@ -95,6 +116,50 @@ export function createCareInsight(log = {}) {
   };
 }
 
+export function createAssistantAssessment({ log = {}, logs = [], answers = {} } = {}) {
+  const base = createCareInsight(log);
+  const redFlags = getAnsweredRedFlags(answers);
+  const intensity = getIntensity(log);
+  const hasRedFlags = redFlags.length > 0;
+  const tone = hasRedFlags || intensity >= HIGH_INTENSITY ? 'high' : base.tone;
+  const level = hasRedFlags ? 'Escalate care' : base.level;
+  const summary = hasRedFlags
+    ? 'Your follow-up answers include warning signs. A trusted adult should contact medical support now.'
+    : base.summary;
+
+  const questions = [
+    { key: 'fever', label: 'Fever, vomiting, dizziness, or unusual tiredness?' },
+    { key: 'injury', label: 'Pain started after a fall, hit, or accident?' },
+    { key: 'breathing', label: 'Breathing trouble, chest pain, or fainting?' },
+    { key: 'gettingWorse', label: 'Pain is getting worse or spreading?' },
+    { key: 'canPlay', label: 'Child can still walk, talk, play, or rest normally?' },
+  ];
+
+  const carePlan = [
+    hasRedFlags
+      ? 'Contact a doctor, nurse, urgent care, or emergency support now.'
+      : base.nextSteps[0],
+    answers.canPlay === 'no'
+      ? 'Keep the child close and avoid school, sports, or intense activity until checked.'
+      : 'Keep the child comfortable and observe changes calmly.',
+    intensity >= MODERATE_INTENSITY
+      ? 'Create another Nana report within 30-60 minutes so the trend is visible.'
+      : 'Create another Nana report later today if the pain changes.',
+    'Use the handoff note when speaking with another caregiver or health professional.',
+  ];
+
+  return {
+    ...base,
+    tone,
+    level,
+    summary,
+    questions,
+    carePlan,
+    trend: getTrend(logs),
+    redFlags,
+  };
+}
+
 export function careInsightHtml(log = {}) {
   const insight = createCareInsight(log);
 
@@ -112,7 +177,41 @@ export function careInsightHtml(log = {}) {
         <span>Doctor-ready handoff</span>
         <textarea readonly rows="4">${safeText(insight.handoff)}</textarea>
       </label>
+      <div class="ai-care-actions">
+        <button type="button" data-copy-handoff>Copy handoff</button>
+        <button type="button" data-open-assistant>Open full assistant</button>
+      </div>
       <small>This is decision support, not a diagnosis. In an emergency, contact local medical help.</small>
     </section>
   `;
+}
+
+export function wireCareInsightActions(root, { onCopied } = {}) {
+  root.querySelectorAll('[data-copy-handoff]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const textarea = button.closest('.ai-care-card')?.querySelector('.ai-care-handoff textarea');
+      const text = textarea?.value || '';
+
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied';
+      } catch {
+        textarea?.select();
+        document.execCommand?.('copy');
+        button.textContent = 'Copied';
+      }
+
+      onCopied?.();
+
+      setTimeout(() => {
+        button.textContent = 'Copy handoff';
+      }, 1200);
+    });
+  });
+
+  root.querySelectorAll('[data-open-assistant]').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.location.hash = '#assistant';
+    });
+  });
 }

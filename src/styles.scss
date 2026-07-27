@@ -5879,3 +5879,326 @@ body > .children-header {
     padding: 15px;
   }
 }
+
+/* === PRODUCT HARDENING PASS: assistant feature, loading, smoother flows === */
+.asset-loading {
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 0.28s ease, filter 0.28s ease;
+}
+
+.asset-loaded {
+  opacity: 1;
+  filter: blur(0);
+  transition: opacity 0.28s ease, filter 0.28s ease;
+}
+
+.asset-error {
+  opacity: 0.55;
+  filter: grayscale(1);
+}
+
+.page-animate-in {
+  animation: nana-page-in 0.28s ease both;
+}
+
+@keyframes nana-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pain-progress {
+  width: calc(100% - 28px);
+  margin: 8px auto 6px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.pain-progress span {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  color: rgba(21, 21, 28, 0.42);
+}
+
+.pain-progress i {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(21, 21, 28, 0.1);
+  font-style: normal;
+  font-size: 0.74rem;
+  font-weight: 1000;
+}
+
+.pain-progress em {
+  font-style: normal;
+  font-size: 0.65rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.pain-progress .is-active i,
+.pain-progress .is-complete i {
+  background: linear-gradient(180deg, #31ddc0 0%, var(--nana-mint) 100%);
+  color: #06352f;
+  box-shadow: 0 8px 16px rgba(32, 199, 168, 0.24);
+}
+
+.pain-progress .is-active,
+.pain-progress .is-complete {
+  color: var(--nana-ink);
+}
+
+.bottom-nav {
+  padding: 0 26px !important;
+}
+
+.bottom-nav-item--assistant {
+  width: 48px;
+  height: 48px;
+}
+
+.bottom-nav-item--assistant span {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #31ddc0 0%, var(--nana-mint) 100%);
+  color: #053731;
+  font-size: 0.82rem;
+  font-weight: 1000;
+  letter-spacing: 0;
+  box-shadow: 0 10px 20px rgba(32, 199, 168, 0.28);
+}
+
+.ai-care-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.ai-care-actions button,
+.home-assistant-strip button,
+.assistant-question button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--nana-ink);
+  font-weight: 1000;
+  box-shadow: 0 8px 18px rgba(21, 21, 28, 0.08);
+}
+
+.ai-care-actions button:first-child,
+.assistant-question button.is-selected {
+  background: linear-gradient(180deg, #ff786d 0%, var(--nana-coral-deep) 100%);
+  color: #fff;
+}
+
+.home-assistant-strip {
+  width: calc(100% - 32px);
+  margin: 8px auto 8px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--nana-border-soft);
+  box-shadow: var(--nana-shadow-soft);
+}
+
+.home-assistant-strip span,
+.assistant-hero span,
+.assistant-empty span,
+.settings-summary-card span {
+  display: block;
+  color: var(--nana-mint);
+  font-size: 0.72rem;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.home-assistant-strip strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.92rem;
+  line-height: 1.15;
+}
+
+.home-assistant-strip button {
+  min-width: 76px;
+  background: linear-gradient(180deg, #31ddc0 0%, var(--nana-mint) 100%);
+  color: #06352f;
+}
+
+.assistant-screen {
+  padding-bottom: calc(var(--nana-bottom-nav-height, 92px) + 36px);
+}
+
+.assistant-content {
+  display: grid;
+  gap: 16px;
+}
+
+.assistant-hero,
+.assistant-empty,
+.assistant-report-card,
+.assistant-section,
+.settings-summary-card {
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--nana-border-soft);
+  box-shadow: var(--nana-shadow-soft);
+  padding: 18px;
+}
+
+.assistant-hero {
+  background:
+    radial-gradient(circle at top right, rgba(255, 233, 138, 0.75), transparent 35%),
+    rgba(255, 255, 255, 0.88);
+}
+
+.assistant-hero--high {
+  border-color: rgba(233, 72, 69, 0.34);
+}
+
+.assistant-hero h1,
+.assistant-empty h1 {
+  margin: 8px 0;
+  color: var(--nana-coral-deep);
+  font-size: clamp(1.8rem, 8vw, 2.5rem);
+  line-height: 0.98;
+}
+
+.assistant-hero p,
+.assistant-empty p,
+.settings-summary-card p {
+  margin: 0;
+  color: rgba(21, 21, 28, 0.72);
+  font-size: 0.96rem;
+  line-height: 1.35;
+}
+
+.assistant-report-card {
+  display: grid;
+  gap: 10px;
+}
+
+.assistant-report-card div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.assistant-report-card span {
+  color: rgba(21, 21, 28, 0.56);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.assistant-report-card p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: rgba(21, 21, 28, 0.76);
+  font-size: 0.9rem;
+}
+
+.assistant-report-card b {
+  color: var(--nana-ink);
+}
+
+.assistant-section h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+.assistant-question-list {
+  display: grid;
+  gap: 10px;
+}
+
+.assistant-question {
+  border: 0;
+  display: grid;
+  gap: 9px;
+}
+
+.assistant-question legend {
+  color: rgba(21, 21, 28, 0.78);
+  font-size: 0.92rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.assistant-question div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.assistant-care-plan {
+  display: grid;
+  gap: 9px;
+}
+
+.assistant-care-plan p {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+  color: rgba(21, 21, 28, 0.76);
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.assistant-care-plan span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--nana-sky);
+  color: #0f3150;
+  font-weight: 1000;
+}
+
+.assistant-handoff-card {
+  width: 100%;
+  margin: 0;
+}
+
+.settings-summary-card {
+  display: grid;
+  gap: 6px;
+}
+
+.settings-summary-card strong {
+  font-size: 1.35rem;
+}
+
+@media (max-width: 365px) {
+  .pain-progress em {
+    display: none;
+  }
+
+  .bottom-nav {
+    padding: 0 20px !important;
+  }
+
+  .ai-care-actions,
+  .assistant-question div {
+    grid-template-columns: 1fr;
+  }
+}

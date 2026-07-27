@@ -10,6 +10,13 @@ export function renderChildAddedScreen(app) {
   screen.insertAdjacentHTML('beforeend', `
     ${headerHtml('')}
     <section class="child-added-intro"><h1 class="children-title children-title--small">Your Children</h1></section>
+    <section class="home-assistant-strip">
+      <div>
+        <span>Nana Assistant</span>
+        <strong>Turn saved pain reports into a care plan.</strong>
+      </div>
+      <button type="button" data-open-assistant>Open</button>
+    </section>
     <section class="child-card-list" data-safe-child-list>
       ${children.length ? children.map(c => childCardHtml(c, false)).join('') : '<p class="empty-state">Tap + to add a child.</p>'}
     </section>
@@ -17,6 +24,9 @@ export function renderChildAddedScreen(app) {
     ${bottomNavHtml('home')}
   `);
   const addButton = screen.querySelector('.floating-add-btn');
+  screen.querySelector('[data-open-assistant]')?.addEventListener('click', () => {
+    window.location.hash = '#assistant';
+  });
   const childList = screen.querySelector('[data-safe-child-list]');
   childList?.classList.remove('child-card-list--two');
   childList?.style.setProperty('display', 'grid', 'important');

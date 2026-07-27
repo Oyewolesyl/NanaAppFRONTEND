@@ -168,7 +168,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     <div class="body-map-wrap">
       <div class="body-svg-wrap" id="bodySvgWrap" style="position:relative;">
         <canvas id="bodyCanvas" style="width:100%;height:100%;display:block;touch-action:none;cursor:pointer;border-radius:16px;"></canvas>
-        <div id="bodyLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#48AFA2;font-family:Nunito,sans-serif;font-size:14px;font-weight:700;pointer-events:none;">Loading model…</div>
+        <div id="bodyLoading" class="body-loading" role="status" aria-live="polite">Loading model...</div>
         <div id="bodyBadges" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
       </div>
     </div>
@@ -206,24 +206,80 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   const overlays = [];
 
   // ── CDN loader ───────────────────────────────────────────────
-  function loadLibs() {
-    return new Promise(resolve => {
-      if (window.THREE && window.THREE.GLTFLoader) { resolve(); return; }
-      const s1 = document.createElement("script");
-      s1.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
-      s1.onload = () => {
-        const s2 = document.createElement("script");
-        s2.src = "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js";
-        s2.onload = resolve;
-        document.head.appendChild(s2);
-      };
-      document.head.appendChild(s1);
+  function setBodyLoading(message) {
+    loadingEl.style.display = "flex";
+    loadingEl.classList.remove("body-loading--error");
+    loadingEl.innerHTML = `<span>${message}</span><i></i>`;
+  }
+
+  function setBodyLoadError(message) {
+    loadingEl.style.display = "flex";
+    loadingEl.classList.add("body-loading--error");
+    loadingEl.innerHTML = `
+      <span>${message}</span>
+      <button type="button" class="body-loading-retry">Retry</button>
+    `;
+    loadingEl.querySelector(".body-loading-retry").addEventListener("click", () => {
+      init();
     });
+  }
+
+  function loadScript(src, message) {
+    setBodyLoading(message);
+
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing?.dataset.loaded === "true") {
+        resolve();
+        return;
+      }
+
+      const script = existing || document.createElement("script");
+      const timeout = window.setTimeout(() => {
+        reject(new Error(`Timed out loading ${src}`));
+      }, 15000);
+
+      script.onload = () => {
+        window.clearTimeout(timeout);
+        script.dataset.loaded = "true";
+        resolve();
+      };
+      script.onerror = () => {
+        window.clearTimeout(timeout);
+        reject(new Error(`Could not load ${src}`));
+      };
+      script.src = src;
+
+      if (!existing) document.head.appendChild(script);
+    });
+  }
+
+  async function loadLibs() {
+    if (window.THREE && window.THREE.GLTFLoader) return;
+
+    await loadScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
+      "Loading 3D engine..."
+    );
+
+    await loadScript(
+      "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js",
+      "Preparing body map tools..."
+    );
   }
 
   // ── Scene init ───────────────────────────────────────────────
   async function init() {
-    await loadLibs();
+    setBodyLoading("Preparing 3D body map...");
+
+    try {
+      await loadLibs();
+    } catch (err) {
+      setBodyLoadError("The 3D body map is taking too long to load.");
+      console.error("3D library load error:", err);
+      return;
+    }
+
     const THREE = window.THREE;
     const rect  = wrap.getBoundingClientRect();
     const W = rect.width  || 300;
@@ -249,6 +305,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     rim.position.set(0, -2, -3); scene.add(rim);
 
     raycaster = new THREE.Raycaster();
+
+    setBodyLoading("Loading child body map...");
 
     new THREE.GLTFLoader().load("/bodymap.glb", gltf => {
       model = gltf.scene;
@@ -292,7 +350,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       })();
 
     }, undefined, err => {
-      loadingEl.textContent = "Place bodymap.glb in /public folder";
+      setBodyLoadError("Body map asset could not be loaded.");
       console.error("GLB load error:", err);
     });
   }

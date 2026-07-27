@@ -23,6 +23,49 @@ body {
   display: flex; justify-content: center; align-items: flex-start;
 }
 
+.nana-route-loader {
+  position: fixed;
+  left: 50%;
+  top: max(14px, env(safe-area-inset-top, 0px));
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 1px solid rgba(2, 2, 2, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #15151c;
+  box-shadow: 0 12px 28px rgba(2, 2, 2, 0.12);
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.nana-route-loader i,
+.body-loading i {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(79, 180, 166, 0.22);
+  border-top-color: var(--teal);
+  border-radius: 999px;
+  animation: nana-spin 0.7s linear infinite;
+}
+
+.nana-route-is-loading .nana-route-loader {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes nana-spin {
+  to { transform: rotate(360deg); }
+}
+
 .screen {
   width: 100%; max-width: 390px; min-height: 100svh;
   background: var(--blue); position: relative;
@@ -517,8 +560,26 @@ body {
 
 /* ───────────────── FINAL SURGICAL APP FIXES ───────────────── */
 .mini-header-title { margin: 0 auto; font-family: "Nunito", sans-serif; color: var(--red); font-size: 18px; font-weight: 800; -webkit-text-stroke: .4px #5f577f; }
-.auth-screen { align-items: center; gap: 18px; padding-top: 80px; }
-.auth-logo { width: 92px; height: auto; object-fit: contain; }
+.auth-screen { align-items: center; gap: 18px; padding-top: 58px; }
+.auth-brand-card {
+  width: min(224px, 68vw);
+  min-height: 184px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 14px 18px 16px;
+  border: 1px solid rgba(2, 2, 2, 0.12);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.64);
+  box-shadow: 0 16px 34px rgba(95, 87, 127, 0.14);
+}
+.auth-logo { width: min(168px, 54vw); height: auto; object-fit: contain; }
+.auth-brand-status {
+  color: rgba(2, 2, 2, 0.58);
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+}
 .auth-copy { width: min(300px, 86vw); text-align: center; font-family: "Nunito", sans-serif; font-size: 16px; font-weight: 800; color: rgba(0,0,0,.68); }
 .auth-mode-switch {
   width: min(300px, 84vw);
@@ -560,6 +621,35 @@ body {
   min-height: 52px !important;
   font-size: 22px !important;
   border-radius: 18px !important;
+}
+.auth-status {
+  min-height: 20px;
+  color: rgba(2, 2, 2, 0.64);
+  font-family: "Nunito", sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  text-align: center;
+}
+.auth-screen--busy .auth-compact-button:not([hidden]) {
+  position: relative;
+  color: transparent !important;
+}
+.auth-screen--busy .auth-compact-button:not([hidden])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  border: 3px solid rgba(242, 230, 216, 0.42);
+  border-top-color: var(--neutral);
+  border-radius: 999px;
+  animation: nana-spin 0.7s linear infinite;
+}
+.auth-screen--busy input,
+.auth-screen--busy .auth-mode-button,
+.auth-screen--busy .auth-skip {
+  opacity: 0.58;
 }
 .app-thumbnail { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
 .welcome-body-preview .mini-body-pin-count {
@@ -4045,6 +4135,43 @@ body.nana-add-child-open .nana-toast {
   max-height: none !important;
 }
 
+.show-pain-screen .body-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(168, 215, 255, 0.66));
+  color: var(--teal);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  text-align: center;
+  pointer-events: auto;
+}
+
+.show-pain-screen .body-loading--error {
+  color: var(--red);
+}
+
+.show-pain-screen .body-loading-retry {
+  min-width: 104px;
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--button-red);
+  color: var(--neutral);
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
 .show-pain-screen .zoom-row {
   margin: 10px auto 0 !important;
   flex: 0 0 auto !important;
@@ -4584,6 +4711,27 @@ body[data-route="child-added"] .child-open-map-btn--compact {
   border-color: transparent !important;
   box-shadow: none !important;
   filter: drop-shadow(0 2px 2px rgba(2, 2, 2, 0.08));
+}
+
+.auth-screen .auth-brand-card {
+  width: min(224px, 68vw) !important;
+  min-height: 184px !important;
+}
+
+.auth-screen .auth-brand-card .auth-logo {
+  width: min(168px, 54vw) !important;
+}
+
+@media (max-width: 430px) {
+  .auth-screen .auth-brand-card {
+    width: min(190px, 54vw) !important;
+    min-height: 146px !important;
+    padding: 10px 14px 12px !important;
+  }
+
+  .auth-screen .auth-brand-card .auth-logo {
+    width: min(138px, 43vw) !important;
+  }
 }
 
 .child-card-divider,

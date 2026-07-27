@@ -1,5 +1,6 @@
 import { appState } from '../appState';
 import { showToast } from '../toast';
+import { ASSETS } from '../assets';
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
@@ -14,11 +15,14 @@ export function renderAuthScreen(app) {
   screen.insertAdjacentHTML(
     'beforeend',
     `
-      <img
-        src="/ani1.svg"
-        alt="Nana"
-        class="auth-logo nana-auth-face"
-      />
+      <div class="auth-brand-card">
+        <img
+          src="${ASSETS.logoFull}"
+          alt="Nana the App"
+          class="auth-logo nana-auth-face"
+        />
+        <span class="auth-brand-status">Secure family care account</span>
+      </div>
 
       <h1 class="screen-title">Welcome</h1>
 
@@ -40,6 +44,7 @@ export function renderAuthScreen(app) {
         <input
           class="auth-name"
           type="text"
+          autocomplete="name"
           placeholder="Your name"
         />
       </label>
@@ -49,6 +54,8 @@ export function renderAuthScreen(app) {
         <input
           class="auth-email"
           type="email"
+          inputmode="email"
+          autocomplete="email"
           placeholder="you@email.com"
         />
       </label>
@@ -58,6 +65,8 @@ export function renderAuthScreen(app) {
         <input
           class="auth-password"
           type="password"
+          autocomplete="current-password"
+          minlength="6"
           placeholder="Password"
         />
       </label>
@@ -88,18 +97,6 @@ export function renderAuthScreen(app) {
     `
   );
 
-  const logo = screen.querySelector('.nana-auth-face');
-
-  logo.src = '/ani1.svg';
-
-  setTimeout(() => {
-    logo.src = '/ani2.svg';
-
-    setTimeout(() => {
-      logo.src = '/ani3.svg';
-    }, 600);
-  }, 500);
-
   const emailInput = screen.querySelector('.auth-email');
   const passwordInput = screen.querySelector('.auth-password');
   const nameInput = screen.querySelector('.auth-name');
@@ -110,6 +107,48 @@ export function renderAuthScreen(app) {
   const loginButton = screen.querySelector('.auth-login');
   const modeButtons = screen.querySelectorAll('.auth-mode-button');
   let authMode = 'signup';
+  let isBusy = false;
+
+  function setBusy(nextBusy, message = '') {
+    isBusy = nextBusy;
+    screen.classList.toggle('auth-screen--busy', nextBusy);
+    screen.setAttribute('aria-busy', String(nextBusy));
+    registerButton.disabled = nextBusy;
+    loginButton.disabled = nextBusy;
+    nameInput.disabled = nextBusy;
+    emailInput.disabled = nextBusy;
+    passwordInput.disabled = nextBusy;
+    modeButtons.forEach((button) => {
+      button.disabled = nextBusy;
+    });
+
+    if (message) status.textContent = message;
+  }
+
+  function validateCredentials({ requireName = false } = {}) {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (requireName && !nameInput.value.trim()) {
+      status.textContent = 'Please enter your full name.';
+      nameInput.focus();
+      return false;
+    }
+
+    if (!email || !email.includes('@')) {
+      status.textContent = 'Please enter a valid email address.';
+      emailInput.focus();
+      return false;
+    }
+
+    if (!password || password.length < 6) {
+      status.textContent = 'Password must be at least 6 characters.';
+      passwordInput.focus();
+      return false;
+    }
+
+    return true;
+  }
 
   function setAuthMode(mode) {
     authMode = mode;
@@ -119,6 +158,7 @@ export function renderAuthScreen(app) {
     nameField.hidden = isLogin;
     registerButton.hidden = isLogin;
     loginButton.hidden = !isLogin;
+    passwordInput.autocomplete = isLogin ? 'current-password' : 'new-password';
     copy.textContent = isLogin
       ? 'Welcome back. Sign in to continue.'
       : 'Create your account to start using Nana.';
@@ -141,6 +181,7 @@ export function renderAuthScreen(app) {
 
   modeButtons.forEach((button) => {
     button.addEventListener('click', () => {
+      if (isBusy) return;
       setAuthMode(button.dataset.authMode);
     });
   });
@@ -149,12 +190,9 @@ export function renderAuthScreen(app) {
 
   registerButton
     .addEventListener('click', async () => {
-      if (!nameInput.value.trim()) {
-        status.textContent = 'Please enter your full name.';
-        return;
-      }
+      if (isBusy || !validateCredentials({ requireName: true })) return;
 
-      status.textContent = 'Creating account...';
+      setBusy(true, 'Creating secure Nana account...');
 
       try {
         const response = await fetch(
@@ -187,12 +225,16 @@ export function renderAuthScreen(app) {
         status.textContent =
           err?.message || 'Registration failed';
         showToast(status.textContent, 'error');
+      } finally {
+        setBusy(false);
       }
     });
 
   loginButton
     .addEventListener('click', async () => {
-      status.textContent = 'Signing in...';
+      if (isBusy || !validateCredentials()) return;
+
+      setBusy(true, 'Signing you in...');
 
       try {
         const response = await fetch(
@@ -231,12 +273,15 @@ export function renderAuthScreen(app) {
         status.textContent =
           err?.message || 'Login failed';
         showToast(status.textContent, 'error');
+      } finally {
+        setBusy(false);
       }
     });
 
   screen
     .querySelector('.auth-skip')
     .addEventListener('click', () => {
+      if (isBusy) return;
       showToast('Testing mode opened');
       goNext();
     });

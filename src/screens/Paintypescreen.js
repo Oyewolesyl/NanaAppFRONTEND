@@ -3,14 +3,14 @@ import { updatePainDraft, appState } from '../appState';
 import { childContextHtml, painProgressHtml } from '../sharedUi';
 
 const TYPES = [
-  { id: 'sharp', label: 'Sharp', icon: 'SH' },
-  { id: 'burning', label: 'Burning', icon: 'BU' },
-  { id: 'throbbing', label: 'Throbbing', icon: 'TH' },
-  { id: 'tingling', label: 'Tingling', icon: 'TI' },
-  { id: 'stabbing', label: 'Stabbing', icon: 'ST' },
-  { id: 'cramping', label: 'Cramping', icon: 'CR' },
-  { id: 'aching', label: 'Aching', icon: 'AC' },
-  { id: 'other', label: 'Other', icon: 'OT' },
+  { id: 'sharp', label: 'Sharp', hint: 'Sudden and pointed' },
+  { id: 'burning', label: 'Burning', hint: 'Hot or stinging' },
+  { id: 'throbbing', label: 'Throbbing', hint: 'Pulsing pain' },
+  { id: 'tingling', label: 'Tingling', hint: 'Pins and needles' },
+  { id: 'stabbing', label: 'Stabbing', hint: 'Deep quick pain' },
+  { id: 'cramping', label: 'Cramping', hint: 'Tight or squeezing' },
+  { id: 'aching', label: 'Aching', hint: 'Dull and steady' },
+  { id: 'other', label: 'Other', hint: 'Something else' },
 ];
 
 export function renderPainTypeScreen(app, { fromScreen = '#body-map' } = {}) {
@@ -38,8 +38,9 @@ export function renderPainTypeScreen(app, { fromScreen = '#body-map' } = {}) {
           aria-label="${type.label}"
           aria-pressed="${appState.painDraft.painType === type.id}"
         >
-          <span class="pain-card-icon pain-card-emoji">${type.icon}</span>
+          <span class="pain-card-icon pain-card-icon--${type.id}" aria-hidden="true"></span>
           <span class="pain-card-label">${type.label}</span>
+          <span class="pain-card-hint">${type.hint}</span>
         </button>
       `).join('')}
     </div>

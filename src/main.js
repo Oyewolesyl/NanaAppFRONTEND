@@ -1,5 +1,7 @@
-import './styles.scss';
+// Legacy mobile fit rules load first; styles.scss ends with the current
+// Figma-aligned design-system layer that should win final visual conflicts.
 import './mobileNavFixes.scss';
+import './styles.scss';
 
 import { renderGetStartedScreen } from './screens/getStartedScreen';
 import { renderSelectRoleScreen } from './screens/selectRoleScreen';
@@ -240,6 +242,20 @@ function installPwaSupport() {
   }, 1400);
 }
 
+function promoteRouteOverlays(app) {
+  const actionRow = app.querySelector('.pain-type-actions, .confirmation-actions');
+
+  document.querySelectorAll('body > .pain-type-actions, body > .confirmation-actions').forEach((node) => {
+    if (node !== actionRow) node.remove();
+  });
+
+  if (actionRow && actionRow.parentElement !== document.body) {
+    // Pain-flow actions are visually fixed controls. Keeping them in <body>
+    // avoids transformed or scrollable screen containers changing their anchor.
+    document.body.append(actionRow);
+  }
+}
+
 function renderApp() {
   const app = document.querySelector('#app');
   if (!app) return;
@@ -251,7 +267,7 @@ function renderApp() {
   // Header, menu, bottom nav, and floating add button are moved to <body> on
   // mobile so they can stay fixed above each screen without being clipped by
   // the current route container. Remove stale copies before rendering a route.
-  document.querySelectorAll('body > .children-header, body > .nana-menu-overlay, body > .bottom-nav, body > .floating-add-btn').forEach((node) => node.remove());
+  document.querySelectorAll('body > .children-header, body > .nana-menu-overlay, body > .bottom-nav, body > .floating-add-btn, body > .pain-type-actions, body > .confirmation-actions').forEach((node) => node.remove());
 
   try {
     if (route === '#select-role') return renderSelectRoleScreen(app);
@@ -280,6 +296,7 @@ function renderApp() {
 
     renderGetStartedScreen(app);
   } finally {
+    promoteRouteOverlays(app);
     finishRouteLoading(app);
   }
 }

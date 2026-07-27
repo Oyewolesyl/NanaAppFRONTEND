@@ -43,14 +43,16 @@ const MINI_ZONE_POINTS = {
 
 function loadLibs() {
   if (loading) return loading;
-  loading = new Promise(resolve => {
+  loading = new Promise((resolve, reject) => {
     if (window.THREE && window.THREE.GLTFLoader) { resolve(); return; }
     const s1 = document.createElement('script');
     s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s1.onerror = reject;
     s1.onload = () => {
       const s2 = document.createElement('script');
       s2.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js';
       s2.onload = resolve;
+      s2.onerror = reject;
       document.head.appendChild(s2);
     };
     document.head.appendChild(s1);
@@ -78,6 +80,8 @@ export function mountMiniBody(container, {
     container.append(label);
   }
   loadLibs().then(() => {
+    // This miniature model mirrors the full body-map selection on review
+    // screens. It is intentionally passive so the form remains the focus.
     const THREE = window.THREE;
     const rect = container.getBoundingClientRect();
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -115,6 +119,10 @@ export function mountMiniBody(container, {
       loop();
     }, undefined, () => {
       if (label) label.textContent = 'body model';
+      container.classList.add('mini-body-wrap--error');
     });
+  }).catch(() => {
+    container.classList.add('mini-body-wrap--error');
+    if (label) label.textContent = 'body model';
   });
 }

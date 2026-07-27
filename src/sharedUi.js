@@ -15,11 +15,21 @@ function getBottomNavActive(active) {
   return 'home';
 }
 
+export function escapeHtml(value = '', fallback = '') {
+  return String(value ?? fallback)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 export function headerHtml(title = '', menu = true) {
+  const safeTitle = escapeHtml(title);
   return `
     <header class="children-header">
       <img src="${ASSETS.splashHeaderLogo}" alt="Nana logo" class="children-header-logo" />
-      ${title ? `<strong class="mini-header-title">${title}</strong>` : ''}
+      ${title ? `<strong class="mini-header-title">${safeTitle}</strong>` : ''}
       ${menu ? `<button type="button" aria-label="Open menu" class="children-menu-button"><img src="${ASSETS.splashMenuIcon}" alt="" /></button>` : ''}
     </header>
   `;
@@ -84,11 +94,12 @@ export function attachMenu(root) {
   overlay.className = 'nana-menu-overlay';
   overlay.hidden = true;
   const child = getActiveChild();
+  const childName = escapeHtml(child?.name || '');
   overlay.innerHTML = `
     <div class="nana-menu-backdrop" data-close-menu></div>
     <aside class="nana-menu-panel">
       <div class="nana-menu-top"><img src="${ASSETS.splashHeaderLogo}" alt="Nana" /><button type="button" data-close-menu aria-label="Close menu">×</button></div>
-      <p class="nana-menu-context">${child ? `Current child: ${child.name}` : 'Manage Nana'}</p>
+      <p class="nana-menu-context">${child ? `Current child: ${childName}` : 'Manage Nana'}</p>
       <button type="button" data-menu-nav="#child-added">Home</button>
       <button type="button" data-menu-nav="#assistant">Nana Assistant</button>
       <button type="button" data-menu-nav="#manage-children">Manage Children</button>
@@ -105,12 +116,13 @@ export function attachMenu(root) {
 
 export function childCardHtml(child, compact = false, options = {}) {
   const showEdit = Boolean(options.showEdit);
-  const childPhoto = child.photo_url || ASSETS.inactiveChildPhoto;
-  const childName = child.name || 'Child';
-  const childAge = child.age ? `${child.age} years old` : '';
+  const childId = escapeHtml(child.id || '');
+  const childPhoto = escapeHtml(child.photo_url || ASSETS.inactiveChildPhoto);
+  const childName = escapeHtml(child.name || 'Child');
+  const childAge = child.age ? `${escapeHtml(child.age)} years old` : '';
 
   return `
-    <article class="child-card ${compact ? 'child-card--compact' : ''}" data-child-id="${child.id}">
+    <article class="child-card ${compact ? 'child-card--compact' : ''}" data-child-id="${childId}">
       ${showEdit ? `<button type="button" class="child-edit-profile-btn" data-edit-child aria-label="Edit ${childName}">Edit</button>` : ''}
 
       <div class="child-card-photo-wrap">
@@ -207,7 +219,7 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
 export function childContextHtml() {
   const child = getActiveChild();
   if (!child) return '';
-  return `<div class="child-context-pill"><img src="${child.photo_url || ASSETS.inactiveChildPhoto}" alt="" /><span>For ${child.name}</span></div>`;
+  return `<div class="child-context-pill"><img src="${escapeHtml(child.photo_url || ASSETS.inactiveChildPhoto)}" alt="" /><span>For ${escapeHtml(child.name)}</span></div>`;
 }
 
 export function prettyZone(zone = '') {

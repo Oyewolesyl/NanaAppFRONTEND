@@ -1,13 +1,18 @@
 import { createAddChildOverlay } from '../components/addChildOverlay';
 import { appState, removeChild, setActiveChild } from '../appState';
-import { headerHtml, bottomNavHtml, wireBottomNav, attachMenu, wireAddChildOverlay } from '../sharedUi';
+import { headerHtml, bottomNavHtml, wireBottomNav, attachMenu, wireAddChildOverlay, escapeHtml } from '../sharedUi';
 import { ASSETS } from '../assets';
 import { showToast } from '../toast';
 
 function card(child) {
-  return `<article class="manage-child-card" data-child-id="${child.id}">
-    <img src="${child.photo_url || ASSETS.inactiveChildPhoto}" alt="${child.name}" />
-    <div><strong>${child.name}</strong><span>${child.age} years old</span></div>
+  const childId = escapeHtml(child.id || '');
+  const childName = escapeHtml(child.name || 'Child');
+  const childPhoto = escapeHtml(child.photo_url || ASSETS.inactiveChildPhoto);
+  const childAge = escapeHtml(child.age || '-');
+
+  return `<article class="manage-child-card" data-child-id="${childId}">
+    <img src="${childPhoto}" alt="${childName}" />
+    <div><strong>${childName}</strong><span>${childAge} years old</span></div>
     <button type="button" data-edit-child>Edit Profile</button>
     <button type="button" data-open-child>Body Map</button>
     <button type="button" data-remove-child>Remove</button>

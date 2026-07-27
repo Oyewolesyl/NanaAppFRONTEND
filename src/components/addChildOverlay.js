@@ -72,6 +72,8 @@ export function createAddChildOverlay() {
   createAgeWheelItems(wheel);
 
   function selectAge(age = 4) {
+    // The age wheel stays native-scroll for phone ergonomics; the selected
+    // value is whichever item is visually closest to the center line.
     const item = wheel.querySelector(`[data-age="${age}"]`) || wheel.querySelector('[data-age="4"]');
     setTimeout(() => {
       item?.scrollIntoView({ block: 'center' });
@@ -99,6 +101,8 @@ export function createAddChildOverlay() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
+      // Images stay local as data URLs in this build, so adding a profile photo
+      // is instant and does not depend on external storage being configured.
       overlay.dataset.photoUrl = String(reader.result || '');
       preview.src = overlay.dataset.photoUrl;
     };

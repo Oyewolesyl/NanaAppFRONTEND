@@ -27,25 +27,6 @@ export function renderChildAddedScreen(app) {
   screen.querySelector('[data-open-assistant]')?.addEventListener('click', () => {
     window.location.hash = '#assistant';
   });
-  const childList = screen.querySelector('[data-safe-child-list]');
-  childList?.classList.remove('child-card-list--two');
-  childList?.style.setProperty('display', 'grid', 'important');
-  childList?.style.setProperty('grid-template-columns', 'minmax(0, min(270px, 78vw))', 'important');
-  childList?.style.setProperty('justify-content', 'center', 'important');
-  childList?.style.setProperty('justify-items', 'center', 'important');
-  childList?.style.setProperty('gap', '16px', 'important');
-  childList?.style.setProperty('width', '100%', 'important');
-  childList?.querySelectorAll('.child-card').forEach((card) => {
-    card.classList.remove('child-card--compact');
-    card.style.setProperty('width', '100%', 'important');
-    card.style.setProperty('max-width', 'min(270px, 78vw)', 'important');
-    card.style.setProperty('margin', '0', 'important');
-    card.style.setProperty('transform', 'none', 'important');
-  });
-  addButton.style.position = 'fixed';
-  addButton.style.right = '18px';
-  addButton.style.bottom = 'calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 20px)';
-  addButton.style.zIndex = '2147483001';
   const overlay = createAddChildOverlay();
   screen.append(overlay);
   wireChildCards(screen);

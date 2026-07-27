@@ -1,7 +1,7 @@
 import { ASSETS } from '../assets';
 import { appState, getActiveChild, loadPainDraftFromLog } from '../appState';
 import { mountMiniBody } from '../miniBody3d';
-import { formatZones } from '../sharedUi';
+import { escapeHtml, formatZones } from '../sharedUi';
 import { careInsightHtml, wireCareInsightActions } from '../aiCareAssistant';
 import { showToast } from '../toast';
 
@@ -10,8 +10,11 @@ export function renderConfirmationScreen(app) {
   const logId = sessionStorage.getItem('nana_last_log_id');
   const log = appState.painLogs.find(x => x.id === logId) || appState.painLogs[0];
   const child = getActiveChild();
-  const savedName = log?.childName || child?.name || 'this child';
-  const savedPhoto = log?.childPhoto || log?.photo_url || child?.photo_url || ASSETS.inactiveChildPhoto;
+  const savedName = escapeHtml(log?.childName || child?.name || 'this child');
+  const savedPhoto = escapeHtml(log?.childPhoto || log?.photo_url || child?.photo_url || ASSETS.inactiveChildPhoto);
+  const savedTime = escapeHtml(log ? new Date(log.created_at).toLocaleString() : new Date().toLocaleString());
+  const savedZones = escapeHtml(formatZones(log?.zones || []));
+  const savedNotes = escapeHtml(log?.notes || '');
   const screen = document.createElement('main');
   screen.className = 'screen pain-scale-screen confirmation-screen page-animate-in';
   screen.insertAdjacentHTML('beforeend', `
@@ -28,7 +31,7 @@ export function renderConfirmationScreen(app) {
       <div class="summary-detail-grid">
         <p>
           <span class="history-icon history-icon--started" aria-hidden="true"></span>
-          <span><strong>Time</strong><em>${log ? new Date(log.created_at).toLocaleString() : new Date().toLocaleString()}</em></span>
+          <span><strong>Time</strong><em>${savedTime}</em></span>
         </p>
         <p>
           <span class="summary-icon summary-icon--pain" aria-hidden="true">${log?.intensity ?? '-'}</span>
@@ -36,11 +39,11 @@ export function renderConfirmationScreen(app) {
         </p>
         <p>
           <span class="history-icon history-icon--area" aria-hidden="true"></span>
-          <span><strong>Spots</strong><em>${formatZones(log?.zones || [])}</em></span>
+          <span><strong>Spots</strong><em>${savedZones}</em></span>
         </p>
         ${log?.notes ? `<p>
           <span class="history-icon history-icon--note" aria-hidden="true"></span>
-          <span><strong>Note</strong><em>${log.notes}</em></span>
+          <span><strong>Note</strong><em>${savedNotes}</em></span>
         </p>` : ''}
       </div>
     </section>

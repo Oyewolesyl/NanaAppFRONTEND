@@ -7173,6 +7173,35 @@ body > .bottom-nav {
   color: #fff !important;
 }
 
+.pain-type-actions,
+.confirmation-actions {
+  position: fixed !important;
+  left: 50% !important;
+  bottom: max(14px, env(safe-area-inset-bottom, 0px)) !important;
+  transform: translateX(-50%) !important;
+  width: min(344px, calc(100vw - 32px)) !important;
+  z-index: 25 !important;
+  padding: var(--nana-space-2) !important;
+  border: 1px solid rgba(2, 2, 2, 0.1) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 18px 32px rgba(53, 69, 103, 0.18) !important;
+  backdrop-filter: blur(14px);
+}
+
+.pain-type-screen,
+.when-screen,
+.pain-scale-screen,
+.summary-screen,
+.confirmation-screen {
+  padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+  transform: none !important;
+}
+
+.confirmation-screen {
+  padding-bottom: calc(224px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
 .asset-loading {
   transform: scale(0.985);
 }
@@ -7189,5 +7218,432 @@ body > .bottom-nav {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* === LAUNCH RHYTHM PASS: spacing, sizing, and page-to-page proportions === */
+:root {
+  --nana-space-1: 4px;
+  --nana-space-2: 8px;
+  --nana-space-3: 12px;
+  --nana-space-4: 16px;
+  --nana-space-5: 20px;
+  --nana-space-6: 24px;
+  --nana-space-7: 32px;
+  --nana-content-width: min(358px, calc(100vw - 28px));
+  --nana-card-radius: 24px;
+  --nana-control-height: 52px;
+}
+
+.screen {
+  gap: 0 !important;
+}
+
+.screen--body-header {
+  padding-top: 76px !important;
+}
+
+body > .children-header,
+.children-header {
+  width: min(390px, 100vw) !important;
+  height: 72px !important;
+  padding: max(12px, env(safe-area-inset-top, 0px)) var(--nana-space-5) var(--nana-space-3) !important;
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  align-items: center !important;
+  gap: var(--nana-space-3) !important;
+}
+
+.children-header-logo {
+  width: 116px !important;
+  max-height: 38px !important;
+  justify-self: center !important;
+  grid-column: 2 !important;
+}
+
+.mini-header-title {
+  grid-column: 2 !important;
+  justify-self: center !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 17px !important;
+  line-height: 1.1 !important;
+}
+
+.children-menu-button {
+  grid-column: 3 !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.children-intro,
+.child-added-intro,
+.settings-content,
+.history-content,
+.assistant-content,
+.manage-content {
+  width: var(--nana-content-width) !important;
+  margin-inline: auto !important;
+}
+
+.children-intro,
+.child-added-intro {
+  padding-top: var(--nana-space-5) !important;
+  padding-bottom: var(--nana-space-4) !important;
+}
+
+.children-title {
+  margin: 0 !important;
+  font-size: clamp(31px, 9vw, 39px) !important;
+  line-height: 1.04 !important;
+}
+
+.children-title--small {
+  font-size: clamp(27px, 7.4vw, 34px) !important;
+}
+
+.children-subtitle,
+.history-helper,
+.auth-copy,
+.assistant-hero p,
+.assistant-empty p,
+.settings-summary-card p {
+  max-width: 34ch !important;
+  line-height: 1.42 !important;
+}
+
+.children-add-section {
+  width: var(--nana-content-width) !important;
+  margin: var(--nana-space-6) auto 0 !important;
+  padding: var(--nana-space-6) var(--nana-space-5) !important;
+  border: 1.5px solid rgba(2, 2, 2, 0.12) !important;
+  border-radius: var(--nana-card-radius) !important;
+  background: rgba(255, 255, 255, 0.54) !important;
+  box-shadow: var(--nana-shadow-soft) !important;
+}
+
+.children-add-title {
+  margin: 0 0 var(--nana-space-5) !important;
+  font-size: 19px !important;
+  line-height: 1.16 !important;
+}
+
+.children-add-button,
+.floating-add-btn {
+  width: 74px !important;
+  height: 74px !important;
+  min-width: 74px !important;
+  min-height: 74px !important;
+}
+
+.children-add-button svg,
+.floating-add-btn svg {
+  width: 74px !important;
+  height: 74px !important;
+}
+
+body > .floating-add-btn,
+.children-screen .floating-add-btn {
+  position: fixed !important;
+  right: max(18px, calc((100vw - 390px) / 2 + 18px)) !important;
+  bottom: calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 20px) !important;
+  z-index: 2147483001 !important;
+}
+
+.home-assistant-strip,
+.settings-summary-card,
+.assistant-hero,
+.assistant-empty,
+.assistant-section,
+.assistant-report-card,
+.history-record-card,
+.manage-child-card,
+.summary-card,
+.confirmation-summary-card {
+  border-radius: var(--nana-card-radius) !important;
+  padding: var(--nana-space-5) !important;
+}
+
+.home-assistant-strip {
+  width: var(--nana-content-width) !important;
+  margin: 0 auto var(--nana-space-5) !important;
+  min-height: 104px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: var(--nana-space-4) !important;
+}
+
+.home-assistant-strip strong {
+  line-height: 1.18 !important;
+}
+
+.home-assistant-strip button,
+.continue-button,
+.auth-compact-button,
+.auth-skip,
+.pain-type-next-btn,
+.pain-type-back-btn,
+.manage-child-card button,
+.settings-link,
+.save-child-button {
+  min-height: var(--nana-control-height) !important;
+  border-radius: 999px !important;
+  line-height: 1.1 !important;
+}
+
+.child-card-list,
+.child-card-list--two,
+body[data-route="child-added"] .child-card-list,
+body[data-route="homepage-newuser"] .child-card-list {
+  width: var(--nana-content-width) !important;
+  margin: 0 auto !important;
+  padding: 0 0 calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 72px) !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(154px, 100%), 1fr)) !important;
+  justify-content: center !important;
+  justify-items: stretch !important;
+  gap: var(--nana-space-4) !important;
+}
+
+.child-card-list:not(:has(.child-card:nth-child(2))) {
+  grid-template-columns: minmax(0, min(282px, 82vw)) !important;
+  justify-items: center !important;
+}
+
+.child-card,
+.child-card.child-card--compact {
+  width: 100% !important;
+  max-width: 282px !important;
+  min-height: 282px !important;
+  border-radius: var(--nana-card-radius) !important;
+  padding: var(--nana-space-5) var(--nana-space-4) var(--nana-space-4) !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(54px, auto) auto !important;
+  justify-items: center !important;
+  gap: var(--nana-space-4) !important;
+}
+
+.child-card-photo-wrap,
+.child-card-photo-frame {
+  width: clamp(104px, 30vw, 132px) !important;
+  height: clamp(104px, 30vw, 132px) !important;
+  margin: 0 !important;
+}
+
+.child-card-meta,
+.child-card-meta--compact {
+  width: 100% !important;
+  padding: 0 !important;
+  display: grid !important;
+  gap: var(--nana-space-1) !important;
+}
+
+.child-card .child-name {
+  font-size: clamp(23px, 6.2vw, 30px) !important;
+  line-height: 1.03 !important;
+}
+
+.child-card .child-age {
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+.child-open-map-btn {
+  width: 100% !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+}
+
+.settings-content,
+.history-content,
+.assistant-content,
+.manage-content {
+  padding: var(--nana-space-5) 0 calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 28px) !important;
+  gap: var(--nana-space-4) !important;
+}
+
+.settings-field,
+.history-search-wrap {
+  min-height: var(--nana-control-height) !important;
+  border-radius: 18px !important;
+}
+
+.history-group-tabs {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: var(--nana-space-1) !important;
+}
+
+.history-group-tab {
+  min-height: 40px !important;
+  padding-inline: var(--nana-space-2) !important;
+  font-size: 12px !important;
+}
+
+.history-detail-grid,
+.summary-detail-grid {
+  display: grid !important;
+  gap: var(--nana-space-3) !important;
+}
+
+.summary-card,
+.confirmation-summary-card {
+  width: var(--nana-content-width) !important;
+  margin: var(--nana-space-4) auto 0 !important;
+}
+
+.pain-progress {
+  width: var(--nana-content-width) !important;
+  margin: var(--nana-space-2) auto var(--nana-space-4) !important;
+}
+
+.pain-scale-body-wrap,
+.mini-body-wrap {
+  flex: 0 0 auto !important;
+}
+
+.mini-body-wrap--error {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 233, 138, 0.5)) !important;
+}
+
+.mini-body-wrap--error::after {
+  content: "3D preview unavailable";
+  position: absolute;
+  inset: auto 10px 12px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: rgba(21, 21, 28, 0.72);
+  font-family: "Nunito", sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  text-align: center;
+}
+
+@media (min-width: 700px) {
+  :root {
+    --nana-content-width: min(360px, calc(100% - 30px));
+  }
+
+  body > .floating-add-btn,
+  .children-screen .floating-add-btn {
+    right: calc(50% - 178px) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --nana-control-height: 48px;
+  }
+
+  .screen--body-header {
+    padding-top: 68px !important;
+  }
+
+  body > .children-header,
+  .children-header {
+    height: 66px !important;
+    padding-inline: 16px !important;
+  }
+
+  .home-assistant-strip {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-assistant-strip button {
+    width: 100% !important;
+  }
+}
+
+/* === FINAL PROPORTION LOCK: keep the launch surfaces from drifting === */
+body[data-route="child-added"] .child-card,
+body[data-route="child-added"] .child-card.child-card--compact,
+body[data-route="homepage-newuser"] .child-card,
+body[data-route="homepage-newuser"] .child-card.child-card--compact {
+  width: 100% !important;
+  max-width: 282px !important;
+  min-height: 282px !important;
+  height: auto !important;
+  max-height: none !important;
+  border-radius: var(--nana-card-radius) !important;
+  padding: var(--nana-space-5) var(--nana-space-4) var(--nana-space-4) !important;
+  grid-template-rows: auto minmax(54px, auto) auto !important;
+}
+
+body[data-route="child-added"] .child-card-list,
+body[data-route="child-added"] .child-card-list.child-card-list--two,
+body[data-route="homepage-newuser"] .child-card-list,
+body[data-route="homepage-newuser"] .child-card-list.child-card-list--two {
+  width: var(--nana-content-width) !important;
+  margin: 0 auto !important;
+  padding: 0 0 calc(var(--nana-bottom-nav-height, 92px) + env(safe-area-inset-bottom, 0px) + 72px) !important;
+  grid-template-columns: minmax(0, min(282px, 82vw)) !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  gap: var(--nana-space-4) !important;
+}
+
+body[data-route="child-added"] .child-card-list:has(.child-card:nth-child(2)),
+body[data-route="homepage-newuser"] .child-card-list:has(.child-card:nth-child(2)) {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  justify-items: stretch !important;
+}
+
+body[data-route="child-added"] .child-card-photo-wrap,
+body[data-route="child-added"] .child-card-photo-frame,
+body[data-route="homepage-newuser"] .child-card-photo-wrap,
+body[data-route="homepage-newuser"] .child-card-photo-frame {
+  width: clamp(104px, 30vw, 132px) !important;
+  height: clamp(104px, 30vw, 132px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+}
+
+body[data-route="settings"] .settings-summary-card,
+body[data-route="settings"] .settings-summary-card * {
+  max-height: none !important;
+}
+
+body[data-route="settings"] .settings-summary-card {
+  width: 100% !important;
+  min-height: 138px !important;
+  height: auto !important;
+  overflow: visible !important;
+  display: grid !important;
+  gap: var(--nana-space-2) !important;
+}
+
+body[data-route="settings"] .settings-summary-card strong {
+  line-height: 1.08 !important;
+}
+
+.bottom-nav,
+body > .bottom-nav,
+.children-screen .bottom-nav,
+.history-screen .bottom-nav,
+.settings-screen .bottom-nav,
+.manage-screen .bottom-nav,
+.manage-children-screen .bottom-nav,
+body[data-route="child-added"] .bottom-nav {
+  width: min(366px, calc(100vw - 24px)) !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  border-radius: 28px 28px 0 0 !important;
+}
+
+@media (max-width: 370px) {
+  body[data-route="child-added"] .child-card-list:has(.child-card:nth-child(2)),
+  body[data-route="homepage-newuser"] .child-card-list:has(.child-card:nth-child(2)) {
+    grid-template-columns: 1fr !important;
   }
 }

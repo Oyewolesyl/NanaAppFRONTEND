@@ -1,10 +1,14 @@
 import { appState, updateCaregiver } from '../appState';
-import { headerHtml, bottomNavHtml, wireBottomNav, attachMenu } from '../sharedUi';
+import { headerHtml, bottomNavHtml, wireBottomNav, attachMenu, escapeHtml } from '../sharedUi';
 
 export function renderSettingsScreen(app) {
   app.innerHTML = '';
 
   const c = appState.caregiver;
+  const caregiverName = escapeHtml(c.name || 'Caregiver');
+  const caregiverNameValue = escapeHtml(c.name || '');
+  const caregiverEmail = escapeHtml(c.email || '');
+  const caregiverPhone = escapeHtml(c.phone || '');
   const screen = document.createElement('main');
   screen.className = 'screen settings-screen mobile-fit-screen page-animate-in';
 
@@ -15,23 +19,23 @@ export function renderSettingsScreen(app) {
       <h1 class="children-title children-title--small">Caregiver Profile</h1>
       <section class="settings-summary-card">
         <span>Launch profile</span>
-        <strong>${c.name || 'Caregiver'}</strong>
+        <strong>${caregiverName}</strong>
         <p>${appState.children.length} child profile${appState.children.length === 1 ? '' : 's'} connected. ${appState.painLogs.length} pain report${appState.painLogs.length === 1 ? '' : 's'} saved.</p>
       </section>
 
       <label class="settings-field">
         Name
-        <input data-caregiver-name value="${c.name || ''}" placeholder="Your name" />
+        <input data-caregiver-name value="${caregiverNameValue}" placeholder="Your name" />
       </label>
 
       <label class="settings-field">
         Email
-        <input type="email" inputmode="email" autocomplete="email" data-caregiver-email value="${c.email || ''}" placeholder="you@email.com" />
+        <input type="email" inputmode="email" autocomplete="email" data-caregiver-email value="${caregiverEmail}" placeholder="you@email.com" />
       </label>
 
       <label class="settings-field">
         Phone
-        <input type="tel" inputmode="tel" autocomplete="tel" data-caregiver-phone value="${c.phone || ''}" placeholder="Phone number" />
+        <input type="tel" inputmode="tel" autocomplete="tel" data-caregiver-phone value="${caregiverPhone}" placeholder="Phone number" />
       </label>
 
       <button type="button" class="continue-button save-settings">Save Profile</button>

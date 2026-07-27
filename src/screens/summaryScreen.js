@@ -1,6 +1,6 @@
 import { ASSETS } from '../assets';
 import { appState, getActiveChild, savePainLog, updatePainDraft } from '../appState';
-import { childContextHtml, formatZones, painProgressHtml } from '../sharedUi';
+import { childContextHtml, escapeHtml, formatZones, painProgressHtml } from '../sharedUi';
 import { mountMiniBody } from '../miniBody3d';
 import { showToast } from '../toast';
 
@@ -8,6 +8,13 @@ export function renderSummaryScreen(app) {
   app.innerHTML = '';
   const child = getActiveChild();
   const d = appState.painDraft;
+  const childPhoto = escapeHtml(child?.photo_url || ASSETS.inactiveChildPhoto);
+  const childName = escapeHtml(child?.name || 'Child');
+  const childAge = escapeHtml(child?.age || '-');
+  const zones = escapeHtml(formatZones(d.zones));
+  const painType = escapeHtml(d.painType || 'Not chosen');
+  const started = escapeHtml(d.started || 'Not chosen');
+  const noteText = escapeHtml(d.notes || '');
   const screen = document.createElement('main');
   screen.className = 'screen pain-scale-screen summary-screen page-animate-in';
   screen.insertAdjacentHTML('beforeend', `
@@ -16,19 +23,19 @@ export function renderSummaryScreen(app) {
     <div class="pain-scale-body-wrap mini-body-wrap"></div>
     <div class="pain-scale-heading-wrap"><h1 class="pain-scale-title">Pain Summary</h1>${childContextHtml()}</div>
     <section class="summary-card">
-      <div class="summary-child"><img src="${child?.photo_url || ASSETS.inactiveChildPhoto}" alt=""/><div><strong>${child?.name || 'Child'}</strong><span>${child?.age || '-'} years old</span></div></div>
+      <div class="summary-child"><img src="${childPhoto}" alt=""/><div><strong>${childName}</strong><span>${childAge} years old</span></div></div>
       <div class="summary-detail-grid">
         <p>
           <span class="history-icon history-icon--area" aria-hidden="true"></span>
-          <span><strong>Spots</strong><em>${formatZones(d.zones)}</em></span>
+          <span><strong>Spots</strong><em>${zones}</em></span>
         </p>
         <p>
           <span class="history-icon history-icon--type" aria-hidden="true"></span>
-          <span><strong>Feels like</strong><em>${d.painType || 'Not chosen'}</em></span>
+          <span><strong>Feels like</strong><em>${painType}</em></span>
         </p>
         <p>
           <span class="history-icon history-icon--started" aria-hidden="true"></span>
-          <span><strong>Started</strong><em>${d.started || 'Not chosen'}</em></span>
+          <span><strong>Started</strong><em>${started}</em></span>
         </p>
         <p>
           <span class="summary-icon summary-icon--pain" aria-hidden="true">${d.intensity ?? '-'}</span>
@@ -37,7 +44,7 @@ export function renderSummaryScreen(app) {
       </div>
       <label class="summary-note-field">
         <span><span class="history-icon history-icon--note" aria-hidden="true"></span>Add note</span>
-        <textarea data-pain-note rows="3" placeholder="Add any extra detail here">${d.notes || ''}</textarea>
+        <textarea data-pain-note rows="3" placeholder="Add any extra detail here">${noteText}</textarea>
       </label>
     </section>
     <div class="pain-type-actions"><button type="button" class="pain-type-back-btn">Back</button><button type="button" class="pain-type-next-btn">Submit</button></div>

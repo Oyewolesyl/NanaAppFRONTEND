@@ -7647,3 +7647,138 @@ body[data-route="child-added"] .bottom-nav {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* === REAL IPHONE SAFARI LANDING FIX: compact first view, no cropped hero === */
+body[data-route="get-started"] .get-started-screen {
+  min-height: 100svh !important;
+  height: auto !important;
+  padding: max(10px, env(safe-area-inset-top, 0px)) 16px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  align-content: start !important;
+  justify-content: start !important;
+  gap: 8px !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+body[data-route="get-started"] .welcome-title {
+  margin: 0 auto !important;
+  font-size: clamp(1.35rem, 6.4vw, 1.85rem) !important;
+  line-height: 1.02 !important;
+}
+
+body[data-route="get-started"] .app-thumbnail {
+  width: clamp(86px, 26vw, 116px) !important;
+  height: clamp(74px, 22vw, 96px) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 10px !important;
+  border-radius: 26px !important;
+}
+
+body[data-route="get-started"] .app-thumbnail::after {
+  bottom: -8px !important;
+  height: 12px !important;
+}
+
+body[data-route="get-started"] .thumbnail-mark {
+  width: 100% !important;
+  max-width: 86px !important;
+  max-height: 76px !important;
+  object-fit: contain !important;
+}
+
+body[data-route="get-started"] .welcome-body-preview {
+  width: clamp(102px, 32vw, 132px) !important;
+  height: clamp(104px, 26svh, 136px) !important;
+  min-height: 0 !important;
+  margin: 0 auto 4px !important;
+}
+
+body[data-route="get-started"] .welcome-body-preview::before {
+  bottom: 8px !important;
+  height: 12px !important;
+}
+
+body[data-route="get-started"] .landing-feature-guide {
+  width: min(344px, calc(100vw - 32px)) !important;
+  margin: 2px auto 8px !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+
+body[data-route="get-started"] .landing-feature-card {
+  min-height: 72px !important;
+  padding: 10px 12px !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: center !important;
+  align-content: center !important;
+  gap: 4px 10px !important;
+  border-radius: 20px !important;
+}
+
+body[data-route="get-started"] .landing-feature-card span {
+  grid-row: 1 / span 2 !important;
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 13px !important;
+}
+
+body[data-route="get-started"] .landing-feature-card strong {
+  font-size: clamp(17px, 5.2vw, 20px) !important;
+  line-height: 1.02 !important;
+}
+
+body[data-route="get-started"] .landing-feature-card em {
+  grid-column: 2 !important;
+  font-size: clamp(12px, 3.6vw, 14px) !important;
+  line-height: 1.15 !important;
+}
+
+body[data-route="get-started"] .get-started-button {
+  width: min(300px, calc(100vw - 48px)) !important;
+  min-height: 48px !important;
+  margin: 2px auto 0 !important;
+}
+
+body[data-route="get-started"] .landing-install-link {
+  min-height: 40px !important;
+  margin: 2px auto 0 !important;
+}
+
+body[data-route="get-started"] .tagline {
+  margin: 2px auto 0 !important;
+  font-size: 12px !important;
+}
+
+@media (max-height: 700px) {
+  body[data-route="get-started"] .welcome-title {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail {
+    width: 80px !important;
+    height: 64px !important;
+    padding: 8px !important;
+  }
+
+  body[data-route="get-started"] .welcome-body-preview {
+    width: 92px !important;
+    height: 96px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card {
+    min-height: 66px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card strong {
+    font-size: 16px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card em {
+    font-size: 11.5px !important;
+  }
+}

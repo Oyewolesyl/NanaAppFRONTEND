@@ -297,6 +297,10 @@ function renderApp() {
     renderGetStartedScreen(app);
   } finally {
     promoteRouteOverlays(app);
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      app.querySelector('.screen')?.scrollTo?.(0, 0);
+    });
     finishRouteLoading(app);
   }
 }

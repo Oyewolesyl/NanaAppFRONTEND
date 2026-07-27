@@ -10,7 +10,7 @@ export function renderAuthScreen(app) {
   app.innerHTML = '';
 
   const screen = document.createElement('main');
-  screen.className = 'screen select-role-screen auth-screen';
+  screen.className = 'screen select-role-screen auth-screen page-animate-in';
 
   screen.insertAdjacentHTML(
     'beforeend',
@@ -110,6 +110,8 @@ export function renderAuthScreen(app) {
   let isBusy = false;
 
   function setBusy(nextBusy, message = '') {
+    // Lock all auth controls while a network request is active. This prevents
+    // duplicate account creation/login attempts on slow Render cold starts.
     isBusy = nextBusy;
     screen.classList.toggle('auth-screen--busy', nextBusy);
     screen.setAttribute('aria-busy', String(nextBusy));
@@ -195,6 +197,8 @@ export function renderAuthScreen(app) {
       setBusy(true, 'Creating secure Nana account...');
 
       try {
+        // Backend API base comes from VITE_API_URL in production; the Render URL
+        // is kept as a fallback so the app still works in a local demo.
         const response = await fetch(
           `${API_URL}/api/auth/register`,
           {
@@ -262,6 +266,8 @@ export function renderAuthScreen(app) {
           data.access_token
         );
 
+        // Token/user are persisted for future backend-connected screens. The
+        // current local pain-report flow still works when users choose skip.
         localStorage.setItem(
           'nana_user',
           JSON.stringify(data.user)

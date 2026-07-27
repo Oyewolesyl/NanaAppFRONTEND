@@ -228,6 +228,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     setBodyLoading(message);
 
     return new Promise((resolve, reject) => {
+      // Three.js is loaded only when the body map route is opened. That keeps
+      // the first app load lighter, while these messages explain the delay.
       const existing = document.querySelector(`script[src="${src}"]`);
       if (existing?.dataset.loaded === "true") {
         resolve();
@@ -308,6 +310,9 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
     setBodyLoading("Loading child body map...");
 
+    // bodymap.glb lives in /public and is preloaded by main.js. This loader
+    // still needs an error path because schools/test devices can have slow or
+    // interrupted connections.
     new THREE.GLTFLoader().load("/bodymap.glb", gltf => {
       model = gltf.scene;
       model.scale.setScalar(MODEL_SCALE);
@@ -398,7 +403,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const hits = raycaster.intersectObject(model, true);
     if (!hits.length) return;
 
-    // Convert hit point into original model-local space, including rotation.
+    // Convert the hit point back into original model-local space. The zone
+    // thresholds below were tuned to the specific child body GLB dimensions.
     const origLocal = model.worldToLocal(hits[0].point.clone());
     const zoneSideIsFront = origLocal.z >= 0;
     isFront = zoneSideIsFront;

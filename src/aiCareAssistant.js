@@ -5,6 +5,8 @@ const MODERATE_INTENSITY = 5;
 const WATCH_WORDS = ['fever', 'vomit', 'vomiting', 'bleeding', 'dizzy', 'faint', 'swelling', 'breathing'];
 const RED_FLAG_KEYS = ['fever', 'injury', 'breathing', 'gettingWorse'];
 
+// All assistant copy is rendered into template strings, so every dynamic value
+// must pass through safeText before it reaches the DOM.
 export function safeText(value, fallback = '') {
   return String(value ?? fallback)
     .replaceAll('&', '&amp;')
@@ -117,6 +119,9 @@ export function createCareInsight(log = {}) {
 }
 
 export function createAssistantAssessment({ log = {}, logs = [], answers = {} } = {}) {
+  // The assistant is intentionally rules-based for the resit build: it creates
+  // a real interactive care-support feature while staying explainable in the
+  // technical interview. Red flags always override the base urgency level.
   const base = createCareInsight(log);
   const redFlags = getAnsweredRedFlags(answers);
   const intensity = getIntensity(log);
@@ -135,6 +140,8 @@ export function createAssistantAssessment({ log = {}, logs = [], answers = {} } 
     { key: 'canPlay', label: 'Child can still walk, talk, play, or rest normally?' },
   ];
 
+  // The plan changes immediately as follow-up answers change, so the user can
+  // see why Nana recommends either monitoring or escalating care.
   const carePlan = [
     hasRedFlags
       ? 'Contact a doctor, nurse, urgent care, or emergency support now.'
@@ -196,6 +203,8 @@ export function wireCareInsightActions(root, { onCopied } = {}) {
         await navigator.clipboard.writeText(text);
         button.textContent = 'Copied';
       } catch {
+        // Older embedded browsers may block Clipboard API. Keep a fallback so
+        // the handoff can still be copied during a live demo.
         textarea?.select();
         document.execCommand?.('copy');
         button.textContent = 'Copied';

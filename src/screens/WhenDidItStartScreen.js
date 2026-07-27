@@ -18,7 +18,7 @@ export function renderWhenDidItStartScreen(app, { painDesc = "", fromScreen = "#
   app.innerHTML = "";
 
   const screen = document.createElement("main");
-  screen.className = "screen when-screen";
+  screen.className = "screen when-screen page-animate-in";
 
   const subtitle = painDesc ? `<p class="when-subtitle">(${painDesc})</p>` : "";
 

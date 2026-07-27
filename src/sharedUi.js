@@ -31,7 +31,7 @@ export function bottomNavHtml(active = '') {
     <nav class="bottom-nav" aria-label="Main navigation" data-active="${current}">
       <button type="button" class="bottom-nav-item bottom-nav-item--home ${current === 'home' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#child-added" aria-label="Home" aria-current="${current === 'home' ? 'page' : 'false'}"><img src="${ASSETS.navHome}" alt="" /></button>
       <button type="button" class="bottom-nav-item bottom-nav-item--activity ${current === 'history' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#history" aria-label="History" aria-current="${current === 'history' ? 'page' : 'false'}"><img src="${current === 'history' ? ASSETS.navHistoryActive : ASSETS.navClock}" alt="" /></button>
-      <button type="button" class="bottom-nav-item bottom-nav-item--assistant ${current === 'assistant' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#assistant" aria-label="Nana Assistant" aria-current="${current === 'assistant' ? 'page' : 'false'}"><span aria-hidden="true">AI</span></button>
+      <button type="button" class="bottom-nav-item bottom-nav-item--assistant ${current === 'assistant' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#assistant" aria-label="Nana Assistant" aria-current="${current === 'assistant' ? 'page' : 'false'}"><span aria-hidden="true">N</span></button>
       <button type="button" class="bottom-nav-item bottom-nav-item--settings ${current === 'settings' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#settings" aria-label="Settings" aria-current="${current === 'settings' ? 'page' : 'false'}"><img src="${current === 'settings' ? ASSETS.navSettingsActive : ASSETS.navSettingsInactive}" alt="" /></button>
     </nav>
   `;
@@ -41,6 +41,9 @@ export function wireBottomNav(root) {
   const nav = root.querySelector('.bottom-nav');
 
   if (nav) {
+    // The nav is rendered with the screen for readability, then promoted to the
+    // body for fixed positioning. This prevents route containers from clipping
+    // the nav on small mobile screens.
     document.querySelectorAll('body > .bottom-nav').forEach((node) => {
       if (node !== nav) node.remove();
     });
@@ -64,6 +67,8 @@ export function attachMenu(root) {
   const header = btn.closest('.children-header');
 
   if (header) {
+    // Same pattern as bottom nav: keep screen modules declarative while the
+    // shared helper handles the fixed mobile placement.
     document.querySelectorAll('body > .children-header').forEach((node) => {
       if (node !== header) node.remove();
     });
@@ -142,6 +147,8 @@ export function wireAddChildOverlay(root, overlay, { onSave } = {}) {
   }
 
   function openOverlay(child = null) {
+    // resetForm receives either an existing child for edit mode or null for a
+    // fresh child. The overlay owns its temporary form state until Save.
     overlay.resetForm?.(child);
     document.body.classList.add('nana-add-child-open');
     overlay.hidden = false;

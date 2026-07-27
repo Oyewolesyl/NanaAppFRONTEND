@@ -6,7 +6,7 @@ export function renderSettingsScreen(app) {
 
   const c = appState.caregiver;
   const screen = document.createElement('main');
-  screen.className = 'screen settings-screen mobile-fit-screen';
+  screen.className = 'screen settings-screen mobile-fit-screen page-animate-in';
 
   screen.insertAdjacentHTML('beforeend', `
     ${headerHtml('Settings')}
@@ -26,12 +26,12 @@ export function renderSettingsScreen(app) {
 
       <label class="settings-field">
         Email
-        <input data-caregiver-email value="${c.email || ''}" placeholder="you@email.com" />
+        <input type="email" inputmode="email" autocomplete="email" data-caregiver-email value="${c.email || ''}" placeholder="you@email.com" />
       </label>
 
       <label class="settings-field">
         Phone
-        <input data-caregiver-phone value="${c.phone || ''}" placeholder="Phone number" />
+        <input type="tel" inputmode="tel" autocomplete="tel" data-caregiver-phone value="${c.phone || ''}" placeholder="Phone number" />
       </label>
 
       <button type="button" class="continue-button save-settings">Save Profile</button>

@@ -7,6 +7,9 @@ const K = {
   role: 'nana_role_v3',
 };
 
+// This prototype runs without a backend for the core pain-report flow, so
+// localStorage is the source of truth for demo/resit data. Versioned keys let
+// future schema changes reset safely without corrupting older browser data.
 function hasStored(key) {
   return localStorage.getItem(key) !== null;
 }
@@ -100,6 +103,9 @@ export const appState = {
   painLogs: read(K.painLogs, []),
 };
 
+// Always keep an active child when possible. Many screens assume a selected
+// child so that reports, body-map selections, and assistant handoffs stay tied
+// to the correct profile.
 if (appState.children.length && !appState.children.some((c) => c.id === appState.activeChildId)) {
   appState.activeChildId = appState.children[0].id;
 }
@@ -197,6 +203,8 @@ export function updateCaregiver(patch) {
 }
 
 export function updatePainDraft(patch) {
+  // Zones are stored as a set because the 3D body map can be tapped multiple
+  // times while rotating. Dedupe here keeps every later screen simple.
   const zones = patch?.zones
     ? [...new Set(patch.zones)]
     : appState.painDraft.zones;

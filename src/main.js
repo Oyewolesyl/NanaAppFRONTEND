@@ -23,7 +23,12 @@ import { ASSETS } from './assets';
 let previousHash = '#get-started';
 let assetObserverInstalled = false;
 let criticalAssetsStarted = false;
+let deferredInstallPrompt = null;
+let installPromptRendered = false;
 
+// Keep this list small and launch-critical. These assets appear early in the
+// flow or are expensive enough that a delayed load would make the app feel
+// unfinished, especially on the 3D body-map screen.
 const CRITICAL_ASSETS = [
   ASSETS.logoMark,
   ASSETS.logoText,
@@ -72,6 +77,8 @@ function installAssetLoadingObserver() {
   if (assetObserverInstalled) return;
   assetObserverInstalled = true;
 
+  // Every image added after a route change gets the same fade-in/fallback state.
+  // This avoids individual screens having to remember asset loading behavior.
   document.querySelectorAll('img').forEach(prepareAsset);
 
   new MutationObserver((mutations) => {
@@ -103,6 +110,9 @@ function preloadAsset(url) {
 function preloadCriticalAssets() {
   if (criticalAssetsStarted) return;
   criticalAssetsStarted = true;
+
+  // Fire-and-forget by design: preloading should improve perceived speed but
+  // must never block the app from rendering on a weak or offline connection.
   Promise.allSettled(CRITICAL_ASSETS.map(preloadAsset));
 }
 
@@ -133,6 +143,103 @@ function finishRouteLoading(app) {
   });
 }
 
+function isStandaloneDisplay() {
+  return (
+    window.matchMedia?.('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true
+  );
+}
+
+function isLikelyIosBrowser() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent || '');
+}
+
+function createInstallPrompt() {
+  if (installPromptRendered || isStandaloneDisplay()) return null;
+  installPromptRendered = true;
+
+  const prompt = document.createElement('aside');
+  prompt.className = 'nana-install-prompt';
+  prompt.hidden = true;
+  prompt.innerHTML = `
+    <img src="/pwa-icon-192.png" alt="" />
+    <div>
+      <strong>Add Nana to Home Screen</strong>
+      <span data-install-copy>Open Nana faster from your phone or desktop.</span>
+    </div>
+    <button type="button" data-install-action>Install</button>
+    <button type="button" data-install-dismiss aria-label="Dismiss install prompt">x</button>
+  `;
+
+  const copy = prompt.querySelector('[data-install-copy]');
+  const action = prompt.querySelector('[data-install-action]');
+
+  action.addEventListener('click', async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice.catch(() => null);
+      deferredInstallPrompt = null;
+      prompt.hidden = true;
+      return;
+    }
+
+    copy.textContent = isLikelyIosBrowser()
+      ? 'Tap Share, then choose Add to Home Screen.'
+      : 'Use your browser menu and choose Install app or Add to desktop.';
+    action.textContent = 'Got it';
+    action.addEventListener('click', () => {
+      prompt.hidden = true;
+    }, { once: true });
+  });
+
+  prompt.querySelector('[data-install-dismiss]').addEventListener('click', () => {
+    localStorage.setItem('nana_install_prompt_dismissed', 'true');
+    prompt.hidden = true;
+  });
+
+  document.body.append(prompt);
+  return prompt;
+}
+
+function showInstallPrompt({ force = false } = {}) {
+  if (isStandaloneDisplay()) return;
+  if (!force && localStorage.getItem('nana_install_prompt_dismissed') === 'true') return;
+
+  const prompt = document.querySelector('.nana-install-prompt') || createInstallPrompt();
+  if (!prompt) return;
+
+  const action = prompt.querySelector('[data-install-action]');
+  const copy = prompt.querySelector('[data-install-copy]');
+  action.textContent = deferredInstallPrompt ? 'Install' : 'How';
+  copy.textContent = 'Open Nana faster from your phone or desktop.';
+  prompt.hidden = false;
+}
+
+function installPwaSupport() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => null);
+  }
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    showInstallPrompt();
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    document.querySelector('.nana-install-prompt')?.remove();
+  });
+
+  window.addEventListener('nana:show-install-prompt', (event) => {
+    showInstallPrompt({ force: Boolean(event.detail?.force) });
+  });
+
+  setTimeout(() => {
+    if (isLikelyIosBrowser()) showInstallPrompt();
+  }, 1400);
+}
+
 function renderApp() {
   const app = document.querySelector('#app');
   if (!app) return;
@@ -140,6 +247,10 @@ function renderApp() {
   const route = window.location.hash || '#get-started';
   startRouteLoading(app, route);
   document.body.dataset.route = route.replace('#', '');
+
+  // Header, menu, bottom nav, and floating add button are moved to <body> on
+  // mobile so they can stay fixed above each screen without being clipped by
+  // the current route container. Remove stale copies before rendering a route.
   document.querySelectorAll('body > .children-header, body > .nana-menu-overlay, body > .bottom-nav, body > .floating-add-btn').forEach((node) => node.remove());
 
   try {
@@ -184,4 +295,5 @@ if (!window.location.hash) window.location.hash = '#get-started';
 
 installAssetLoadingObserver();
 preloadCriticalAssets();
+installPwaSupport();
 renderApp();

@@ -4,7 +4,7 @@ export function renderSelectRoleScreen(app) {
   app.innerHTML = "";
 
   const screen = document.createElement("main");
-  screen.className = "screen select-role-screen";
+  screen.className = "screen select-role-screen page-animate-in";
 
   screen.insertAdjacentHTML("beforeend", `
     <header class="top-bar">

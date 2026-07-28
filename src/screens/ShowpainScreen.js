@@ -1,6 +1,8 @@
 import { ASSETS } from "../assets";
 import { getActiveChild, updatePainDraft, appState } from "../appState";
 import { childContextHtml, painProgressHtml } from "../sharedUi";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /* ── Labels (child-friendly + clinically accurate) ─────────────── */
 const LABELS = {
@@ -316,15 +318,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   async function init() {
     setBodyLoading("Preparing 3D body map...");
 
-    try {
-      await loadLibs();
-    } catch (err) {
-      activateBodyFallback("3D is taking too long. Use the body map below.");
-      console.error("3D library load error:", err);
-      return;
-    }
-
-    const THREE = window.THREE;
     const rect  = wrap.getBoundingClientRect();
     const W = rect.width  || 300;
     const H = rect.height || 420;
@@ -332,7 +325,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(W, H);
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.setClearColor(0x000000, 0);
 
@@ -355,7 +348,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     // bodymap.glb lives in /public and is preloaded by main.js. This loader
     // still needs an error path because schools/test devices can have slow or
     // interrupted connections.
-    new THREE.GLTFLoader().load("/bodymap.glb", gltf => {
+    new GLTFLoader().load("/bodymap.glb", gltf => {
       model = gltf.scene;
       model.scale.setScalar(MODEL_SCALE);
       model.position.set(0, -(MODEL_CENTRE_Y * MODEL_SCALE), 0);

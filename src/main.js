@@ -136,6 +136,7 @@ function startRouteLoading(app, route) {
     document.body.append(loader);
   }
 
+  loader.hidden = false;
   loader.querySelector('span').textContent =
     route === '#body-map' ? 'Preparing 3D body map' : 'Loading Nana';
 }
@@ -145,6 +146,7 @@ function finishRouteLoading(app) {
     setTimeout(() => {
       app.removeAttribute('aria-busy');
       document.body.classList.remove('nana-route-is-loading');
+      document.querySelector('.nana-route-loader')?.setAttribute('hidden', '');
     }, 140);
   });
 }

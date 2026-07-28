@@ -82,33 +82,29 @@ export function renderGetStartedScreen(app) {
       </span>
     </button>
 
-    <section class="welcome-body-preview" aria-label="Rotating body map preview">
-      <div class="welcome-body-orbit"></div>
-    </section>
-
-    <section class="landing-feature-guide" aria-label="How Nana works">
-      <button type="button" class="landing-feature-card" data-landing-action="profile">
+    <section class="landing-flow-map" aria-label="Nana app flow">
+      <button type="button" class="landing-flow-hotspot landing-flow-hotspot--profile" data-landing-action="profile">
         <span>01</span>
-        <strong>Add a child profile</strong>
-        <em>Keep each pain report connected to the right child.</em>
+        <strong>profile</strong>
       </button>
 
-      <button type="button" class="landing-feature-card" data-landing-action="map">
+      <button type="button" class="landing-flow-hotspot landing-flow-hotspot--map" data-landing-action="map">
         <span>02</span>
-        <strong>Tap the 3D body map</strong>
-        <em>Show exactly where it hurts with a visual body model.</em>
+        <strong>body map</strong>
       </button>
 
-      <button type="button" class="landing-feature-card" data-landing-action="report">
+      <section class="welcome-body-preview" aria-label="Rotating body map preview">
+        <div class="welcome-body-orbit"></div>
+      </section>
+
+      <button type="button" class="landing-flow-hotspot landing-flow-hotspot--report" data-landing-action="report">
         <span>03</span>
-        <strong>Describe the pain</strong>
-        <em>Capture feeling, timing, intensity, and notes in one flow.</em>
+        <strong>report</strong>
       </button>
 
-      <button type="button" class="landing-feature-card" data-landing-action="assistant">
-        <span>04</span>
-        <strong>Get a handoff plan</strong>
-        <em>Nana Assistant turns reports into a caregiver-ready summary.</em>
+      <button type="button" class="landing-flow-hotspot landing-flow-hotspot--assistant" data-landing-action="assistant">
+        <img src="${ASSETS.logoMark}" alt="" />
+        <strong>assistant</strong>
       </button>
     </section>
 

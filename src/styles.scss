@@ -9502,3 +9502,380 @@ body[data-route="select-role"] .select-role-screen > .continue-button {
     line-height: 1 !important;
   }
 }
+
+/* launch correction: real flow polish after iphone screenshots. */
+body > .children-header .mini-header-title,
+.children-header .mini-header-title {
+  display: none !important;
+}
+
+.bottom-nav-item--assistant .assistant-wink-icon {
+  display: none !important;
+}
+
+.bottom-nav-item--assistant .bottom-nav-logo {
+  display: block !important;
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: contain !important;
+}
+
+.bottom-nav-item--assistant.bottom-nav-item--active .bottom-nav-logo {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+body[data-route="get-started"] .landing-feature-guide {
+  display: none !important;
+}
+
+.landing-flow-map {
+  position: relative;
+  width: min(354px, calc(100vw - 28px));
+  min-height: 310px;
+  margin: 8px auto 0;
+  display: grid;
+  place-items: center;
+}
+
+.landing-flow-hotspot {
+  position: absolute;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid rgba(2, 2, 2, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #10131a;
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(42, 88, 118, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.landing-flow-hotspot span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--button-red);
+  color: #fff;
+  font-size: 12px;
+}
+
+.landing-flow-hotspot strong {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.landing-flow-hotspot img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.landing-flow-hotspot--profile {
+  top: 18px;
+  left: 2px;
+}
+
+.landing-flow-hotspot--map {
+  top: 88px;
+  right: 0;
+}
+
+.landing-flow-hotspot--report {
+  left: 12px;
+  bottom: 64px;
+}
+
+.landing-flow-hotspot--assistant {
+  right: 6px;
+  bottom: 18px;
+}
+
+body[data-route="get-started"] .welcome-body-preview {
+  width: min(214px, 58vw) !important;
+  height: 250px !important;
+  margin: 34px auto 0 !important;
+  overflow: visible !important;
+}
+
+body[data-route="get-started"] .welcome-body-preview::before {
+  bottom: 18px !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink {
+  pointer-events: none !important;
+  animation: nanaLandingWinkExit 4.8s ease both !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame {
+  animation-duration: 4.2s !important;
+  animation-iteration-count: 1 !important;
+}
+
+@keyframes nanaLandingWinkExit {
+  0% { opacity: 0; transform: translateY(2px) scale(0.94); }
+  12%, 68% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-6px) scale(0.96); visibility: hidden; }
+}
+
+@media (max-width: 430px) {
+  body[data-route="get-started"] .get-started-screen {
+    min-height: 100svh !important;
+    padding: 16px 14px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 8px !important;
+    justify-content: flex-start !important;
+  }
+
+  body[data-route="get-started"] .welcome-title {
+    font-size: clamp(30px, 9vw, 38px) !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    width: min(188px, 52vw) !important;
+    height: 88px !important;
+    min-height: 88px !important;
+  }
+
+  body[data-route="get-started"] .landing-flow-map {
+    min-height: 318px !important;
+    margin-top: 0 !important;
+  }
+
+  body[data-route="get-started"] .get-started-button {
+    margin-top: 8px !important;
+    width: min(318px, calc(100vw - 44px)) !important;
+  }
+
+  body[data-route="body-map"] .show-pain-screen {
+    padding: 12px 18px calc(22px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 8px !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route="body-map"] .show-pain-top-bar {
+    position: absolute !important;
+    top: 14px !important;
+    left: 16px !important;
+    width: auto !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 8 !important;
+  }
+
+  body[data-route="body-map"] .pain-progress {
+    margin-top: 48px !important;
+    height: 58px !important;
+  }
+
+  body[data-route="body-map"] .show-pain-title {
+    margin: 12px auto 0 !important;
+    max-width: 330px !important;
+    font-size: clamp(38px, 11vw, 50px) !important;
+    line-height: 0.98 !important;
+  }
+
+  body[data-route="body-map"] .body-hint {
+    max-width: 320px !important;
+    margin: 6px auto 0 !important;
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+  }
+
+  body[data-route="body-map"] .body-map-wrap {
+    width: min(334px, calc(100vw - 36px)) !important;
+    height: min(350px, 48svh) !important;
+    margin: 8px auto 0 !important;
+    border-radius: 28px !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="body-map"] .body-svg-wrap,
+  body[data-route="body-map"] #bodyCanvas {
+    border-radius: 28px !important;
+  }
+
+  body[data-route="body-map"] .zoom-row {
+    position: static !important;
+    width: min(270px, calc(100vw - 86px)) !important;
+    height: 56px !important;
+    margin: 6px auto 0 !important;
+    display: grid !important;
+    grid-template-columns: 72px 1fr 72px !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  body[data-route="body-map"] .zoom-btn {
+    width: 72px !important;
+    height: 56px !important;
+    border-radius: 16px !important;
+  }
+
+  body[data-route="body-map"] .show-pain-continue {
+    width: min(316px, calc(100vw - 48px)) !important;
+    min-height: 56px !important;
+    margin: 6px auto 0 !important;
+  }
+}
+
+/* launch opening: smooth logo wink first, then reveal the actual app landing. */
+body[data-route="get-started"] .welcome-title {
+  display: none !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink {
+  position: fixed !important;
+  left: 50% !important;
+  top: 42% !important;
+  z-index: 300 !important;
+  width: 118px !important;
+  height: 118px !important;
+  margin: 0 !important;
+  border-radius: 34px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 22px 44px rgba(33, 78, 108, 0.22) !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) scale(0.96) !important;
+  animation: nanaSplashWinkShell 4.4s cubic-bezier(.2,.8,.2,1) forwards !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-icon {
+  width: 94px !important;
+  height: 94px !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame {
+  animation-duration: 4.1s !important;
+  animation-iteration-count: 1 !important;
+  animation-timing-function: ease-in-out !important;
+  transform: none !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--one {
+  animation-name: nanaSplashFaceOne !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--two {
+  animation-name: nanaSplashFaceTwo !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--three {
+  animation-name: nanaSplashFaceThree !important;
+}
+
+body[data-route="get-started"] .app-thumbnail--text-logo,
+body[data-route="get-started"] .landing-flow-map,
+body[data-route="get-started"] .get-started-button,
+body[data-route="get-started"] .landing-install-link,
+body[data-route="get-started"] .tagline {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: nanaLandingContentIn .7s ease forwards !important;
+  animation-delay: 4.1s !important;
+}
+
+body[data-route="get-started"] .landing-flow-map {
+  animation-delay: 4.22s !important;
+}
+
+body[data-route="get-started"] .get-started-button {
+  animation-delay: 4.34s !important;
+}
+
+@keyframes nanaSplashWinkShell {
+  0% { opacity: 0; transform: translate(-50%, -44%) scale(0.9); }
+  14%, 78% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -56%) scale(0.96); visibility: hidden; }
+}
+
+@keyframes nanaSplashFaceOne {
+  0%, 34% { opacity: 1; }
+  46%, 100% { opacity: 0; }
+}
+
+@keyframes nanaSplashFaceTwo {
+  0%, 26% { opacity: 0; }
+  38%, 66% { opacity: 1; }
+  78%, 100% { opacity: 0; }
+}
+
+@keyframes nanaSplashFaceThree {
+  0%, 58% { opacity: 0; }
+  72%, 100% { opacity: 1; }
+}
+
+@keyframes nanaLandingContentIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* body map seal: keep the model large and keep controls outside the canvas. */
+@media (max-width: 430px) {
+  body[data-route="body-map"] .show-pain-screen {
+    padding: 10px 18px calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 7px !important;
+  }
+
+  body[data-route="body-map"] .pain-progress {
+    margin-top: 38px !important;
+    height: 46px !important;
+  }
+
+  body[data-route="body-map"] .show-pain-title {
+    margin-top: 6px !important;
+    font-size: clamp(32px, 9.2vw, 40px) !important;
+  }
+
+  body[data-route="body-map"] .child-context-pill {
+    margin-top: 4px !important;
+    min-height: 38px !important;
+    padding: 5px 12px !important;
+  }
+
+  body[data-route="body-map"] .body-hint {
+    margin-top: 4px !important;
+    font-size: 13px !important;
+    line-height: 1.15 !important;
+  }
+
+  body[data-route="body-map"] .body-map-wrap {
+    width: min(342px, calc(100vw - 32px)) !important;
+    height: 282px !important;
+    margin-top: 6px !important;
+  }
+
+  body[data-route="body-map"] .zoom-row,
+  body[data-route="body-map"] .show-pain-screen .zoom-row {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: min(270px, calc(100vw - 86px)) !important;
+    height: 54px !important;
+    margin: 4px auto 0 !important;
+  }
+
+  body[data-route="body-map"] .show-pain-continue,
+  body[data-route="body-map"] .show-pain-screen .show-pain-continue {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: min(316px, calc(100vw - 48px)) !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    margin: 4px auto 0 !important;
+  }
+}

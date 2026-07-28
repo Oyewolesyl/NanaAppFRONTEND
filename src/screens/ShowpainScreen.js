@@ -195,8 +195,9 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   let cidx      = 0;
   let hasTapped = false;   // pulse stops after first successful tap
 
-  // Continuous camera distance (zoom). Start farther back so the full body is visible.
-  let camDist = 2.45;
+  // Continuous camera distance (zoom). Start close enough that the body map is
+  // the usable focal point, while the minus control still lets testers zoom out.
+  let camDist = 1.55;
   const CAM_MIN = 0.62;
   const CAM_MAX = 2.45;
   const cameraTarget = { x: 0, y: 0 };

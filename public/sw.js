@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nana-app-v4-landing-wink-icon';
+const CACHE_NAME = 'nana-app-v5-mobile-spacing-polish';
 
 const CORE_ASSETS = [
   '/',
@@ -7,6 +7,7 @@ const CORE_ASSETS = [
   '/nana-3d-logo-full.png',
   '/nana-3d-logo-main.svg',
   '/nana-3d-logo-with-text.svg',
+  '/topnavlogo.svg',
   '/back.svg',
   '/caregiver.svg',
   '/doctor.svg',

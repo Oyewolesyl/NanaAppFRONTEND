@@ -7,7 +7,7 @@ export const ASSETS = {
 
   teddyBackground: "https://www.figma.com/api/mcp/asset/21892e67-8fdd-4e2e-9215-a772b96c1957",
 
-  logoMark: "/nana-3d-logo-main.svg",
+  logoMark: "/topnavlogo.svg",
   logoText: "/nana-3d-logo-with-text.svg",
   logoFull: "/nana-3d-logo-full.png",
   logoCard: "/nana-3d-logo-card.png",

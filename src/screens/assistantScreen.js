@@ -64,10 +64,10 @@ function renderAssessment(screen, log, answers) {
 
     <section class="assistant-section assistant-intelligence-panel">
       <div class="assistant-intelligence-top">
-        <span>analysis confidence</span>
+        <span>handoff readiness</span>
         <strong>${safeText(assessment.signals.confidenceScore)}%</strong>
       </div>
-      <p>${safeText(assessment.signals.confidenceLabel)} based on the saved report, recent history, and follow-up answers.</p>
+      <p>Nana checks the report, recent history, and follow-up answers to prepare a clear care handoff.</p>
       <div class="assistant-signal-grid">
         ${assessment.signals.signals.map((signal) => `<span>${safeText(signal)}</span>`).join('')}
       </div>

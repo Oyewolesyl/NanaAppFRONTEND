@@ -42,6 +42,7 @@ export function renderSettingsScreen(app) {
       <button type="button" class="settings-link settings-link--assistant" data-go-assistant>Nana Assistant</button>
       <button type="button" class="settings-link" data-go-manage>Manage Children</button>
       <button type="button" class="settings-link" data-go-history>View History</button>
+      <div class="settings-bottom-clearance" aria-hidden="true"></div>
     </section>
 
     ${bottomNavHtml('settings')}

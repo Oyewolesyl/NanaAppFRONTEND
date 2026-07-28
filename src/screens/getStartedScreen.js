@@ -19,6 +19,11 @@ export function renderGetStartedScreen(app) {
 
     <div class="landing-ai-wink" aria-hidden="true">
       <span class="assistant-wink-icon" aria-hidden="true">
+        <span class="landing-css-face" aria-hidden="true">
+          <i class="landing-css-face__eye landing-css-face__eye--left"></i>
+          <i class="landing-css-face__eye landing-css-face__eye--right"></i>
+          <i class="landing-css-face__smile"></i>
+        </span>
         <img src="${ASSETS.logoMark}" alt="" class="landing-wink-fallback" />
         <img src="${ASSETS.winkFace1}" alt="" class="assistant-wink-frame assistant-wink-frame--one" />
         <img src="${ASSETS.winkFace2}" alt="" class="assistant-wink-frame assistant-wink-frame--two" />

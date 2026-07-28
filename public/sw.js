@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nana-app-v2-launch';
+const CACHE_NAME = 'nana-app-v4-landing-wink-icon';
 
 const CORE_ASSETS = [
   '/',

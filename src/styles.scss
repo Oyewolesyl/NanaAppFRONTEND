@@ -10751,7 +10751,7 @@ body[data-route="get-started"].nana-landing-ready > .landing-ai-wink {
 body[data-route="get-started"] .landing-css-face {
   position: absolute !important;
   inset: 0 !important;
-  z-index: 0 !important;
+  z-index: 5 !important;
   display: block !important;
   border-radius: 50% !important;
   background:
@@ -10761,6 +10761,31 @@ body[data-route="get-started"] .landing-css-face {
     inset 0 2px 6px rgba(255,255,255,.72),
     inset 0 -8px 18px rgba(207,66,61,.18),
     0 20px 34px rgba(52, 92, 117, .22) !important;
+}
+
+body[data-route="get-started"] .landing-wink-fallback,
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body[data-route="get-started"] .app-thumbnail--text-logo {
+  min-height: 168px !important;
+  padding: 20px 24px 22px !important;
+  border: 1px solid rgba(255, 255, 255, .72) !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(246, 252, 255, .78)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .92),
+    0 18px 40px rgba(54, 98, 124, .16) !important;
+}
+
+body[data-route="get-started"] .app-thumbnail--text-logo .thumbnail-mark--text {
+  width: 100% !important;
+  max-width: 228px !important;
+  max-height: 124px !important;
+  object-fit: contain !important;
 }
 
 body[data-route="get-started"] .landing-css-face__eye {
@@ -11347,4 +11372,308 @@ body[data-route="get-started"] .welcome-title {
 
 .nana-route-loader[hidden] {
   display: none !important;
+}
+
+/* iphone safari launch seal: keep fixed controls above browser chrome. */
+@media (max-width: 430px) {
+  :root {
+    --nana-mobile-browser-offset: 92px;
+    --nana-bottom-nav-height: 78px;
+  }
+
+  body[data-route] .bottom-nav,
+  body > .bottom-nav {
+    bottom: calc(var(--nana-mobile-browser-offset) + env(safe-area-inset-bottom, 0px) + 8px) !important;
+    height: 78px !important;
+    min-height: 78px !important;
+    width: min(calc(100vw - 22px), 390px) !important;
+    padding: 8px 18px !important;
+    border-radius: 28px !important;
+  }
+
+  body[data-route] .bottom-nav-item {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  body[data-route] .bottom-nav-item--assistant .bottom-nav-logo {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  body[data-route="settings"] .settings-screen,
+  body[data-route="history"] .history-screen,
+  body[data-route="assistant"] .assistant-screen,
+  body[data-route="child-added"] .children-screen,
+  body[data-route="homepage-newuser"] .children-screen {
+    padding-bottom: calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 78px) !important;
+    overflow-y: auto !important;
+    min-height: 100dvh !important;
+  }
+
+  body[data-route="settings"] .settings-content,
+  body[data-route="settings"] .settings-content-fit,
+  body[data-route="history"] .history-content,
+  body[data-route="assistant"] .assistant-content {
+    padding-bottom: calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 92px) !important;
+  }
+
+  body[data-route="settings"] .settings-link:last-of-type,
+  body[data-route="settings"] .settings-content > *:last-child {
+    margin-bottom: calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 28px) !important;
+  }
+
+  body[data-route="child-added"] .child-card-list,
+  body[data-route="child-added"] .child-card-list.child-card-list--two,
+  body[data-route="child-added"] .child-card-list:has(.child-card:nth-child(2)),
+  body[data-route="homepage-newuser"] .child-card-list,
+  body[data-route="homepage-newuser"] .child-card-list.child-card-list--two,
+  body[data-route="homepage-newuser"] .child-card-list:has(.child-card:nth-child(2)) {
+    padding-bottom: calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 86px) !important;
+  }
+
+  body[data-route="child-added"] .floating-add-btn,
+  body[data-route="homepage-newuser"] .floating-add-btn {
+    bottom: calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 18px) !important;
+  }
+
+  body[data-route="body-map"] .show-pain-screen {
+    min-height: 100dvh !important;
+    padding: 8px 18px calc(var(--nana-mobile-browser-offset) + 18px) !important;
+    gap: 4px !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route="body-map"] .show-pain-top-bar {
+    margin-top: 2px !important;
+  }
+
+  body[data-route="body-map"] .pain-progress {
+    height: 36px !important;
+    margin-top: 8px !important;
+  }
+
+  body[data-route="body-map"] .show-pain-title {
+    margin-top: 2px !important;
+    font-size: clamp(32px, 9vw, 38px) !important;
+    line-height: .95 !important;
+  }
+
+  body[data-route="body-map"] .child-context-pill {
+    min-height: 32px !important;
+    margin-top: 2px !important;
+  }
+
+  body[data-route="body-map"] .body-map-wrap {
+    width: min(330px, calc(100vw - 36px)) !important;
+    height: min(286px, 38svh) !important;
+    margin-top: 8px !important;
+    border-radius: 24px !important;
+  }
+
+  body[data-route="body-map"] .body-svg-wrap,
+  body[data-route="body-map"] #bodyCanvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  body[data-route="body-map"] .zoom-row,
+  body[data-route="body-map"] .show-pain-screen .zoom-row {
+    position: static !important;
+    width: min(238px, calc(100vw - 104px)) !important;
+    height: 44px !important;
+    margin: 8px auto 0 !important;
+    transform: none !important;
+  }
+
+  body[data-route="body-map"] .zoom-btn {
+    width: 70px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    font-size: 32px !important;
+  }
+
+  body[data-route="body-map"] .show-pain-continue,
+  body[data-route="body-map"] .show-pain-screen .show-pain-continue {
+    position: static !important;
+    width: min(316px, calc(100vw - 48px)) !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    margin: 8px auto 0 !important;
+    transform: none !important;
+  }
+
+  .add-child-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 120 !important;
+    align-items: start !important;
+    justify-items: center !important;
+    padding: max(54px, env(safe-area-inset-top, 0px) + 42px) 14px calc(var(--nana-mobile-browser-offset) + 18px) !important;
+    overflow-y: auto !important;
+  }
+
+  .add-child-modal {
+    width: min(100%, 356px) !important;
+    max-height: calc(100dvh - var(--nana-mobile-browser-offset) - 86px) !important;
+    margin: 0 auto !important;
+    padding: 18px 18px 20px !important;
+    overflow-y: auto !important;
+    border-radius: 28px !important;
+  }
+
+  .add-child-overlay .add-image-card {
+    min-height: 120px !important;
+    padding-top: 14px !important;
+  }
+
+  .add-child-overlay .add-image-action {
+    min-height: 42px !important;
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 430px) and (display-mode: standalone) {
+  :root {
+    --nana-mobile-browser-offset: 12px;
+  }
+}
+
+/* iphone safari final clearance: give scrollable pages real space after content. */
+@media (max-width: 430px) {
+  body[data-route="settings"],
+  body[data-route="history"],
+  body[data-route="assistant"],
+  body[data-route="child-added"],
+  body[data-route="homepage-newuser"],
+  body[data-route="manage-children"] {
+    background: #a8d7ff !important;
+  }
+
+  body[data-route="settings"] .screen,
+  body[data-route="history"] .screen,
+  body[data-route="assistant"] .screen,
+  body[data-route="child-added"] .screen,
+  body[data-route="homepage-newuser"] .screen,
+  body[data-route="manage-children"] .screen {
+    background: linear-gradient(180deg, #bfe2fb 0%, #a8d7ff 52%, #98cdf3 100%) !important;
+  }
+
+  body[data-route="settings"] .settings-screen::after,
+  body[data-route="history"] .history-screen::after,
+  body[data-route="assistant"] .assistant-screen::after,
+  body[data-route="child-added"] .children-screen::after,
+  body[data-route="homepage-newuser"] .children-screen::after {
+    content: "";
+    display: block;
+    flex: 0 0 calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 118px);
+  }
+
+  body[data-route="settings"] .settings-content.settings-content-fit {
+    gap: 9px !important;
+    padding-bottom: 12px !important;
+  }
+
+  body[data-route="settings"] .settings-field input {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    font-size: 16px !important;
+  }
+
+  body[data-route="settings"] .settings-link,
+  body[data-route="settings"] .save-settings {
+    min-height: 46px !important;
+    height: 46px !important;
+  }
+
+  body[data-route="settings"] .settings-link:last-of-type,
+  body[data-route="settings"] .settings-content > *:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  body[data-route="settings"] .settings-bottom-clearance {
+    display: block !important;
+    width: 100% !important;
+    min-height: calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 132px) !important;
+    flex: 0 0 calc(var(--nana-mobile-browser-offset) + var(--nana-bottom-nav-height) + 132px) !important;
+  }
+
+  body > .children-header,
+  body[data-route] .children-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-left: max(22px, env(safe-area-inset-left, 0px) + 22px) !important;
+    padding-right: max(14px, env(safe-area-inset-right, 0px) + 14px) !important;
+  }
+
+  body > .children-header .children-header-logo,
+  body[data-route] .children-header .children-header-logo {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    margin-right: 0 !important;
+    transform: none !important;
+  }
+
+  body > .children-header .mini-header-title,
+  body[data-route] .children-header .mini-header-title {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: max-content !important;
+    max-width: calc(100vw - 150px) !important;
+    text-align: center !important;
+  }
+
+  body > .children-header .children-menu-button,
+  body[data-route] .children-header .children-menu-button {
+    margin-left: 0 !important;
+  }
+
+  body[data-route="get-started"] .welcome-copy {
+    display: block !important;
+    order: 3 !important;
+    width: min(318px, calc(100vw - 44px)) !important;
+    margin: -4px auto 0 !important;
+    color: #25384a !important;
+    font-family: "Nunito", sans-serif !important;
+    font-size: clamp(15px, 4.2vw, 18px) !important;
+    font-weight: 900 !important;
+    line-height: 1.28 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    order: 2 !important;
+  }
+
+  body[data-route="get-started"] .get-started-button {
+    order: 4 !important;
+  }
+
+  body[data-route="get-started"] .landing-install-link {
+    order: 5 !important;
+  }
+
+  body[data-route="get-started"] .tagline {
+    order: 6 !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .landing-css-face {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .landing-wink-fallback,
+  body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
 }

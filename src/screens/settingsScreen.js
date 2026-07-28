@@ -23,20 +23,20 @@ export function renderSettingsScreen(app) {
         <p>${appState.children.length} child profile${appState.children.length === 1 ? '' : 's'} connected. ${appState.painLogs.length} pain report${appState.painLogs.length === 1 ? '' : 's'} saved.</p>
       </section>
 
-      <label class="settings-field">
-        Name
+      <div class="settings-field">
+        <span class="settings-field-label">Name</span>
         <input data-caregiver-name value="${caregiverNameValue}" placeholder="Your name" />
-      </label>
+      </div>
 
-      <label class="settings-field">
-        Email
+      <div class="settings-field">
+        <span class="settings-field-label">Email</span>
         <input type="email" inputmode="email" autocomplete="email" data-caregiver-email value="${caregiverEmail}" placeholder="you@email.com" />
-      </label>
+      </div>
 
-      <label class="settings-field">
-        Phone
+      <div class="settings-field">
+        <span class="settings-field-label">Phone</span>
         <input type="tel" inputmode="tel" autocomplete="tel" data-caregiver-phone value="${caregiverPhone}" placeholder="Phone number" />
-      </label>
+      </div>
 
       <button type="button" class="continue-button save-settings">Save Profile</button>
       <button type="button" class="settings-link settings-link--assistant" data-go-assistant>Nana Assistant</button>

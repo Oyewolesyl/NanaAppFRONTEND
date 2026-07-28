@@ -1,4 +1,20 @@
 let loading;
+
+function showMiniBodyFallback(container, label) {
+  container.classList.add('mini-body-wrap--error');
+  container.innerHTML = `
+    <div class="mini-body-fallback" aria-hidden="true">
+      <span class="mini-body-fallback-head"></span>
+      <span class="mini-body-fallback-torso"></span>
+      <span class="mini-body-fallback-arm mini-body-fallback-arm--left"></span>
+      <span class="mini-body-fallback-arm mini-body-fallback-arm--right"></span>
+      <span class="mini-body-fallback-leg mini-body-fallback-leg--left"></span>
+      <span class="mini-body-fallback-leg mini-body-fallback-leg--right"></span>
+    </div>
+  `;
+  if (label) label.remove();
+}
+
 const MINI_ZONE_POINTS = {
   head: { x: 0, y: 0.99, z: 0.1 },
   "back-head": { x: 0, y: 0.99, z: -0.09 },
@@ -118,11 +134,9 @@ export function mountMiniBody(container, {
       }
       loop();
     }, undefined, () => {
-      if (label) label.textContent = 'body model';
-      container.classList.add('mini-body-wrap--error');
+      showMiniBodyFallback(container, label);
     });
   }).catch(() => {
-    container.classList.add('mini-body-wrap--error');
-    if (label) label.textContent = 'body model';
+    showMiniBodyFallback(container, label);
   });
 }

@@ -271,7 +271,7 @@ function renderApp() {
   // Header, menu, bottom nav, and floating add button are moved to <body> on
   // mobile so they can stay fixed above each screen without being clipped by
   // the current route container. Remove stale copies before rendering a route.
-  document.querySelectorAll('body > .children-header, body > .nana-menu-overlay, body > .bottom-nav, body > .floating-add-btn, body > .pain-type-actions, body > .confirmation-actions').forEach((node) => node.remove());
+  document.querySelectorAll('body > .children-header, body > .nana-menu-overlay, body > .bottom-nav, body > .floating-add-btn, body > .pain-type-actions, body > .confirmation-actions, body > .landing-ai-wink').forEach((node) => node.remove());
 
   try {
     if (route === '#select-role') return renderSelectRoleScreen(app);

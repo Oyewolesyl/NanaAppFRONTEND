@@ -8049,6 +8049,511 @@ body[data-route="get-started"] .tagline {
   }
 }
 
+/* final launch tail override: this must stay at eof because older mobile rules above are still broad. */
+@media (max-width: 430px) {
+  body[data-route] .bottom-nav {
+    left: 50% !important;
+    right: auto !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px) !important;
+    width: min(354px, calc(100vw - 24px)) !important;
+    height: 78px !important;
+    padding: 8px 22px !important;
+    transform: translateX(-50%) !important;
+    border-radius: 28px !important;
+    background: rgba(250, 253, 255, 0.9) !important;
+    box-shadow: 0 18px 38px rgba(31, 78, 108, 0.2) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+
+  body[data-route] .bottom-nav-item--assistant {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  body[data-route] .bottom-nav-item--assistant .assistant-wink-icon {
+    display: block !important;
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  body[data-route] .bottom-nav-item--home,
+  body[data-route] .bottom-nav-item--activity,
+  body[data-route] .bottom-nav-item--settings {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  body[data-route] .children-screen,
+  body[data-route] .settings-screen,
+  body[data-route] .assistant-screen,
+  body[data-route] .manage-screen,
+  body[data-route] .history-screen {
+    padding-bottom: calc(124px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-route] .settings-content-fit,
+  body[data-route] .settings-content,
+  body[data-route] .assistant-content {
+    padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-route="child-added"] .child-card-list {
+    padding-bottom: 132px !important;
+  }
+
+  body[data-route="child-added"] .floating-add-btn {
+    bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-route="get-started"] .welcome-title {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 38px !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+    color: #ff6660 !important;
+    font-size: clamp(30px, 9vw, 38px) !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    width: min(202px, 58vw) !important;
+    height: 96px !important;
+    min-height: 96px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body[data-route="get-started"] .thumbnail-mark--text {
+    width: 100% !important;
+    max-width: 202px !important;
+    height: auto !important;
+  }
+
+  body[data-route="get-started"] .landing-ai-wink {
+    display: grid !important;
+    width: 68px !important;
+    height: 68px !important;
+  }
+
+  body[data-route="auth"] .auth-brand-card {
+    width: min(190px, 54vw) !important;
+    min-height: 92px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-route="auth"] .auth-logo {
+    width: min(184px, 52vw) !important;
+    max-height: 112px !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  body[data-route="auth"] .auth-brand-status {
+    display: none !important;
+  }
+
+  body[data-route="get-started"] .welcome-body-preview {
+    width: 72px !important;
+    height: 68px !important;
+    margin: -4px auto 0 !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-guide {
+    margin-top: 0 !important;
+    gap: 7px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card {
+    min-height: 60px !important;
+    padding: 8px 12px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card span {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 15px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card strong {
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card em {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+  }
+
+  body[data-route="get-started"] .get-started-button {
+    margin-top: 8px !important;
+  }
+
+  body[data-route="get-started"] .landing-install-link,
+  body[data-route="get-started"] .tagline {
+    display: none !important;
+  }
+
+  body[data-route="child-added"] .child-card {
+    width: min(246px, calc(100vw - 72px)) !important;
+    height: 198px !important;
+    min-height: 198px !important;
+    max-height: 198px !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="child-added"] .child-card-photo-wrap {
+    width: 68px !important;
+    height: 68px !important;
+    margin: 8px 0 4px !important;
+    border-width: 5px !important;
+  }
+
+  body[data-route="child-added"] .child-card-meta {
+    padding: 4px 10px 2px !important;
+  }
+
+  body[data-route="child-added"] .child-name {
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  body[data-route="child-added"] .child-age {
+    margin-top: 3px !important;
+    font-size: 13px !important;
+  }
+
+  body[data-route="child-added"] .child-open-map-btn {
+    margin: 4px 12px 8px !important;
+    width: calc(100% - 28px) !important;
+    min-height: 34px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* launch polish: fixes the latest iphone safari screenshots without changing the app flow. */
+.assistant-wink-icon {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 48px;
+  isolation: isolate;
+}
+
+.assistant-wink-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.96);
+  animation: nanaAssistantWink 2.8s ease-in-out infinite;
+}
+
+.assistant-wink-frame--one { animation-delay: 0s; }
+.assistant-wink-frame--two { animation-delay: 0.9s; }
+.assistant-wink-frame--three { animation-delay: 1.8s; }
+
+@keyframes nanaAssistantWink {
+  0%, 28%, 100% { opacity: 0; transform: scale(0.94); }
+  5%, 24% { opacity: 1; transform: scale(1); }
+}
+
+.bottom-nav-item--assistant {
+  width: 64px !important;
+  height: 64px !important;
+}
+
+.bottom-nav-item--assistant .assistant-wink-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.bottom-nav-item--assistant.bottom-nav-item--active .assistant-wink-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.landing-ai-wink {
+  width: 68px;
+  height: 68px;
+  margin: 4px auto -2px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 26px rgba(51, 88, 111, 0.18);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.landing-ai-wink .assistant-wink-icon {
+  width: 58px;
+  height: 58px;
+}
+
+@media (max-width: 430px) {
+  .children-header {
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 10px 16px !important;
+    background: rgba(168, 215, 255, 0.88) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+  }
+
+  .children-header-logo {
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: contain !important;
+  }
+
+  .mini-header-title {
+    font-size: 18px !important;
+    line-height: 1 !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  .children-menu-button {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .bottom-nav {
+    left: 50% !important;
+    right: auto !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px) !important;
+    width: min(354px, calc(100vw - 24px)) !important;
+    height: 78px !important;
+    padding: 8px 22px !important;
+    transform: translateX(-50%) !important;
+    border-radius: 28px !important;
+    background: rgba(250, 253, 255, 0.9) !important;
+    box-shadow: 0 18px 38px rgba(31, 78, 108, 0.2) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+
+  .bottom-nav-item--home,
+  .bottom-nav-item--activity,
+  .bottom-nav-item--settings {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .bottom-nav-item img {
+    max-width: 40px !important;
+    max-height: 40px !important;
+  }
+
+  .bottom-nav-item--active {
+    border-radius: 20px !important;
+  }
+
+  .children-screen,
+  .assistant-screen,
+  .settings-screen,
+  .manage-screen,
+  .history-screen {
+    padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .settings-content-fit,
+  .settings-content,
+  .assistant-content {
+    padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .floating-add-btn {
+    bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 70 !important;
+  }
+
+  body[data-route="child-added"] .child-added-intro {
+    margin-top: 92px !important;
+  }
+
+  body[data-route="child-added"] .child-card-list {
+    margin-top: 18px !important;
+    padding-bottom: 128px !important;
+  }
+
+  body[data-route="child-added"] .child-card-list--two {
+    gap: 14px !important;
+  }
+
+  body[data-route="child-added"] .child-card-list--two .child-card {
+    width: min(162px, calc(50vw - 20px)) !important;
+  }
+
+  body[data-route="child-added"] .child-open-map-btn {
+    min-height: 44px !important;
+    font-size: 15px !important;
+  }
+
+  body[data-route="settings"] .settings-screen {
+    padding-top: 88px !important;
+  }
+
+  body[data-route="settings"] .settings-content-fit {
+    padding-top: 8px !important;
+  }
+
+  body[data-route="settings"] .save-settings {
+    min-height: 54px !important;
+  }
+
+  body[data-route="assistant"] .assistant-content {
+    padding-top: 14px !important;
+  }
+
+  body[data-route="assistant"] .assistant-report-card {
+    margin-bottom: 12px !important;
+  }
+
+  body[data-route="get-started"] .get-started-screen {
+    min-height: 100svh !important;
+    padding: 14px 22px calc(28px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 8px !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route="get-started"] .welcome-title {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    color: #ff6660 !important;
+    font-size: clamp(30px, 9vw, 38px) !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    width: min(202px, 58vw) !important;
+    min-height: 96px !important;
+    height: 96px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    background: transparent !important;
+    border: 0 !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="get-started"] .thumbnail-mark--text {
+    width: 100% !important;
+    max-width: 202px !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  body[data-route="get-started"] .welcome-body-preview {
+    width: 108px !important;
+    height: 112px !important;
+    margin: -6px auto 0 !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-guide {
+    width: min(354px, calc(100vw - 28px)) !important;
+    margin-top: 4px !important;
+    gap: 10px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card {
+    min-height: 74px !important;
+    padding: 11px 14px !important;
+  }
+
+  body[data-route="get-started"] .get-started-button {
+    width: min(318px, calc(100vw - 56px)) !important;
+    min-height: 54px !important;
+    margin: 10px auto 0 !important;
+  }
+
+  body[data-route="auth"] .auth-screen {
+    padding: 16px 22px calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 10px !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route="auth"] .auth-brand-card {
+    width: min(190px, 54vw) !important;
+    min-height: 92px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-route="auth"] .auth-logo {
+    width: min(184px, 52vw) !important;
+    height: auto !important;
+    max-height: 112px !important;
+    object-fit: contain !important;
+  }
+
+  body[data-route="auth"] .auth-brand-status {
+    display: none !important;
+  }
+
+  body[data-route="auth"] .screen-title {
+    margin: 0 auto !important;
+    font-size: clamp(34px, 10vw, 44px) !important;
+    line-height: 1 !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="auth"] .auth-copy {
+    margin: 0 auto !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+  }
+
+  body[data-route="auth"] .auth-mode-switch {
+    min-height: 44px !important;
+    margin-top: 2px !important;
+  }
+
+  body[data-route="auth"] .settings-field {
+    gap: 5px !important;
+    font-size: 14px !important;
+  }
+
+  body[data-route="auth"] .settings-field input {
+    min-height: 52px !important;
+  }
+
+  body[data-route="auth"] .auth-compact-button,
+  body[data-route="auth"] .auth-skip {
+    width: min(300px, calc(100vw - 60px)) !important;
+    min-height: 52px !important;
+  }
+}
+
 @media (max-width: 430px) and (max-height: 700px) {
   body[data-route="body-map"] .body-map-wrap {
     height: 204px !important;
@@ -8755,5 +9260,245 @@ body[data-route="select-role"] .select-role-screen > .continue-button {
 
   body[data-route="body-map"] .show-pain-continue {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 14px) !important;
+  }
+}
+
+/* final launch tail override: this must stay at eof because older mobile rules above are still broad. */
+@media (max-width: 430px) {
+  body[data-route] .bottom-nav {
+    left: 50% !important;
+    right: auto !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px) !important;
+    width: min(354px, calc(100vw - 24px)) !important;
+    height: 78px !important;
+    padding: 8px 22px !important;
+    transform: translateX(-50%) !important;
+    border-radius: 28px !important;
+    background: rgba(250, 253, 255, 0.9) !important;
+    box-shadow: 0 18px 38px rgba(31, 78, 108, 0.2) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+
+  body[data-route] .bottom-nav-item--assistant {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  body[data-route] .bottom-nav-item--assistant .assistant-wink-icon {
+    display: block !important;
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  body[data-route] .bottom-nav-item--home,
+  body[data-route] .bottom-nav-item--activity,
+  body[data-route] .bottom-nav-item--settings {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  body[data-route] .children-screen,
+  body[data-route] .settings-screen,
+  body[data-route] .assistant-screen,
+  body[data-route] .manage-screen,
+  body[data-route] .history-screen {
+    padding-bottom: calc(124px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-route] .settings-content-fit,
+  body[data-route] .settings-content,
+  body[data-route] .assistant-content {
+    padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-route="child-added"] .child-card-list {
+    padding-bottom: 132px !important;
+  }
+
+  body[data-route="child-added"] .floating-add-btn {
+    bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-route="get-started"] .welcome-title {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 38px !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+    color: #ff6660 !important;
+    font-size: clamp(30px, 9vw, 38px) !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    width: min(202px, 58vw) !important;
+    height: 96px !important;
+    min-height: 96px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body[data-route="get-started"] .thumbnail-mark--text {
+    width: 100% !important;
+    max-width: 202px !important;
+    height: auto !important;
+  }
+
+  body[data-route="get-started"] .landing-ai-wink {
+    display: grid !important;
+    width: 68px !important;
+    height: 68px !important;
+  }
+
+  body[data-route="auth"] .auth-brand-card {
+    width: min(190px, 54vw) !important;
+    min-height: 92px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-route="auth"] .auth-logo {
+    width: min(184px, 52vw) !important;
+    max-height: 112px !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  body[data-route="auth"] .auth-brand-status {
+    display: none !important;
+  }
+
+  body[data-route="get-started"] .welcome-body-preview {
+    width: 72px !important;
+    height: 68px !important;
+    margin: -4px auto 0 !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-guide {
+    margin-top: 0 !important;
+    gap: 7px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card {
+    height: 60px !important;
+    min-height: 60px !important;
+    padding: 8px 12px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card span {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 15px !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card strong {
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+  }
+
+  body[data-route="get-started"] .landing-feature-card em {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+  }
+
+  body[data-route="get-started"] .get-started-button {
+    margin-top: 8px !important;
+  }
+
+  body[data-route="get-started"] .landing-install-link,
+  body[data-route="get-started"] .tagline {
+    display: none !important;
+  }
+
+  body[data-route="child-added"] .child-card {
+    width: min(246px, calc(100vw - 72px)) !important;
+    min-height: 0 !important;
+    border-radius: 24px !important;
+  }
+
+  body[data-route="child-added"] .child-card-photo-wrap {
+    width: 92px !important;
+    height: 92px !important;
+    margin: 14px 0 8px !important;
+    border-width: 6px !important;
+  }
+
+  body[data-route="child-added"] .child-card-meta {
+    padding: 6px 12px 4px !important;
+  }
+
+  body[data-route="child-added"] .child-name {
+    font-size: 24px !important;
+    line-height: 1 !important;
+  }
+
+  body[data-route="child-added"] .child-age {
+    margin-top: 6px !important;
+    font-size: 15px !important;
+  }
+
+  body[data-route="child-added"] .child-open-map-btn {
+    margin: 8px 14px 12px !important;
+    width: calc(100% - 28px) !important;
+    min-height: 42px !important;
+  }
+}
+
+/* launch seal: keeps iphone se cards and nav separated after legacy overrides above. */
+@media (max-width: 430px) {
+  body[data-route="child-added"] .child-card,
+  body[data-route="child-added"] .child-card.child-card--compact {
+    height: 198px !important;
+    min-height: 198px !important;
+    max-height: 198px !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="child-added"] .child-card-photo-wrap,
+  body[data-route="child-added"] .child-card-photo-frame {
+    width: 68px !important;
+    height: 68px !important;
+    margin: 8px auto 4px !important;
+    border-width: 5px !important;
+  }
+
+  body[data-route="child-added"] .child-card-meta,
+  body[data-route="child-added"] .child-card-meta--compact {
+    padding: 4px 10px 2px !important;
+  }
+
+  body[data-route="child-added"] .child-card .child-name {
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  body[data-route="child-added"] .child-age,
+  body[data-route="child-added"] .child-card-age {
+    margin-top: 3px !important;
+    font-size: 13px !important;
+  }
+
+  body[data-route="child-added"] .child-open-map-btn,
+  body[data-route="child-added"] .child-card button:not(.child-edit-button):not(.child-delete-button) {
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    margin: 2px 12px 4px !important;
+    padding: 0 8px !important;
+    width: calc(100% - 24px) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
   }
 }

@@ -68,11 +68,19 @@ export function renderGetStartedScreen(app) {
   screen.className = "screen get-started-screen page-animate-in";
 
   screen.insertAdjacentHTML("beforeend", `
-    <h1 class="welcome-title">Welcome to</h1>
+    <h1 class="welcome-title">Welcome</h1>
 
-    <section class="app-thumbnail" aria-label="Nana app logo card">
-      <img src="${ASSETS.logoMark}" alt="Nana the app" class="thumbnail-mark" />
+    <section class="app-thumbnail app-thumbnail--text-logo" aria-label="Nana the App logo">
+      <img src="${ASSETS.logoText}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
     </section>
+
+    <button type="button" class="landing-ai-wink" data-landing-action="assistant" aria-label="Open Nana Assistant hint">
+      <span class="assistant-wink-icon" aria-hidden="true">
+        <img src="${ASSETS.winkFace1}" alt="" class="assistant-wink-frame assistant-wink-frame--one" />
+        <img src="${ASSETS.winkFace2}" alt="" class="assistant-wink-frame assistant-wink-frame--two" />
+        <img src="${ASSETS.winkFace3}" alt="" class="assistant-wink-frame assistant-wink-frame--three" />
+      </span>
+    </button>
 
     <section class="welcome-body-preview" aria-label="Rotating body map preview">
       <div class="welcome-body-orbit"></div>

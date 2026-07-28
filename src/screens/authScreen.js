@@ -17,7 +17,7 @@ export function renderAuthScreen(app) {
     `
       <div class="auth-brand-card">
         <img
-          src="${ASSETS.logoFull}"
+          src="${ASSETS.logoText}"
           alt="Nana the App"
           class="auth-logo nana-auth-face"
         />

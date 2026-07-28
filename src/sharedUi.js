@@ -28,7 +28,7 @@ export function headerHtml(title = '', menu = true) {
   const safeTitle = escapeHtml(title);
   return `
     <header class="children-header">
-      <img src="${ASSETS.splashHeaderLogo}" alt="Nana logo" class="children-header-logo" />
+      <img src="${ASSETS.logoMark}" alt="Nana logo" class="children-header-logo" />
       ${title ? `<strong class="mini-header-title">${safeTitle}</strong>` : ''}
       ${menu ? `<button type="button" aria-label="Open menu" class="children-menu-button"><img src="${ASSETS.splashMenuIcon}" alt="" /></button>` : ''}
     </header>
@@ -37,11 +37,18 @@ export function headerHtml(title = '', menu = true) {
 
 export function bottomNavHtml(active = '') {
   const current = getBottomNavActive(active);
+  const assistantIcon = `
+    <span class="assistant-wink-icon" aria-hidden="true">
+      <img src="${ASSETS.winkFace1}" alt="" class="assistant-wink-frame assistant-wink-frame--one" />
+      <img src="${ASSETS.winkFace2}" alt="" class="assistant-wink-frame assistant-wink-frame--two" />
+      <img src="${ASSETS.winkFace3}" alt="" class="assistant-wink-frame assistant-wink-frame--three" />
+    </span>
+  `;
   return `
     <nav class="bottom-nav" aria-label="Main navigation" data-active="${current}">
       <button type="button" class="bottom-nav-item bottom-nav-item--home ${current === 'home' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#child-added" aria-label="Home" aria-current="${current === 'home' ? 'page' : 'false'}"><img src="${ASSETS.navHome}" alt="" /></button>
       <button type="button" class="bottom-nav-item bottom-nav-item--activity ${current === 'history' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#history" aria-label="History" aria-current="${current === 'history' ? 'page' : 'false'}"><img src="${current === 'history' ? ASSETS.navHistoryActive : ASSETS.navClock}" alt="" /></button>
-      <button type="button" class="bottom-nav-item bottom-nav-item--assistant ${current === 'assistant' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#assistant" aria-label="Nana Assistant" aria-current="${current === 'assistant' ? 'page' : 'false'}"><img src="${ASSETS.logoMark}" alt="" class="bottom-nav-logo" /></button>
+      <button type="button" class="bottom-nav-item bottom-nav-item--assistant ${current === 'assistant' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#assistant" aria-label="Nana Assistant" aria-current="${current === 'assistant' ? 'page' : 'false'}">${assistantIcon}</button>
       <button type="button" class="bottom-nav-item bottom-nav-item--settings ${current === 'settings' ? 'bottom-nav-item--active' : 'bottom-nav-item--inactive'}" data-nav="#settings" aria-label="Settings" aria-current="${current === 'settings' ? 'page' : 'false'}"><img src="${current === 'settings' ? ASSETS.navSettingsActive : ASSETS.navSettingsInactive}" alt="" /></button>
     </nav>
   `;

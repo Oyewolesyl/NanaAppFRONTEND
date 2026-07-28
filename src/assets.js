@@ -12,6 +12,9 @@ export const ASSETS = {
   logoFull: "/nana-3d-logo-full.png",
   logoCard: "/nana-3d-logo-card.png",
   splashHeaderLogo: "/nana-3d-logo-with-text.svg",
+  winkFace1: "/ani1.svg",
+  winkFace2: "/ani2.svg",
+  winkFace3: "/ani3.svg",
 
   menuIcon: "/hamburgermenu.svg",
   splashMenuIcon: "/hamburgermenu.svg",

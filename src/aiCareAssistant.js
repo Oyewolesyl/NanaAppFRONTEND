@@ -84,6 +84,58 @@ function getTrend(logs = []) {
   return 'Pain is similar to recent reports.';
 }
 
+function getRecentSameAreaCount(log = {}, logs = []) {
+  const currentZones = new Set(getZones(log));
+  if (!currentZones.size) return 0;
+
+  return logs
+    .filter((item) => item.id !== log.id)
+    .slice(0, 6)
+    .filter((item) => getZones(item).some((zone) => currentZones.has(zone)))
+    .length;
+}
+
+function getAssistantSignals({ log = {}, logs = [], answers = {} } = {}) {
+  const intensity = getIntensity(log);
+  const redFlags = getAnsweredRedFlags(answers);
+  const sameAreaCount = getRecentSameAreaCount(log, logs);
+  const noteHasWatchWord = textIncludesWatchWord(log);
+  const missingFields = [
+    !getZones(log).length && 'body area',
+    !getPainType(log) && 'pain type',
+    !getStarted(log) && 'start time',
+    (intensity === 0 && intensity !== Number(log.intensity ?? log.pain_scale)) && 'pain score',
+  ].filter(Boolean);
+
+  const signals = [
+    intensity >= HIGH_INTENSITY && 'high pain score',
+    intensity >= MODERATE_INTENSITY && intensity < HIGH_INTENSITY && 'moderate pain score',
+    sameAreaCount > 0 && 'same area appeared before',
+    noteHasWatchWord && 'care note contains a warning word',
+    redFlags.length > 0 && 'follow-up answers include warning signs',
+    !missingFields.length && 'report has the key fields needed for a handoff',
+  ].filter(Boolean);
+
+  const confidenceScore = Math.max(
+    45,
+    Math.min(96, 58 + signals.length * 8 - missingFields.length * 7)
+  );
+
+  return {
+    signals,
+    redFlags,
+    sameAreaCount,
+    missingFields,
+    confidenceScore,
+    confidenceLabel:
+      confidenceScore >= 82
+        ? 'strong context'
+        : confidenceScore >= 68
+          ? 'usable context'
+          : 'needs more detail',
+  };
+}
+
 export function createCareInsight(log = {}) {
   const intensity = getIntensity(log);
   const painType = getPainType(log);
@@ -123,7 +175,8 @@ export function createAssistantAssessment({ log = {}, logs = [], answers = {} } 
   // a real interactive care-support feature while staying explainable in the
   // technical interview. Red flags always override the base urgency level.
   const base = createCareInsight(log);
-  const redFlags = getAnsweredRedFlags(answers);
+  const signals = getAssistantSignals({ log, logs, answers });
+  const redFlags = signals.redFlags;
   const intensity = getIntensity(log);
   const hasRedFlags = redFlags.length > 0;
   const tone = hasRedFlags || intensity >= HIGH_INTENSITY ? 'high' : base.tone;
@@ -164,6 +217,7 @@ export function createAssistantAssessment({ log = {}, logs = [], answers = {} } 
     carePlan,
     trend: getTrend(logs),
     redFlags,
+    signals,
   };
 }
 

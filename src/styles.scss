@@ -10244,3 +10244,370 @@ body[data-route="settings"] .settings-content.settings-content-fit > * {
   grid-row: auto !important;
   grid-column: auto !important;
 }
+
+/* final launch flow: opening wink first, then the real text-logo landing. */
+body[data-route="get-started"] .get-started-screen {
+  min-height: 100dvh !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(150px, 1fr) auto auto auto !important;
+  align-content: center !important;
+  gap: clamp(12px, 2.4svh, 22px) !important;
+  padding: clamp(18px, 4svh, 34px) clamp(22px, 6vw, 34px)
+    calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 5svh, 42px)) !important;
+  overflow-x: hidden !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 80 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  border: 0 !important;
+  background: linear-gradient(180deg, #bfe2fb 0%, #a9d5f7 100%) !important;
+  pointer-events: none !important;
+  transform: none !important;
+  animation: nana-opening-layer 4.25s cubic-bezier(.2, .72, .2, 1) forwards !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-icon {
+  position: relative !important;
+  display: block !important;
+  width: clamp(118px, 35vw, 158px) !important;
+  height: clamp(118px, 35vw, 158px) !important;
+  filter: drop-shadow(0 22px 26px rgba(47, 86, 112, .2)) !important;
+  animation: nana-opening-face 3.35s cubic-bezier(.2, .72, .2, 1) forwards !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  opacity: 0 !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--one {
+  animation: nana-wink-one 2.8s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--two {
+  animation: nana-wink-two 2.8s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--three {
+  animation: nana-wink-three 2.8s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"] .welcome-title,
+body[data-route="get-started"] .app-thumbnail,
+body[data-route="get-started"] .welcome-logo-stage,
+body[data-route="get-started"] .get-started-button,
+body[data-route="get-started"] .landing-install-link,
+body[data-route="get-started"] .tagline {
+  opacity: 0 !important;
+  transform: translateY(14px) scale(.985) !important;
+  animation: nana-landing-reveal .62s cubic-bezier(.2, .72, .2, 1) 4.05s forwards !important;
+}
+
+body[data-route="get-started"] .welcome-title {
+  margin: 0 !important;
+  font-size: clamp(38px, 11vw, 58px) !important;
+  line-height: .98 !important;
+  letter-spacing: 0 !important;
+}
+
+body[data-route="get-started"] .app-thumbnail--text-logo {
+  width: min(78vw, 270px) !important;
+  min-height: auto !important;
+  aspect-ratio: 1 / .72 !important;
+  margin: 0 auto !important;
+  padding: clamp(14px, 4vw, 22px) !important;
+  border-radius: 30px !important;
+  background: rgba(255, 255, 255, .72) !important;
+  box-shadow: 0 22px 40px rgba(61, 105, 137, .2), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+body[data-route="get-started"] .thumbnail-mark--text {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+body[data-route="get-started"] .welcome-logo-stage {
+  min-height: clamp(150px, 24svh, 230px) !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+body[data-route="get-started"] .welcome-body-preview {
+  width: min(54vw, 190px) !important;
+  height: clamp(130px, 22svh, 210px) !important;
+  margin: 0 auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-route="get-started"] .get-started-button {
+  width: min(100%, 330px) !important;
+  height: 56px !important;
+  margin: 0 auto !important;
+  border-radius: 999px !important;
+  font-size: clamp(24px, 7vw, 34px) !important;
+  box-shadow: 0 18px 28px rgba(225, 78, 70, .26) !important;
+}
+
+body[data-route="get-started"] .landing-install-link {
+  width: fit-content !important;
+  margin: -4px auto 0 !important;
+  color: #315466 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body[data-route="get-started"] .tagline {
+  max-width: 300px !important;
+  margin: 0 auto !important;
+  color: rgba(25, 45, 58, .72) !important;
+  font-size: 15px !important;
+  line-height: 1.3 !important;
+  text-align: center !important;
+}
+
+body[data-route="get-started"] .landing-flow-map,
+body[data-route="get-started"] .landing-flow-hotspot,
+body[data-route="get-started"] .landing-feature-guide {
+  display: none !important;
+}
+
+@keyframes nana-opening-layer {
+  0%, 78% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes nana-opening-face {
+  0% { transform: translateY(12px) scale(.78); opacity: 0; }
+  22% { transform: translateY(0) scale(1); opacity: 1; }
+  68% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-8px) scale(.92); opacity: 0; }
+}
+
+@keyframes nana-wink-one {
+  0%, 28% { opacity: 1; }
+  34%, 100% { opacity: 0; }
+}
+
+@keyframes nana-wink-two {
+  0%, 30% { opacity: 0; }
+  36%, 55% { opacity: 1; }
+  62%, 100% { opacity: 0; }
+}
+
+@keyframes nana-wink-three {
+  0%, 58% { opacity: 0; }
+  66%, 100% { opacity: 1; }
+}
+
+@keyframes nana-landing-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* guided tour: one maintained system for real feature hints inside the app. */
+.nana-tour {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+}
+
+.nana-tour[hidden] {
+  display: none !important;
+}
+
+.nana-tour::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 58, 74, .16);
+  backdrop-filter: blur(1px);
+}
+
+.nana-tour-spotlight {
+  position: absolute;
+  left: var(--tour-x);
+  top: var(--tour-y);
+  width: var(--tour-w);
+  height: var(--tour-h);
+  border: 3px solid rgba(255, 111, 97, .92);
+  border-radius: 28px;
+  box-shadow: 0 0 0 999px rgba(21, 40, 52, .18), 0 16px 32px rgba(36, 76, 99, .18);
+}
+
+.nana-tour-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  display: grid;
+  gap: 8px;
+  padding: 16px 16px 14px;
+  border: 1px solid rgba(255, 111, 97, .28);
+  border-radius: 24px;
+  background: rgba(248, 253, 255, .96);
+  box-shadow: 0 18px 40px rgba(49, 91, 117, .24);
+  color: #182f3d;
+}
+
+.nana-tour-count {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #ff6f61;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.nana-tour-card h2 {
+  margin: 0;
+  color: #e84b50;
+  font-size: clamp(22px, 6vw, 30px);
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.nana-tour-card p {
+  margin: 0;
+  color: #314452;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.nana-tour-card [data-tour-next] {
+  min-height: 44px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff7f75 0%, #f45f56 100%);
+  color: white;
+  font-size: 17px;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(232, 75, 80, .22);
+}
+
+.nana-tour-skip {
+  position: fixed;
+  right: 16px;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  z-index: 1;
+  pointer-events: auto;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(49, 84, 102, .2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .82);
+  color: #315466;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: lowercase;
+}
+
+@media (max-width: 430px) {
+  .nana-tour-card {
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .nana-tour-card p {
+    font-size: 14px;
+  }
+
+  .nana-tour-spotlight {
+    border-radius: 24px;
+  }
+}
+
+/* assistant intelligence layer: explainable care support, not diagnosis. */
+.assistant-intelligence-panel {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(72, 175, 162, .26) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(255, 236, 137, .42), transparent 35%),
+    linear-gradient(135deg, rgba(255,255,255,.96), rgba(231,247,255,.92)) !important;
+  box-shadow: 0 16px 30px rgba(49, 91, 117, .14) !important;
+}
+
+.assistant-intelligence-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+.assistant-intelligence-top span {
+  color: #36ad9f !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  text-transform: uppercase !important;
+}
+
+.assistant-intelligence-top strong {
+  min-width: 70px !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  background: #ff6f61 !important;
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+.assistant-intelligence-panel p {
+  margin: 0 !important;
+  color: #2f4350 !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+}
+
+.assistant-signal-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.assistant-signal-grid span {
+  max-width: 100% !important;
+  padding: 7px 10px !important;
+  border: 1px solid rgba(72, 175, 162, .24) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .72) !important;
+  color: #263f4f !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  line-height: 1.2 !important;
+}
+
+.assistant-intelligence-panel small {
+  color: rgba(47, 67, 80, .78) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+}

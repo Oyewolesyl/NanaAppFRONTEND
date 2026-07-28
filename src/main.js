@@ -21,6 +21,7 @@ import { renderManageChildrenScreen } from './screens/manageChildrenScreen';
 import { renderAssistantScreen } from './screens/assistantScreen';
 import { appState } from './appState';
 import { ASSETS } from './assets';
+import { showGuidedTourForRoute } from './appTour';
 
 let previousHash = '#get-started';
 let assetObserverInstalled = false;
@@ -303,6 +304,7 @@ function renderApp() {
     requestAnimationFrame(() => {
       window.scrollTo(0, 0);
       app.querySelector('.screen')?.scrollTo?.(0, 0);
+      showGuidedTourForRoute();
     });
     finishRouteLoading(app);
   }

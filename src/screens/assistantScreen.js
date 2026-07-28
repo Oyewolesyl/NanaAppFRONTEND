@@ -62,6 +62,22 @@ function renderAssessment(screen, log, answers) {
       <p><b>Trend</b>${safeText(assessment.trend)}</p>
     </section>
 
+    <section class="assistant-section assistant-intelligence-panel">
+      <div class="assistant-intelligence-top">
+        <span>analysis confidence</span>
+        <strong>${safeText(assessment.signals.confidenceScore)}%</strong>
+      </div>
+      <p>${safeText(assessment.signals.confidenceLabel)} based on the saved report, recent history, and follow-up answers.</p>
+      <div class="assistant-signal-grid">
+        ${assessment.signals.signals.map((signal) => `<span>${safeText(signal)}</span>`).join('')}
+      </div>
+      ${
+        assessment.signals.missingFields.length
+          ? `<small>add more detail for: ${safeText(assessment.signals.missingFields.join(', '))}</small>`
+          : '<small>the handoff has enough structure for a caregiver or professional conversation.</small>'
+      }
+    </section>
+
     <section class="assistant-section">
       <h2>Follow-up check</h2>
       <div class="assistant-question-list">

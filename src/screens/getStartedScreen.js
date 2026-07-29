@@ -14,17 +14,11 @@ export function renderGetStartedScreen(app) {
     <p class="welcome-copy">Create your account to start using Nana.</p>
 
     <section class="app-thumbnail app-thumbnail--text-logo" aria-label="Nana the App logo">
-      <img src="${ASSETS.logoFull}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
+      <img src="${ASSETS.logoText}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
     </section>
 
     <div class="landing-ai-wink" aria-hidden="true">
       <span class="assistant-wink-icon" aria-hidden="true">
-        <span class="landing-css-face" aria-hidden="true">
-          <i class="landing-css-face__eye landing-css-face__eye--left"></i>
-          <i class="landing-css-face__eye landing-css-face__eye--right"></i>
-          <i class="landing-css-face__smile"></i>
-        </span>
-        <img src="${ASSETS.logoMark}" alt="" class="landing-wink-fallback" />
         <img src="${ASSETS.winkFace1}" alt="" class="assistant-wink-frame assistant-wink-frame--one" />
         <img src="${ASSETS.winkFace2}" alt="" class="assistant-wink-frame assistant-wink-frame--two" />
         <img src="${ASSETS.winkFace3}" alt="" class="assistant-wink-frame assistant-wink-frame--three" />

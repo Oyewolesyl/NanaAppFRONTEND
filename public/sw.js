@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nana-app-v5-mobile-spacing-polish';
+const CACHE_NAME = 'nana-app-v7-launch-visual-lock';
 
 const CORE_ASSETS = [
   '/',

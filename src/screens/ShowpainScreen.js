@@ -358,9 +358,10 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         c.castShadow = true;
         c.receiveShadow = true;
         c.material = new THREE.MeshStandardMaterial({
-          color:     new THREE.Color(0xf0b882),
-          emissive:  new THREE.Color(0x000000),
-          roughness: 0.55,
+          color:     new THREE.Color(0xffd7a8),
+          emissive:  new THREE.Color(0x2a1308),
+          emissiveIntensity: 0.025,
+          roughness: 0.66,
           metalness: 0.0,
         });
         bodyMeshes.push(c);
@@ -428,15 +429,52 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   }
 
   // ── Hit detection ────────────────────────────────────────────
+  function commitZoneSelection(zone) {
+    if (!zone) return;
+
+    hasTapped = true;
+    if (sel.has(zone)) {
+      sel.delete(zone);
+    } else {
+      sel.set(zone, 0);
+    }
+
+    updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
+    refreshOverlays();
+    updateBadges();
+  }
+
+  function fallbackZoneFromCanvasPoint(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return null;
+
+    const px = (clientX - rect.left) / rect.width;
+    const py = (clientY - rect.top) / rect.height;
+
+    // Finger taps on small screens can visually land on the body while missing
+    // the exact mesh raycast. This maps the visible body back to the same zones.
+    const bodyLeft = 0.20;
+    const bodyRight = 0.80;
+    const bodyTop = 0.10;
+    const bodyBottom = 0.96;
+    if (px < bodyLeft || px > bodyRight || py < bodyTop || py > bodyBottom) return null;
+
+    const localX = (((px - bodyLeft) / (bodyRight - bodyLeft)) - 0.5) * 0.66;
+    const localY = MODEL_LOCAL_Y_MAX - (((py - bodyTop) / (bodyBottom - bodyTop)) * MODEL_LOCAL_HEIGHT);
+    return getZoneFromPoint({ x: localX, y: localY }, isFront);
+  }
+
   function handleTap(clientX, clientY) {
     if (!model) return;
-    const THREE = window.THREE;
     const rect = canvas.getBoundingClientRect();
     const nx =  ((clientX - rect.left) / rect.width)  * 2 - 1;
     const ny = -((clientY - rect.top)  / rect.height) * 2 + 1;
     raycaster.setFromCamera({ x: nx, y: ny }, camera);
     const hits = raycaster.intersectObject(model, true);
-    if (!hits.length) return;
+    if (!hits.length) {
+      commitZoneSelection(fallbackZoneFromCanvasPoint(clientX, clientY));
+      return;
+    }
 
     // Convert the hit point back into original model-local space. The zone
     // thresholds below were tuned to the specific child body GLB dimensions.
@@ -444,14 +482,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const zoneSideIsFront = origLocal.z >= 0;
     isFront = zoneSideIsFront;
 
-    const zone = getZoneFromPoint(origLocal, zoneSideIsFront);
-    if (!zone) return;
-
-    hasTapped = true;
-    if (sel.has(zone)) { sel.delete(zone); } else { sel.set(zone, 0); }
-    updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
-    refreshOverlays();
-    updateBadges();
+    commitZoneSelection(getZoneFromPoint(origLocal, zoneSideIsFront));
   }
 
   let suppressNextClick = false;
@@ -477,9 +508,11 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     updateBadges();
   });
   canvas.addEventListener("pointerup", e => {
-    if (pointerDrag?.moved) suppressNextClick = true;
+    const wasTap = pointerDrag && !pointerDrag.moved;
+    if (pointerDrag?.moved || wasTap) suppressNextClick = true;
     pointerDrag = null;
     canvas.releasePointerCapture?.(e.pointerId);
+    if (wasTap) handleTap(e.clientX, e.clientY);
   });
 
   // ── Touch: pinch-to-zoom + single-finger drag-to-zoom + tap ──
@@ -538,6 +571,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     e.preventDefault();
     const state = touchState;
     touchState = null;
+    if (window.PointerEvent) return;
     // Only fire tap if it was a single touch and barely moved
     if (state && state.type === "single" && !state.moved && e.changedTouches.length) {
       handleTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
@@ -556,7 +590,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
   // ── Zone overlays ────────────────────────────────────────────
   function localBoundToWorld(b) {
-    const THREE = window.THREE;
     if (!model) return { wx: b.x, wy: b.y, wz: b.z || 0, ww: b.w, wh: b.h, wd: b.d };
     const world = model.localToWorld(new THREE.Vector3(b.x, b.y, b.z || 0));
     return { wx: world.x, wy: world.y, wz: world.z, ww: b.w * MODEL_SCALE, wh: b.h * MODEL_SCALE, wd: b.d * MODEL_SCALE };
@@ -571,7 +604,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   function updateBadges() {
     badgesEl.innerHTML = "";
     if (!camera || !renderer || !model) return;
-    const THREE = window.THREE;
     const rect = canvas.getBoundingClientRect();
     sel.forEach((ci, zone) => {
       const b = ZONE_BOUNDS_LOCAL[zone]; if (!b) return;
@@ -584,6 +616,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       el.className = "body-zone-label";
       el.style.left = `${px}px`;
       el.style.top = `${py}px`;
+      el.dataset.zone = zone;
       el.textContent = LABELS[zone] || zone;
       el.addEventListener("click", () => { sel.delete(zone); updatePainDraft({ zones: [...sel.keys()], view: 'rotatable' }); refreshOverlays(); updateBadges(); });
       badgesEl.appendChild(el);

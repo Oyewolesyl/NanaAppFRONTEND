@@ -266,7 +266,7 @@ function renderApp() {
   const app = document.querySelector('#app');
   if (!app) return;
 
-  const route = window.location.hash || '#get-started';
+  const route = (window.location.hash || '#get-started').split('?')[0] || '#get-started';
   startRouteLoading(app, route);
   document.body.dataset.route = route.replace('#', '');
 

@@ -10287,7 +10287,7 @@ body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame {
   width: 100% !important;
   height: 100% !important;
   object-fit: contain !important;
-  opacity: 0 !important;
+  opacity: 0;
 }
 
 body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame--one {
@@ -10763,8 +10763,7 @@ body[data-route="get-started"] .landing-css-face {
     0 20px 34px rgba(52, 92, 117, .22) !important;
 }
 
-body[data-route="get-started"] .landing-wink-fallback,
-body[data-route="get-started"] .landing-ai-wink .assistant-wink-frame {
+body[data-route="get-started"] .landing-wink-fallback {
   opacity: 0 !important;
   visibility: hidden !important;
 }
@@ -11673,7 +11672,7 @@ body[data-route="get-started"] .welcome-title {
   body[data-route="get-started"] > .landing-ai-wink .landing-wink-fallback,
   body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame {
     display: none !important;
-    opacity: 0 !important;
+    opacity: 0;
     visibility: hidden !important;
   }
 }
@@ -12668,4 +12667,339 @@ body[data-route="get-started"] .welcome-title {
     font-weight: 1000 !important;
     text-shadow: none !important;
   }
+}
+
+/* launch lock: final mobile polish after all legacy figma-fit rules. */
+@media (max-width: 430px) {
+  .nana-route-loader {
+    position: fixed !important;
+    inset: auto auto max(18px, env(safe-area-inset-bottom, 0px) + 18px) 50% !important;
+    z-index: 210 !important;
+    display: inline-grid !important;
+    grid-auto-flow: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    padding: 0 16px !important;
+    border-radius: 999px !important;
+    color: #172331 !important;
+    background: rgba(246, 251, 255, .9) !important;
+    box-shadow: 0 14px 34px rgba(43, 95, 132, .18) !important;
+    transform: translateX(-50%) translateY(12px) !important;
+    opacity: 0;
+    pointer-events: none !important;
+  }
+
+  .nana-route-is-loading .nana-route-loader {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+  }
+
+  .nana-route-loader span {
+    color: #172331 !important;
+    font-family: "Nunito", sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 1000 !important;
+    white-space: nowrap !important;
+  }
+
+  .nana-route-loader i {
+    width: 16px !important;
+    height: 16px !important;
+    border: 3px solid rgba(255, 111, 97, .2) !important;
+    border-top-color: #ff6f61 !important;
+  }
+
+  body[data-route] .children-header,
+  body > .children-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 82px !important;
+    padding: max(10px, env(safe-area-inset-top, 0px) + 10px) 28px 10px !important;
+  }
+
+  body[data-route] .children-header-logo,
+  body > .children-header .children-header-logo {
+    width: 42px !important;
+    height: 42px !important;
+    object-fit: contain !important;
+    justify-self: start !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  body[data-route] .children-menu-button,
+  body > .children-header .children-menu-button {
+    width: 58px !important;
+    height: 58px !important;
+    margin-left: auto !important;
+  }
+
+  body[data-route] .bottom-nav,
+  body > .bottom-nav {
+    bottom: calc(var(--nana-mobile-browser-offset, 0px) + max(12px, env(safe-area-inset-bottom, 0px))) !important;
+    height: 76px !important;
+    padding: 9px 28px !important;
+    background: rgba(248, 252, 255, .9) !important;
+    border: 1px solid rgba(54, 120, 160, .16) !important;
+  }
+
+  body[data-route] .bottom-nav-item {
+    width: 54px !important;
+    height: 54px !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  body[data-route] .bottom-nav-item--inactive img,
+  body[data-route] .bottom-nav-item--inactive .bottom-nav-logo {
+    opacity: .54 !important;
+    filter: grayscale(.12) saturate(.86) contrast(1.12) !important;
+  }
+
+  body[data-route] .bottom-nav-item--active img,
+  body[data-route] .bottom-nav-item--active .bottom-nav-logo {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  body[data-route="get-started"] .get-started-screen {
+    display: flex !important;
+    min-height: 100dvh !important;
+    padding: max(56px, env(safe-area-inset-top, 0px) + 42px) 24px max(34px, env(safe-area-inset-bottom, 0px) + 28px) !important;
+    gap: 22px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="get-started"] .welcome-title {
+    margin: 0 !important;
+    color: #ef474f !important;
+    font-size: clamp(40px, 13vw, 56px) !important;
+    line-height: .98 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="get-started"] .welcome-copy {
+    display: block !important;
+    width: min(100%, 336px) !important;
+    margin: 2px auto 0 !important;
+    color: #223140 !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail,
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    display: grid !important;
+    place-items: center !important;
+    width: min(100%, 302px) !important;
+    height: 158px !important;
+    min-height: 158px !important;
+    max-height: 158px !important;
+    margin: 18px auto 16px !important;
+    padding: 22px 32px !important;
+    overflow: visible !important;
+    border: 1px solid rgba(255, 255, 255, .78) !important;
+    border-radius: 30px !important;
+    background: rgba(246, 251, 255, .86) !important;
+    box-shadow: 0 18px 38px rgba(43, 95, 132, .18), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail::after,
+  body[data-route="get-started"] .app-thumbnail::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  body[data-route="get-started"] .thumbnail-mark--text {
+    display: block !important;
+    width: min(210px, 78%) !important;
+    max-width: 210px !important;
+    height: auto !important;
+    max-height: 118px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  body[data-route="get-started"] .get-started-button {
+    width: min(100%, 342px) !important;
+    min-height: 62px !important;
+    margin: 0 auto !important;
+  }
+
+  body[data-route="get-started"] .tagline,
+  body[data-route="get-started"] .landing-install-link {
+    display: none !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 300 !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    background: linear-gradient(180deg, #bfe4ff 0%, #a8d7ff 100%) !important;
+    animation: nana-launch-overlay-final 3.15s ease forwards !important;
+    pointer-events: none !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .assistant-wink-icon {
+    position: relative !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 128px !important;
+    height: 128px !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .landing-css-face,
+  body[data-route="get-started"] > .landing-ai-wink .landing-wink-fallback {
+    display: none !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 128px !important;
+    height: 128px !important;
+    object-fit: contain !important;
+    opacity: 0;
+    visibility: visible !important;
+    filter: drop-shadow(0 18px 24px rgba(43, 95, 132, .18)) !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame--one {
+    animation: nana-launch-wink-one-final 2.82s steps(1, end) forwards !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame--two {
+    animation: nana-launch-wink-two-final 2.82s steps(1, end) forwards !important;
+  }
+
+  body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame--three {
+    animation: nana-launch-wink-three-final 2.82s steps(1, end) forwards !important;
+  }
+
+  body[data-route="get-started"].nana-landing-ready > .landing-ai-wink {
+    display: none !important;
+  }
+
+  body[data-route="body-map"] .show-pain-screen {
+    padding-bottom: max(22px, env(safe-area-inset-bottom, 0px) + 18px) !important;
+  }
+
+  body[data-route="body-map"] .body-map-wrap {
+    height: min(336px, 45svh) !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="body-map"] .body-svg-wrap,
+  body[data-route="body-map"] #bodyBadges {
+    overflow: visible !important;
+  }
+
+  body[data-route="body-map"] .body-zone-label,
+  body[data-route="body-map"] .body-zone-label[style] {
+    position: absolute !important;
+    z-index: 8 !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    padding: 0 !important;
+    border: 3px solid #fff8ea !important;
+    border-radius: 999px !important;
+    color: transparent !important;
+    background: #ff4f55 !important;
+    box-shadow: 0 0 0 4px rgba(255,79,85,.18), 0 8px 16px rgba(255,79,85,.28) !important;
+    transform: translate(-50%, -50%) !important;
+    text-indent: -999px !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="summary"] .summary-screen,
+  body[data-route="confirmation"] .confirmation-screen,
+  body[data-route="assistant"] .assistant-screen,
+  body[data-route="history"] .history-screen,
+  body[data-route="settings"] .settings-screen,
+  body[data-route="child-added"] .child-added-screen,
+  body[data-route="second-child-added"] .child-added-screen,
+  body[data-route="manage-children"] .manage-children-screen {
+    padding-bottom: calc(var(--nana-bottom-nav-height, 76px) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 110px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body[data-route="summary"] .summary-card,
+  body[data-route="confirmation"] .confirmation-summary-card,
+  body[data-route="confirmation"] .ai-care-card {
+    margin-bottom: 22px !important;
+  }
+
+  body[data-route="summary"] .pain-type-actions,
+  body[data-route="confirmation"] .confirmation-actions {
+    bottom: calc(var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
+}
+
+@media (max-width: 370px) {
+  body[data-route="get-started"] .get-started-screen {
+    gap: 18px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail,
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    width: min(100%, 286px) !important;
+    height: 148px !important;
+    min-height: 148px !important;
+    max-height: 148px !important;
+  }
+
+  body[data-route="get-started"] .thumbnail-mark--text {
+    width: min(194px, 76%) !important;
+  }
+
+  body[data-route="body-map"] .body-map-wrap {
+    height: min(320px, 43svh) !important;
+  }
+}
+
+@keyframes nana-launch-overlay-final {
+  0%, 78% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes nana-launch-wink-one-final {
+  0%, 35% { opacity: 1; transform: scale(.96); }
+  36%, 100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes nana-launch-wink-two-final {
+  0%, 35% { opacity: 0; transform: scale(.98); }
+  36%, 58% { opacity: 1; transform: scale(1.02); }
+  59%, 100% { opacity: 0; transform: scale(1.02); }
+}
+
+@keyframes nana-launch-wink-three-final {
+  0%, 58% { opacity: 0; transform: scale(1); }
+  59%, 100% { opacity: 1; transform: scale(1); }
 }

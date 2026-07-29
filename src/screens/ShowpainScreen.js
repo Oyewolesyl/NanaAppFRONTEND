@@ -1,8 +1,19 @@
 import { ASSETS } from "../assets";
 import { getActiveChild, updatePainDraft, appState } from "../appState";
 import { childContextHtml, painProgressHtml } from "../sharedUi";
-import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+
+let THREE;
+let GLTFLoader;
+
+async function loadBodyMapEngine() {
+  if (THREE && GLTFLoader) return;
+
+  const threeModule = await import("three");
+  const loaderModule = await import("three/examples/jsm/loaders/GLTFLoader.js");
+
+  THREE = threeModule;
+  GLTFLoader = loaderModule.GLTFLoader;
+}
 
 /* ── Labels (child-friendly + clinically accurate) ─────────────── */
 const LABELS = {
@@ -268,55 +279,10 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     wrap.append(fallback);
   }
 
-  function loadScript(src, message) {
-    setBodyLoading(message);
-
-    return new Promise((resolve, reject) => {
-      // Three.js is loaded only when the body map route is opened. That keeps
-      // the first app load lighter, while these messages explain the delay.
-      const existing = document.querySelector(`script[src="${src}"]`);
-      if (existing?.dataset.loaded === "true") {
-        resolve();
-        return;
-      }
-
-      const script = existing || document.createElement("script");
-      const timeout = window.setTimeout(() => {
-        reject(new Error(`Timed out loading ${src}`));
-      }, 15000);
-
-      script.onload = () => {
-        window.clearTimeout(timeout);
-        script.dataset.loaded = "true";
-        resolve();
-      };
-      script.onerror = () => {
-        window.clearTimeout(timeout);
-        reject(new Error(`Could not load ${src}`));
-      };
-      script.src = src;
-
-      if (!existing) document.head.appendChild(script);
-    });
-  }
-
-  async function loadLibs() {
-    if (window.THREE && window.THREE.GLTFLoader) return;
-
-    await loadScript(
-      "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
-      "Loading 3D engine..."
-    );
-
-    await loadScript(
-      "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js",
-      "Preparing body map tools..."
-    );
-  }
-
   // ── Scene init ───────────────────────────────────────────────
   async function init() {
     setBodyLoading("Preparing 3D body map...");
+    await loadBodyMapEngine();
 
     const rect  = wrap.getBoundingClientRect();
     const W = rect.width  || 300;

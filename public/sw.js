@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nana-app-v7-launch-visual-lock';
+const CACHE_NAME = 'nana-app-v8-body-map-code-split';
 
 const CORE_ASSETS = [
   '/',

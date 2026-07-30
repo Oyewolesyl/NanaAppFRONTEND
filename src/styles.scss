@@ -15313,3 +15313,215 @@ body[data-route="body-map"] .show-pain-continue {
     height: clamp(258px, 41dvh, 332px) !important;
   }
 }
+
+/* === launch repair: keep the original wink frames clean and aligned === */
+@keyframes nana-original-wink-frame-one {
+  0%, 38% { opacity: 1; transform: scale(1); }
+  46%, 100% { opacity: 0; transform: scale(.985); }
+}
+
+@keyframes nana-original-wink-frame-two {
+  0%, 36% { opacity: 0; transform: scale(.985); }
+  44%, 62% { opacity: 1; transform: scale(1); }
+  70%, 100% { opacity: 0; transform: scale(.985); }
+}
+
+@keyframes nana-original-wink-frame-three {
+  0%, 64% { opacity: 0; transform: scale(.985); }
+  72%, 92% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(.985); }
+}
+
+@keyframes nana-original-wink-holder {
+  0%, 84% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+body[data-route="get-started"] > .landing-ai-wink {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 132px !important;
+  height: 132px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 2147483200 !important;
+  display: block !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  transform: translate(-50%, -50%) !important;
+  animation: nana-original-wink-holder 3.12s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"].nana-landing-ready > .landing-ai-wink {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body[data-route="get-started"] > .landing-ai-wink .assistant-wink-icon {
+  position: relative !important;
+  display: block !important;
+  width: 132px !important;
+  height: 132px !important;
+  min-width: 132px !important;
+  min-height: 132px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 18px 24px rgba(43, 95, 132, .18)) !important;
+}
+
+body[data-route="get-started"] > .landing-ai-wink .landing-css-face,
+body[data-route="get-started"] > .landing-ai-wink .landing-wink-fallback,
+body[data-route="get-started"] > .landing-ai-wink .landing-css-face *,
+body[data-route="get-started"] > .landing-ai-wink .landing-wink-fallback *,
+body[data-route="get-started"] .landing-css-face,
+body[data-route="get-started"] .landing-wink-fallback {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  content: none !important;
+}
+
+body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 132px !important;
+  height: 132px !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame--one {
+  animation: nana-original-wink-frame-one 3.12s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame--two {
+  animation: nana-original-wink-frame-two 3.12s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"] > .landing-ai-wink .assistant-wink-frame--three {
+  animation: nana-original-wink-frame-three 3.12s ease-in-out forwards !important;
+}
+
+body[data-route="get-started"] .get-started-screen {
+  grid-template-rows: auto auto auto !important;
+  justify-items: center !important;
+  align-content: center !important;
+}
+
+body[data-route="get-started"] .app-thumbnail,
+body[data-route="get-started"] .app-thumbnail--text-logo {
+  overflow: visible !important;
+}
+
+body[data-route="get-started"] .thumbnail-mark--text {
+  display: block !important;
+  width: min(214px, 68vw) !important;
+  height: auto !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+}
+
+@media (max-width: 430px) {
+  body[data-route] .children-header,
+  body > .children-header {
+    height: 98px !important;
+    min-height: 98px !important;
+    padding: 16px 28px 14px !important;
+    align-items: center !important;
+  }
+
+  body[data-route] .children-header-logo,
+  body > .children-header .children-header-logo {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  body[data-route] .children-menu-button,
+  body > .children-header .children-menu-button {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  body[data-route="child-added"] .children-content,
+  body[data-route="homepage-newuser"] .children-content {
+    width: min(calc(100vw - 40px), 390px) !important;
+    margin-inline: auto !important;
+    align-items: center !important;
+    justify-items: center !important;
+    gap: 22px !important;
+  }
+
+  body[data-route="child-added"] .assistant-entry,
+  body[data-route="homepage-newuser"] .assistant-entry {
+    width: min(100%, 352px) !important;
+    margin-inline: auto !important;
+  }
+
+  body[data-route="child-added"] .child-card-list,
+  body[data-route="homepage-newuser"] .child-card-list {
+    width: 100% !important;
+    justify-items: center !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height, 76px) + env(safe-area-inset-bottom, 0px) + 144px) !important;
+  }
+
+  body[data-route="child-added"] .child-card,
+  body[data-route="homepage-newuser"] .child-card {
+    width: min(100%, 324px) !important;
+    min-height: 290px !important;
+    margin-inline: auto !important;
+  }
+
+  body[data-route="child-added"] .floating-add-btn,
+  body[data-route="homepage-newuser"] .floating-add-btn,
+  body > .floating-add-btn {
+    width: 58px !important;
+    height: 58px !important;
+    right: max(24px, calc((100vw - 390px) / 2 + 24px)) !important;
+    top: calc(env(safe-area-inset-top, 0px) + 348px) !important;
+    bottom: auto !important;
+    z-index: 2147483001 !important;
+  }
+
+  body[data-route] .bottom-nav,
+  body > .bottom-nav {
+    left: max(20px, calc((100vw - 390px) / 2 + 20px)) !important;
+    right: max(20px, calc((100vw - 390px) / 2 + 20px)) !important;
+    display: flex !important;
+    width: calc(100vw - 40px) !important;
+    max-width: 390px !important;
+    margin: 0 auto !important;
+    justify-content: space-between !important;
+  }
+
+  body[data-route] .bottom-nav-item--inactive {
+    opacity: .76 !important;
+    filter: none !important;
+  }
+
+  body[data-route] .bottom-nav-item--inactive img,
+  body[data-route] .bottom-nav-item--inactive .bottom-nav-logo {
+    opacity: .7 !important;
+    filter: grayscale(.05) saturate(.96) contrast(1.3) !important;
+  }
+}

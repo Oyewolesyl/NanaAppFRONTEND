@@ -4,6 +4,7 @@ import { startGuidedTour } from "../appTour";
 export function renderGetStartedScreen(app) {
   app.innerHTML = "";
   document.body.classList.remove("nana-landing-ready");
+  window.clearTimeout(window.__nanaLandingReadyTimer);
 
   const screen = document.createElement("main");
   screen.className = "screen get-started-screen page-animate-in";
@@ -62,7 +63,7 @@ export function renderGetStartedScreen(app) {
     document.body.append(splash);
   }
 
-  window.setTimeout(() => {
+  window.__nanaLandingReadyTimer = window.setTimeout(() => {
     screen.classList.add("get-started-screen--ready");
     document.body.classList.add("nana-landing-ready");
   }, 3200);

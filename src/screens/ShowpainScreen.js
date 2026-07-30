@@ -210,7 +210,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
   // Continuous camera distance (zoom). Start close enough that the body map is
   // the usable focal point, while the minus control still lets testers zoom out.
-  let camDist = 1.55;
+  let camDist = 1.36;
   const CAM_MIN = 0.62;
   const CAM_MAX = 2.45;
   const cameraTarget = { x: 0, y: 0 };

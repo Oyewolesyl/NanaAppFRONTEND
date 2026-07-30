@@ -234,12 +234,12 @@ function aiHistorySummaryHtml(logs) {
         <strong>${safeText(insight.level)}</strong>
       </div>
       <p>${safeText(insight.summary)}</p>
+      <button type="button" class="history-ai-open" data-ask-nana="${safeText(latest.id || '')}">ask nana about latest report</button>
       <div class="history-ai-stats">
         <span><strong>${logs.length}</strong><em>reports saved</em></span>
         <span><strong>${intenseReports}</strong><em>high pain reports</em></span>
         <span><strong>${uniqueChildren || 1}</strong><em>child profile${uniqueChildren === 1 ? '' : 's'}</em></span>
       </div>
-      <button type="button" class="history-ai-open" data-ask-nana="${safeText(latest.id || '')}">open in nana assistant</button>
     </section>
   `;
 }

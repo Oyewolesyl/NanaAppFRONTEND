@@ -13,109 +13,179 @@ import {
 } from '../aiCareAssistant';
 import { showToast } from '../toast';
 
-function getLatestLog() {
+const SELECTED_ASSISTANT_LOG_KEY = 'nana_assistant_log_id';
+
+function getSortedLogs() {
   return [...(appState.painLogs || [])]
-    .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))[0];
+    .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+}
+
+function getAssistantLog() {
+  const logs = getSortedLogs();
+  const selectedId = sessionStorage.getItem(SELECTED_ASSISTANT_LOG_KEY);
+  return logs.find((log) => log.id === selectedId) || logs[0] || null;
 }
 
 function getChildName(log) {
   return log?.childName || log?.child_name || 'this child';
 }
 
-function questionHtml(question, answers) {
-  const current = answers[question.key] || '';
+function getIntensity(log = {}) {
+  return Number(log.intensity ?? log.pain_scale ?? 0) || 0;
+}
 
+function getPainType(log = {}) {
+  return log.painType || log.pain_type || 'pain';
+}
+
+function getStarted(log = {}) {
+  return log.started || log.when_did_it_start || 'not recorded';
+}
+
+function reportBubbleHtml(log, assessment) {
   return `
-    <fieldset class="assistant-question" data-question="${question.key}">
-      <legend>${safeText(question.label)}</legend>
+    <article class="assistant-report-bubble">
       <div>
-        <button type="button" data-answer="yes" class="${current === 'yes' ? 'is-selected' : ''}">Yes</button>
-        <button type="button" data-answer="no" class="${current === 'no' ? 'is-selected' : ''}">No</button>
+        <span>report loaded</span>
+        <strong>${safeText(getChildName(log))}</strong>
       </div>
-    </fieldset>
+      <p><b>${safeText(getIntensity(log))}/10</b> ${safeText(getPainType(log))} pain</p>
+      <p>${safeText(formatZones(log.zones || log.pain_zones || []))}</p>
+      <small>${safeText(assessment.trend)}</small>
+    </article>
   `;
 }
 
-function renderAssessment(screen, log, answers) {
+function assistantReplyFor(mode, log, assessment) {
+  const child = getChildName(log);
+  const intensity = getIntensity(log);
+  const zoneText = formatZones(log.zones || log.pain_zones || []);
+  const started = getStarted(log);
+
+  if (mode === 'watch') {
+    return [
+      `${child} has a ${intensity}/10 report, so keep the child comfortable and watch for changes in energy, movement, breathing, fever, vomiting, dizziness, or pain spreading.`,
+      intensity >= 5
+        ? 'save another report in 30-60 minutes so the trend is visible.'
+        : 'save another report later today if the pain changes.',
+    ].join(' ');
+  }
+
+  if (mode === 'handoff') {
+    return assessment.handoff;
+  }
+
+  if (mode === 'compare') {
+    return assessment.trend;
+  }
+
+  return `${child} reported ${getPainType(log)} pain around ${zoneText.toLowerCase()} with a score of ${intensity}/10. it started: ${started}. ${assessment.summary}`;
+}
+
+function answerFreeText(question, log, assessment) {
+  const q = String(question || '').toLowerCase();
+
+  // This local rules engine keeps the resit feature explainable: it reads the
+  // saved report, detects intent from the user's message, and returns grounded
+  // care-support copy without pretending to diagnose.
+  if (q.includes('handoff') || q.includes('doctor') || q.includes('share')) {
+    return assistantReplyFor('handoff', log, assessment);
+  }
+
+  if (q.includes('watch') || q.includes('warning') || q.includes('worry') || q.includes('red flag')) {
+    return assistantReplyFor('watch', log, assessment);
+  }
+
+  if (q.includes('trend') || q.includes('history') || q.includes('compare')) {
+    return assistantReplyFor('compare', log, assessment);
+  }
+
+  if (q.includes('next') || q.includes('do')) {
+    return assessment.carePlan.join(' ');
+  }
+
+  return assistantReplyFor('explain', log, assessment);
+}
+
+function messageHtml(role, text) {
+  return `
+    <div class="assistant-chat-message assistant-chat-message--${role}">
+      <p>${safeText(text)}</p>
+    </div>
+  `;
+}
+
+function renderAssistantChat(screen, log) {
   const assessment = createAssistantAssessment({
     log,
-    logs: appState.painLogs,
-    answers,
+    logs: getSortedLogs(),
+    answers: {},
   });
-
   const panel = screen.querySelector('[data-assistant-panel]');
+
   panel.innerHTML = `
-    <section class="assistant-hero assistant-hero--${assessment.tone}">
-      <span>Nana Assistant</span>
-      <h1>${safeText(assessment.level)}</h1>
-      <p>${safeText(assessment.summary)}</p>
-    </section>
+    <section class="assistant-chat-shell ai-care-card assistant-chat-shell--${assessment.tone}">
+      <div class="assistant-chat-head">
+        <span>nana assistant</span>
+        <strong>${safeText(assessment.level)}</strong>
+        <p>${safeText(assessment.summary)}</p>
+      </div>
 
-    <section class="assistant-report-card">
-      <div>
-        <strong>${safeText(getChildName(log))}</strong>
-        <span>${new Date(log.created_at || Date.now()).toLocaleString()}</span>
+      <div class="assistant-chat-thread" data-chat-thread>
+        ${messageHtml('assistant', `i have opened ${getChildName(log)}'s latest pain report. ask me what to watch, what to do next, or ask for a handoff note.`)}
+        <div class="assistant-chat-message assistant-chat-message--user">
+          ${reportBubbleHtml(log, assessment)}
+        </div>
+        ${messageHtml('assistant', assistantReplyFor('explain', log, assessment))}
       </div>
-      <p><b>Area</b>${safeText(formatZones(log.zones || log.pain_zones || []))}</p>
-      <p><b>Type</b>${safeText(log.painType || log.pain_type || 'Not recorded')}</p>
-      <p><b>Score</b>${safeText(log.intensity ?? log.pain_scale ?? '-')} / 10</p>
-      <p><b>Trend</b>${safeText(assessment.trend)}</p>
-    </section>
 
-    <section class="assistant-section assistant-intelligence-panel">
-      <div class="assistant-intelligence-top">
-        <span>handoff readiness</span>
-        <strong>${safeText(assessment.signals.confidenceScore)}%</strong>
+      <div class="assistant-quick-actions" aria-label="assistant suggestions">
+        <button type="button" data-assistant-prompt="explain">explain report</button>
+        <button type="button" data-assistant-prompt="watch">what to watch</button>
+        <button type="button" data-assistant-prompt="handoff">prepare handoff</button>
+        <button type="button" data-assistant-prompt="compare">compare history</button>
       </div>
-      <p>Nana checks the report, recent history, and follow-up answers to prepare a clear care handoff.</p>
-      <div class="assistant-signal-grid">
-        ${assessment.signals.signals.map((signal) => `<span>${safeText(signal)}</span>`).join('')}
-      </div>
-      ${
-        assessment.signals.missingFields.length
-          ? `<small>add more detail for: ${safeText(assessment.signals.missingFields.join(', '))}</small>`
-          : '<small>the handoff has enough structure for a caregiver or professional conversation.</small>'
-      }
-    </section>
 
-    <section class="assistant-section">
-      <h2>Follow-up check</h2>
-      <div class="assistant-question-list">
-        ${assessment.questions.map((question) => questionHtml(question, answers)).join('')}
-      </div>
-    </section>
+      <form class="assistant-chat-form" data-assistant-form>
+        <input type="text" data-assistant-input placeholder="ask nana about this report" autocomplete="off" />
+        <button type="submit">send</button>
+      </form>
 
-    <section class="assistant-section">
-      <h2>Care plan</h2>
-      <div class="assistant-care-plan">
-        ${assessment.carePlan.map((step, index) => `<p><span>${index + 1}</span>${safeText(step)}</p>`).join('')}
+      <div class="assistant-chat-footer">
+        <label class="ai-care-handoff assistant-hidden-handoff">
+          <span>doctor-ready handoff</span>
+          <textarea readonly rows="4">${safeText(assessment.handoff)}</textarea>
+        </label>
+        <button type="button" data-copy-handoff>copy handoff</button>
+        <button type="button" data-start-report>new report</button>
       </div>
-    </section>
 
-    <section class="ai-care-card ai-care-card--${assessment.tone} assistant-handoff-card">
-      <div class="ai-care-card__top">
-        <span class="ai-care-badge">Nana AI</span>
-        <strong>Shareable handoff</strong>
-      </div>
-      <label class="ai-care-handoff">
-        <span>Doctor-ready handoff</span>
-        <textarea readonly rows="5">${safeText(assessment.handoff)}</textarea>
-      </label>
-      <div class="ai-care-actions">
-        <button type="button" data-copy-handoff>Copy handoff</button>
-        <button type="button" data-start-report>New report</button>
-      </div>
-      <small>This assistant supports care decisions. It does not diagnose or replace medical help.</small>
+      <small class="assistant-safety-note">nana supports care decisions. it does not diagnose or replace medical help.</small>
     </section>
   `;
 
-  panel.querySelectorAll('.assistant-question').forEach((field) => {
-    field.querySelectorAll('[data-answer]').forEach((button) => {
-      button.addEventListener('click', () => {
-        answers[field.dataset.question] = button.dataset.answer;
-        renderAssessment(screen, log, answers);
-      });
+  const thread = panel.querySelector('[data-chat-thread]');
+
+  function appendExchange(userText, replyText) {
+    thread.insertAdjacentHTML('beforeend', messageHtml('user', userText));
+    thread.insertAdjacentHTML('beforeend', messageHtml('assistant', replyText));
+    thread.lastElementChild?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  panel.querySelectorAll('[data-assistant-prompt]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const mode = button.dataset.assistantPrompt || 'explain';
+      appendExchange(button.textContent, assistantReplyFor(mode, log, assessment));
     });
+  });
+
+  panel.querySelector('[data-assistant-form]')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = panel.querySelector('[data-assistant-input]');
+    const question = input.value.trim();
+    if (!question) return;
+    input.value = '';
+    appendExchange(question, answerFreeText(question, log, assessment));
   });
 
   panel.querySelector('[data-start-report]')?.addEventListener('click', () => {
@@ -123,14 +193,14 @@ function renderAssessment(screen, log, answers) {
   });
 
   wireCareInsightActions(panel, {
-    onCopied: () => showToast('Handoff copied'),
+    onCopied: () => showToast('handoff copied'),
   });
 }
 
 export function renderAssistantScreen(app) {
   app.innerHTML = '';
 
-  const log = getLatestLog();
+  const log = getAssistantLog();
   const screen = document.createElement('main');
   screen.className = 'screen assistant-screen mobile-fit-screen page-animate-in';
 
@@ -141,11 +211,13 @@ export function renderAssistantScreen(app) {
       ${
         log
           ? '<div data-assistant-panel></div>'
-          : `<section class="assistant-empty">
-              <span>Nana Assistant</span>
-              <h1>No pain report yet</h1>
-              <p>Start by recording where it hurts, how it feels, when it began, and the pain score. Nana Assistant will turn that into a care plan.</p>
-              <button type="button" class="continue-button" data-start-report>Start report</button>
+          : `<section class="assistant-empty assistant-chat-shell">
+              <div class="assistant-chat-head">
+                <span>nana assistant</span>
+                <strong>no report yet</strong>
+                <p>start a pain report so nana can turn the details into a clear care handoff.</p>
+              </div>
+              <button type="button" class="continue-button" data-start-report>start report</button>
             </section>`
       }
     </section>
@@ -154,7 +226,7 @@ export function renderAssistantScreen(app) {
   `);
 
   if (log) {
-    renderAssessment(screen, log, {});
+    renderAssistantChat(screen, log);
   }
 
   screen.querySelector('[data-start-report]')?.addEventListener('click', () => {

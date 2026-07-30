@@ -117,7 +117,7 @@ function historyCard(log) {
     '';
 
   return `
-    <article class="history-card history-record-card" data-history-card>
+    <article class="history-card history-record-card" data-history-card data-log-id="${safeText(log.id || '')}">
       <div class="history-record-top">
         <div class="history-child-head">
           <img
@@ -168,6 +168,11 @@ function historyCard(log) {
           <strong>Note</strong>
           <em>${safeText(notes || 'No note added')}</em>
         </p>
+      </div>
+
+      <div class="history-card-actions">
+        <button type="button" data-ask-nana="${safeText(log.id || '')}">Ask Nana</button>
+        <button type="button" data-repeat-report="${safeText(log.id || '')}">Follow up</button>
       </div>
     </article>
   `;
@@ -234,6 +239,7 @@ function aiHistorySummaryHtml(logs) {
         <span><strong>${intenseReports}</strong><em>high pain reports</em></span>
         <span><strong>${uniqueChildren || 1}</strong><em>child profile${uniqueChildren === 1 ? '' : 's'}</em></span>
       </div>
+      <button type="button" class="history-ai-open" data-ask-nana="${safeText(latest.id || '')}">open in nana assistant</button>
     </section>
   `;
 }
@@ -321,6 +327,21 @@ export function renderHistoryScreen(app) {
       });
       renderGroups(list, filterLogs(logs, searchInput?.value), activeFilter);
     });
+  });
+
+  screen.addEventListener('click', (event) => {
+    const askButton = event.target.closest('[data-ask-nana]');
+    if (askButton) {
+      sessionStorage.setItem('nana_assistant_log_id', askButton.dataset.askNana || '');
+      window.location.hash = '#assistant';
+      return;
+    }
+
+    const followButton = event.target.closest('[data-repeat-report]');
+    if (followButton) {
+      sessionStorage.setItem('nana_extend_log_id', followButton.dataset.repeatReport || '');
+      window.location.hash = '#body-map';
+    }
   });
 
   wireBottomNav(screen);

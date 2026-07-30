@@ -4629,6 +4629,16 @@ body.nana-add-child-open .nana-toast {
   }
 }
 
+@media (max-width: 430px) {
+  body[data-route="settings"] .settings-content.settings-content-fit {
+    padding-top: 28px !important;
+  }
+
+  body[data-route="settings"] .children-title {
+    margin-top: 0 !important;
+  }
+}
+
 /* === ABSOLUTE FINAL SHIP OVERRIDE: keep cards separated after all older patches === */
 body[data-route="child-added"] .child-card-divider,
 body[data-route="child-added"] .child-card-divider--after-photo,
@@ -13633,5 +13643,281 @@ body[data-route="get-started"] .welcome-title {
   body[data-route="assistant"] .ai-care-card:last-child,
   body[data-route="history"] .history-list:last-child {
     margin-bottom: calc(var(--nana-bottom-nav-height, 74px) + var(--nana-mobile-browser-offset, 0px) + 48px) !important;
+  }
+}
+
+/* launch correction: nana assistant is now a chat-first feature, history links
+   into that chat, and mobile screens get extra room so fixed navigation does
+   not hide fields, cards, or primary actions on iphone safari. */
+@media (max-width: 430px) {
+  body[data-route="settings"] .settings-content.settings-content-fit,
+  body[data-route="history"] .history-content,
+  body[data-route="assistant"] .assistant-content {
+    padding-top: 28px !important;
+  }
+
+  body[data-route="settings"] .children-title,
+  body[data-route="history"] .children-title {
+    margin-top: 0 !important;
+  }
+
+  body[data-route="assistant"] .assistant-content {
+    gap: 14px !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-shell {
+    width: min(100%, 346px) !important;
+    margin: 0 auto calc(var(--nana-bottom-nav-height, 74px) + 82px) !important;
+    padding: 18px !important;
+    border: 1px solid rgba(54, 120, 160, .16) !important;
+    border-radius: 28px !important;
+    background: rgba(241, 250, 255, .94) !important;
+    box-shadow: 0 18px 36px rgba(43, 95, 132, .16), inset 0 1px 0 rgba(255,255,255,.9) !important;
+    display: grid !important;
+    gap: 14px !important;
+    color: #162432 !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-head {
+    display: grid !important;
+    gap: 8px !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-head span,
+  body[data-route="assistant"] .assistant-report-bubble span {
+    color: #007f73 !important;
+    font-size: 13px !important;
+    font-weight: 1000 !important;
+    letter-spacing: 0 !important;
+    text-transform: uppercase !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-head strong {
+    color: #ef474f !important;
+    font-size: 34px !important;
+    line-height: 1.04 !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-head p,
+  body[data-route="assistant"] .assistant-chat-message p,
+  body[data-route="assistant"] .assistant-report-bubble p,
+  body[data-route="assistant"] .assistant-report-bubble small,
+  body[data-route="assistant"] .assistant-safety-note {
+    color: #263846 !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+    line-height: 1.28 !important;
+    text-shadow: none !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-thread {
+    display: grid !important;
+    gap: 10px !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-message {
+    max-width: 92% !important;
+    padding: 12px 14px !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    border: 1px solid rgba(54, 120, 160, .14) !important;
+    box-shadow: 0 8px 18px rgba(43, 95, 132, .09) !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-message--assistant {
+    justify-self: start !important;
+    border-top-left-radius: 8px !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-message--user {
+    justify-self: end !important;
+    background: linear-gradient(180deg, #fff49a, #d6f3c6) !important;
+    border-top-right-radius: 8px !important;
+  }
+
+  body[data-route="assistant"] .assistant-report-bubble {
+    display: grid !important;
+    gap: 7px !important;
+  }
+
+  body[data-route="assistant"] .assistant-report-bubble strong {
+    display: block !important;
+    color: #162432 !important;
+    font-size: 20px !important;
+    font-weight: 1000 !important;
+  }
+
+  body[data-route="assistant"] .assistant-report-bubble b {
+    color: #ef474f !important;
+  }
+
+  body[data-route="assistant"] .assistant-quick-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  body[data-route="assistant"] .assistant-quick-actions button,
+  body[data-route="assistant"] .assistant-chat-form button,
+  body[data-route="assistant"] .assistant-chat-footer button,
+  body[data-route="history"] .history-card-actions button,
+  body[data-route="history"] .history-ai-open {
+    min-height: 44px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(54, 120, 160, .18) !important;
+    background: linear-gradient(180deg, #fff39a, #ccf2bc) !important;
+    color: #162432 !important;
+    font-family: "Nunito", sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 1000 !important;
+    text-transform: none !important;
+    box-shadow: 0 6px 12px rgba(43, 95, 132, .1) !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-form {
+    display: grid !important;
+    grid-template-columns: 1fr 76px !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-form input {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    padding: 0 14px !important;
+    border: 1px solid rgba(54, 120, 160, .18) !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    color: #162432 !important;
+    font-family: "Nunito", sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 850 !important;
+  }
+
+  body[data-route="assistant"] .assistant-chat-footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  body[data-route="assistant"] .assistant-hidden-handoff {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+  }
+
+  body[data-route="history"] .history-search-wrap {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 48px 1fr !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="history"] .history-search-icon {
+    position: relative !important;
+    display: block !important;
+    width: 48px !important;
+    height: 62px !important;
+    min-width: 48px !important;
+    border: 0 !important;
+    background: transparent !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="history"] .history-search-icon::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 15px !important;
+    top: 18px !important;
+    width: 16px !important;
+    height: 16px !important;
+    border: 4px solid #12a99a !important;
+    border-radius: 50% !important;
+  }
+
+  body[data-route="history"] .history-search-icon::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 30px !important;
+    top: 35px !important;
+    width: 14px !important;
+    height: 4px !important;
+    border-radius: 999px !important;
+    background: #12a99a !important;
+    transform: rotate(45deg) !important;
+  }
+
+  body[data-route="history"] .history-ai-summary {
+    display: grid !important;
+    gap: 14px !important;
+  }
+
+  body[data-route="history"] .history-ai-open {
+    width: 100% !important;
+  }
+
+  body[data-route="history"] .history-card-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+  }
+
+  body[data-route="history"] .history-card-actions button:first-child {
+    background: linear-gradient(180deg, #ff7068, #ff4f55) !important;
+    color: #fff !important;
+  }
+
+  body[data-route="history"] .history-timeline {
+    padding-bottom: calc(var(--nana-bottom-nav-height, 74px) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 120px) !important;
+  }
+
+  body[data-route="settings"] .settings-content.settings-content-fit {
+    padding-top: 124px !important;
+    gap: 14px !important;
+  }
+
+  body[data-route="settings"] .settings-summary-card {
+    padding: 18px !important;
+    border-radius: 24px !important;
+  }
+
+  body[data-route="settings"] .save-settings {
+    margin: 2px auto 4px !important;
+  }
+
+  body[data-route="settings"] .settings-link {
+    min-height: 54px !important;
+  }
+
+  body[data-route="settings"] .settings-bottom-clearance {
+    min-height: calc(var(--nana-bottom-nav-height, 74px) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 96px) !important;
+  }
+
+  body[data-route="homepage-newuser"] .child-added-screen,
+  body[data-route="child-added"] .child-added-screen {
+    padding-top: 110px !important;
+  }
+
+  body[data-route="homepage-newuser"] .child-card-list,
+  body[data-route="child-added"] .child-card-list {
+    padding-bottom: calc(var(--nana-bottom-nav-height, 74px) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 150px) !important;
+  }
+
+  body[data-route="homepage-newuser"] .floating-add-btn,
+  body[data-route="child-added"] .floating-add-btn,
+  body > .floating-add-btn {
+    top: calc(env(safe-area-inset-top, 0px) + 326px) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  body[data-route="settings"] .settings-content.settings-content-fit {
+    padding-top: 28px !important;
   }
 }

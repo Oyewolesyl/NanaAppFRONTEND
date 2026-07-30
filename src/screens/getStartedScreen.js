@@ -14,7 +14,7 @@ export function renderGetStartedScreen(app) {
     <p class="welcome-copy">Create your account to start using Nana.</p>
 
     <section class="app-thumbnail app-thumbnail--text-logo" aria-label="Nana the App logo">
-      <img src="${ASSETS.logoText}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
+      <img src="${ASSETS.logoFull}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
     </section>
 
     <div class="landing-ai-wink" aria-hidden="true">

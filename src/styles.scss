@@ -12908,6 +12908,45 @@ body[data-route="get-started"] .welcome-title {
     overflow: visible !important;
   }
 
+  body[data-route="child-added"] .home-assistant-strip,
+  body[data-route="homepage-newuser"] .home-assistant-strip {
+    display: flex !important;
+    width: min(100%, 328px) !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
+    margin: 14px auto 0 !important;
+    padding: 18px 16px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  body[data-route="child-added"] .home-assistant-strip > div,
+  body[data-route="homepage-newuser"] .home-assistant-strip > div {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 6px !important;
+  }
+
+  body[data-route="child-added"] .home-assistant-strip strong,
+  body[data-route="homepage-newuser"] .home-assistant-strip strong {
+    font-size: 20px !important;
+    line-height: 1.18 !important;
+  }
+
+  body[data-route="child-added"] .home-assistant-strip button,
+  body[data-route="homepage-newuser"] .home-assistant-strip button {
+    width: 84px !important;
+    min-width: 84px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    border-radius: 24px !important;
+  }
+
   body[data-route="body-map"] .body-svg-wrap,
   body[data-route="body-map"] #bodyBadges {
     overflow: visible !important;
@@ -13002,4 +13041,597 @@ body[data-route="get-started"] .welcome-title {
 @keyframes nana-launch-wink-three-final {
   0%, 58% { opacity: 0; transform: scale(1); }
   59%, 100% { opacity: 1; transform: scale(1); }
+}
+
+/* final audit pass: keeps the approved wink intro intact while correcting the
+   mobile spacing, scroll clearance, contrast, and fixed-nav overlap problems
+   visible on real iphone safari screenshots. */
+@media (max-width: 430px) {
+  :root {
+    --nana-bottom-nav-height: 74px;
+    --nana-page-side: 20px;
+    --nana-readable: #162432;
+    --nana-muted-readable: #4d5f6f;
+    --nana-card: rgba(241, 250, 255, .94);
+  }
+
+  body[data-route] .children-header,
+  body > .children-header {
+    min-height: 82px !important;
+    padding: max(10px, env(safe-area-inset-top, 0px) + 10px) 28px 10px !important;
+    justify-content: space-between !important;
+    background: rgba(168, 216, 255, .82) !important;
+    backdrop-filter: blur(14px) !important;
+  }
+
+  body[data-route] .children-header-logo,
+  body > .children-header .children-header-logo {
+    width: 54px !important;
+    height: 54px !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  body[data-route] .children-menu-button,
+  body > .children-header .children-menu-button {
+    width: 58px !important;
+    height: 58px !important;
+    margin-left: auto !important;
+  }
+
+  body[data-route] .bottom-nav,
+  body > .bottom-nav {
+    left: 20px !important;
+    right: 20px !important;
+    transform: none !important;
+    bottom: calc(var(--nana-mobile-browser-offset, 0px) + max(14px, env(safe-area-inset-bottom, 0px))) !important;
+    width: auto !important;
+    max-width: 390px !important;
+    height: var(--nana-bottom-nav-height) !important;
+    min-height: var(--nana-bottom-nav-height) !important;
+    padding: 8px 28px !important;
+    border: 1px solid rgba(33, 93, 132, .2) !important;
+    border-radius: 34px !important;
+    background: rgba(250, 253, 255, .94) !important;
+    box-shadow: 0 16px 32px rgba(38, 99, 140, .18), inset 0 1px 0 rgba(255,255,255,.92) !important;
+    backdrop-filter: blur(18px) !important;
+  }
+
+  body[data-route] .bottom-nav-item {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-route] .bottom-nav-item--inactive {
+    opacity: .7 !important;
+  }
+
+  body[data-route] .bottom-nav-item--inactive img,
+  body[data-route] .bottom-nav-item--inactive .bottom-nav-logo {
+    opacity: .6 !important;
+    filter: grayscale(.18) saturate(.85) contrast(1.25) !important;
+  }
+
+  body[data-route] .bottom-nav-item--active {
+    opacity: 1 !important;
+    background: linear-gradient(180deg, #fff694, #c8f2bb) !important;
+    box-shadow: 0 12px 24px rgba(46, 132, 170, .16) !important;
+  }
+
+  body[data-route] .bottom-nav-item--active img,
+  body[data-route] .bottom-nav-item--active .bottom-nav-logo {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  body[data-route] .screen,
+  body[data-route] .mobile-fit-screen,
+  body[data-route] .settings-screen,
+  body[data-route] .history-screen,
+  body[data-route] .assistant-screen,
+  body[data-route] .children-screen,
+  body[data-route] .child-added-screen,
+  body[data-route] .manage-children-screen,
+  body[data-route] .summary-screen,
+  body[data-route] .confirmation-screen {
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 128px) !important;
+  }
+
+  body[data-route] .settings-content,
+  body[data-route] .settings-content-fit,
+  body[data-route] .assistant-content,
+  body[data-route] .history-content {
+    width: min(100%, 372px) !important;
+    margin-inline: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 132px) !important;
+    gap: 18px !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="get-started"] .get-started-screen {
+    justify-content: center !important;
+    gap: 24px !important;
+  }
+
+  body[data-route="get-started"] .welcome-title {
+    display: none !important;
+  }
+
+  body[data-route="get-started"] .app-thumbnail,
+  body[data-route="get-started"] .app-thumbnail--text-logo {
+    width: min(100%, 324px) !important;
+    height: auto !important;
+    min-height: 162px !important;
+    max-height: none !important;
+    padding: 24px 34px !important;
+    overflow: visible !important;
+    border-radius: 32px !important;
+    background: rgba(246, 251, 255, .78) !important;
+  }
+
+  body[data-route="get-started"] .thumbnail-mark--text {
+    width: min(210px, 78%) !important;
+    max-width: 210px !important;
+    max-height: 124px !important;
+    mix-blend-mode: normal !important;
+  }
+
+  body[data-route="get-started"] .welcome-copy {
+    display: block !important;
+    width: min(100%, 330px) !important;
+    margin: 0 auto !important;
+  }
+
+  body[data-route="select-role"] .select-role-screen {
+    display: flex !important;
+    min-height: 100dvh !important;
+    padding: max(44px, env(safe-area-inset-top, 0px) + 30px) 20px max(36px, env(safe-area-inset-bottom, 0px) + 26px) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 18px !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route="select-role"] .select-role-screen .top-bar {
+    position: absolute !important;
+    top: max(34px, env(safe-area-inset-top, 0px) + 20px) !important;
+    left: 20px !important;
+  }
+
+  body[data-route="select-role"] .role-options {
+    width: min(100%, 330px) !important;
+    margin: 0 auto !important;
+    flex: 0 0 auto !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 18px !important;
+  }
+
+  body[data-route="select-role"] .role-option {
+    width: min(100%, 310px) !important;
+    min-height: 176px !important;
+    margin-inline: auto !important;
+    padding: 22px 18px 20px !important;
+    border-radius: 28px !important;
+  }
+
+  body[data-route="select-role"] .role-button {
+    width: 100% !important;
+    min-height: 58px !important;
+    color: #d63e54 !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="select-role"] .continue-button {
+    width: min(100%, 316px) !important;
+    margin: 6px auto 0 !important;
+  }
+
+  body[data-route="child-added"] .child-added-screen,
+  body[data-route="homepage-newuser"] .child-added-screen {
+    padding-top: 116px !important;
+  }
+
+  body[data-route="child-added"] .child-card-list,
+  body[data-route="homepage-newuser"] .child-card-list,
+  body[data-route="child-added"] .child-card-list.child-card-list--two,
+  body[data-route="homepage-newuser"] .child-card-list.child-card-list--two {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    width: min(100%, 344px) !important;
+    margin: 26px auto 0 !important;
+    padding: 0 0 calc(var(--nana-bottom-nav-height) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 132px) !important;
+    gap: 22px !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="child-added"] .child-card,
+  body[data-route="homepage-newuser"] .child-card,
+  body[data-route="child-added"] .child-card.child-card--compact,
+  body[data-route="homepage-newuser"] .child-card.child-card--compact {
+    width: min(100%, 284px) !important;
+    min-height: 178px !important;
+    padding: 10px 18px 12px !important;
+    border-radius: 28px !important;
+    background: rgba(241, 250, 255, .9) !important;
+  }
+
+  body[data-route="child-added"] .child-card-photo-wrap,
+  body[data-route="homepage-newuser"] .child-card-photo-wrap,
+  body[data-route="child-added"] .child-card-photo-frame,
+  body[data-route="homepage-newuser"] .child-card-photo-frame {
+    width: 70px !important;
+    height: 70px !important;
+    margin: 0 auto 6px !important;
+  }
+
+  body[data-route="child-added"] .child-card-meta,
+  body[data-route="homepage-newuser"] .child-card-meta {
+    padding: 0 6px !important;
+    min-height: 40px !important;
+  }
+
+  body[data-route="child-added"] .child-age,
+  body[data-route="homepage-newuser"] .child-age {
+    margin-top: 2px !important;
+    line-height: 1.05 !important;
+  }
+
+  body[data-route="child-added"] .child-name,
+  body[data-route="homepage-newuser"] .child-name {
+    color: #ef474f !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="child-added"] .child-open-map-btn,
+  body[data-route="homepage-newuser"] .child-open-map-btn {
+    position: static !important;
+    display: flex !important;
+    width: min(100%, 220px) !important;
+    min-height: 40px !important;
+    margin: 4px auto 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--nana-readable) !important;
+    background: linear-gradient(180deg, #fff39a, #ccf2bc) !important;
+    border: 1px solid rgba(81, 154, 144, .38) !important;
+    text-shadow: none !important;
+  }
+
+  body[data-route="child-added"] .floating-add-btn,
+  body[data-route="homepage-newuser"] .floating-add-btn,
+  body > .floating-add-btn {
+    right: max(22px, calc((100vw - 390px) / 2 + 22px)) !important;
+    top: calc(env(safe-area-inset-top, 0px) + 284px) !important;
+    bottom: auto !important;
+    width: 62px !important;
+    height: 62px !important;
+    min-width: 62px !important;
+    min-height: 62px !important;
+    max-width: 62px !important;
+    max-height: 62px !important;
+    z-index: 72 !important;
+  }
+
+  body[data-route="settings"] .settings-content.settings-content-fit {
+    padding-top: 112px !important;
+    gap: 16px !important;
+  }
+
+  body[data-route="settings"] .children-title {
+    margin: 0 auto 2px !important;
+    font-size: clamp(34px, 10vw, 42px) !important;
+    line-height: 1.05 !important;
+  }
+
+  body[data-route="settings"] .settings-summary-card,
+  body[data-route="settings"] .settings-field,
+  body[data-route="settings"] .save-settings,
+  body[data-route="settings"] .settings-link {
+    width: min(100%, 342px) !important;
+    margin-inline: auto !important;
+  }
+
+  body[data-route="settings"] .settings-field {
+    gap: 7px !important;
+  }
+
+  body[data-route="settings"] .settings-field-label {
+    color: #263846 !important;
+    font-size: 15px !important;
+    font-weight: 1000 !important;
+  }
+
+  body[data-route="settings"] .settings-field input {
+    min-height: 58px !important;
+    color: var(--nana-readable) !important;
+    background: rgba(248, 252, 255, .92) !important;
+    border: 1px solid rgba(54, 120, 160, .18) !important;
+  }
+
+  body[data-route="history"] .history-content {
+    padding-top: 112px !important;
+    gap: 20px !important;
+  }
+
+  body[data-route="history"] .history-helper {
+    width: min(100%, 330px) !important;
+    margin: -4px auto 4px !important;
+    color: #263846 !important;
+    line-height: 1.24 !important;
+  }
+
+  body[data-route="history"] .history-group-tabs {
+    width: min(100%, 344px) !important;
+    padding: 8px !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="history"] .history-group-tab {
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 0 12px !important;
+    font-size: 15px !important;
+    line-height: 1.05 !important;
+  }
+
+  body[data-route="history"] .history-search-wrap {
+    display: flex !important;
+    width: min(100%, 344px) !important;
+    height: 62px !important;
+    margin: 0 auto !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(54, 120, 160, .18) !important;
+    border-radius: 22px !important;
+    background: rgba(248, 252, 255, .94) !important;
+    box-shadow: 0 12px 24px rgba(38, 99, 140, .12) !important;
+  }
+
+  body[data-route="history"] .history-search-icon {
+    flex: 0 0 54px !important;
+    width: 54px !important;
+    height: 100% !important;
+    background: transparent !important;
+  }
+
+  body[data-route="history"] .history-search-input {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 100% !important;
+    padding: 0 16px 0 4px !important;
+    color: var(--nana-readable) !important;
+    background: #fff !important;
+    border: 0 !important;
+    border-left: 1px solid rgba(54, 120, 160, .12) !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body[data-route="history"] .history-search-input::placeholder {
+    color: #7a8792 !important;
+    opacity: 1 !important;
+  }
+
+  body[data-route="history"] .history-ai-summary {
+    width: min(100%, 344px) !important;
+    margin: 4px auto 12px !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="history"] .history-list,
+  body[data-route="history"] .history-timeline,
+  body[data-route="history"] .history-group,
+  body[data-route="history"] .history-card {
+    width: min(100%, 344px) !important;
+    margin-inline: auto !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="history"] .history-record-card {
+    padding: 18px !important;
+  }
+
+  body[data-route="history"] .history-detail-grid p {
+    grid-template-columns: 42px 92px minmax(0, 1fr) !important;
+    min-height: 58px !important;
+    overflow: hidden !important;
+  }
+
+  body[data-route="history"] .history-detail-grid em {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body[data-route="history"] .history-pain-score {
+    color: #fff !important;
+    background: linear-gradient(180deg, #ff6f61, #ff4f55) !important;
+    text-shadow: none !important;
+  }
+
+  body[data-route="assistant"] .assistant-content {
+    padding-top: 108px !important;
+  }
+
+  body[data-route="assistant"] .assistant-intelligence-top {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  body[data-route="assistant"] .assistant-intelligence-top strong {
+    flex: 0 0 auto !important;
+    min-width: 90px !important;
+    padding: 8px 14px !important;
+    color: #fff !important;
+    background: linear-gradient(180deg, #ff6f61, #ff4f55) !important;
+    border-radius: 22px !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  body[data-route="assistant"] .assistant-question {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  body[data-route="assistant"] .assistant-question legend {
+    width: 100% !important;
+    max-width: 100% !important;
+    color: var(--nana-readable) !important;
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+  }
+
+  body[data-route="assistant"] .assistant-question div {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  body[data-route="assistant"] .ai-care-card,
+  body[data-route="assistant"] .assistant-section,
+  body[data-route="assistant"] .assistant-report-card,
+  body[data-route="assistant"] .assistant-hero {
+    width: min(100%, 344px) !important;
+    margin-inline: auto !important;
+    overflow: visible !important;
+  }
+
+  body[data-route="assistant"] .ai-care-handoff textarea {
+    max-height: none !important;
+    min-height: 150px !important;
+    color: var(--nana-readable) !important;
+    background: #fff !important;
+  }
+
+  body[data-route="assistant"] .ai-care-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .add-child-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 86px 18px calc(var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 28px) !important;
+  }
+
+  .add-child-overlay .add-child-modal {
+    width: min(100%, 344px) !important;
+    max-height: min(620px, calc(100dvh - var(--nana-mobile-browser-offset, 0px) - 124px)) !important;
+    padding: 18px !important;
+    gap: 14px !important;
+    overflow-y: auto !important;
+  }
+
+  .add-child-overlay .add-image-card {
+    min-height: 86px !important;
+    border-radius: 22px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  body[data-route] .bottom-nav,
+  body > .bottom-nav {
+    left: 14px !important;
+    right: 14px !important;
+    padding-inline: 22px !important;
+  }
+
+  body[data-route="history"] .history-group-tab {
+    padding-inline: 8px !important;
+    font-size: 14px !important;
+  }
+
+  body[data-route="settings"] .settings-content.settings-content-fit,
+  body[data-route="history"] .history-content,
+  body[data-route="assistant"] .assistant-content {
+    width: min(100%, 342px) !important;
+  }
+}
+
+/* final launch guardrails: these rules are intentionally last so route-level
+   screens keep enough scroll room and the fixed nav cannot cover core actions. */
+@media (max-width: 430px) {
+  html,
+  body,
+  #app {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route] .screen,
+  body[data-route] .settings-screen,
+  body[data-route] .history-screen,
+  body[data-route] .assistant-screen,
+  body[data-route] .child-added-screen,
+  body[data-route] .manage-children-screen {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-route] .bottom-nav,
+  body > .bottom-nav {
+    box-sizing: border-box !important;
+    height: 74px !important;
+    min-height: 74px !important;
+    max-height: 74px !important;
+    padding-block: 8px !important;
+  }
+
+  body[data-route="child-added"] .floating-add-btn,
+  body[data-route="homepage-newuser"] .floating-add-btn,
+  body > .floating-add-btn {
+    top: calc(env(safe-area-inset-top, 0px) + 304px) !important;
+  }
+
+  body[data-route="settings"] .settings-content.settings-content-fit,
+  body[data-route="history"] .history-content,
+  body[data-route="assistant"] .assistant-content {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-bottom: calc(var(--nana-bottom-nav-height, 74px) + var(--nana-mobile-browser-offset, 0px) + env(safe-area-inset-bottom, 0px) + 150px) !important;
+  }
+
+  body[data-route="settings"] .settings-content.settings-content-fit {
+    padding-top: 104px !important;
+  }
+
+  body[data-route="settings"] .settings-link:last-child,
+  body[data-route="settings"] .save-settings,
+  body[data-route="assistant"] .ai-care-card:last-child,
+  body[data-route="history"] .history-list:last-child {
+    margin-bottom: calc(var(--nana-bottom-nav-height, 74px) + var(--nana-mobile-browser-offset, 0px) + 48px) !important;
+  }
 }

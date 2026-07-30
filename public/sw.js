@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nana-app-v8-body-map-code-split';
+const CACHE_NAME = 'nana-app-v10-install-icon-polish';
 
 const CORE_ASSETS = [
   '/',
@@ -7,6 +7,8 @@ const CORE_ASSETS = [
   '/nana-3d-logo-full.png',
   '/nana-3d-logo-main.svg',
   '/nana-3d-logo-with-text.svg',
+  '/pwa-icon-192.png',
+  '/pwa-icon-512.png',
   '/topnavlogo.svg',
   '/back.svg',
   '/caregiver.svg',

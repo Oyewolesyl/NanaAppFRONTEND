@@ -11,6 +11,7 @@ import {
   safeText,
   wireCareInsightActions,
 } from '../aiCareAssistant';
+import { askNanaAssistant } from '../assistantProvider';
 import { showToast } from '../toast';
 
 const SELECTED_ASSISTANT_LOG_KEY = 'nana_assistant_log_id';
@@ -115,6 +116,14 @@ function messageHtml(role, text) {
   `;
 }
 
+function typingHtml() {
+  return `
+    <div class="assistant-chat-message assistant-chat-message--assistant assistant-chat-message--typing" data-typing-message>
+      <p><span></span><span></span><span></span></p>
+    </div>
+  `;
+}
+
 function renderAssistantChat(screen, log) {
   const assessment = createAssistantAssessment({
     log,
@@ -166,10 +175,21 @@ function renderAssistantChat(screen, log) {
 
   const thread = panel.querySelector('[data-chat-thread]');
 
-  function appendExchange(userText, replyText) {
+  async function appendExchange(userText, replyTextOrPromise) {
     thread.insertAdjacentHTML('beforeend', messageHtml('user', userText));
-    thread.insertAdjacentHTML('beforeend', messageHtml('assistant', replyText));
+    thread.insertAdjacentHTML('beforeend', typingHtml());
     thread.lastElementChild?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+
+    const startedAt = window.performance.now();
+    const replyText = await Promise.resolve(replyTextOrPromise);
+    const elapsed = window.performance.now() - startedAt;
+    const remainingDelay = Math.max(340 - elapsed, 0);
+
+    window.setTimeout(() => {
+      thread.querySelector('[data-typing-message]')?.remove();
+      thread.insertAdjacentHTML('beforeend', messageHtml('assistant', replyText));
+      thread.lastElementChild?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }, remainingDelay);
   }
 
   panel.querySelectorAll('[data-assistant-prompt]').forEach((button) => {
@@ -185,7 +205,15 @@ function renderAssistantChat(screen, log) {
     const question = input.value.trim();
     if (!question) return;
     input.value = '';
-    appendExchange(question, answerFreeText(question, log, assessment));
+    appendExchange(
+      question,
+      askNanaAssistant({
+        question,
+        log,
+        assessment,
+        fallbackAnswer: (fallbackQuestion) => answerFreeText(fallbackQuestion, log, assessment),
+      })
+    );
   });
 
   panel.querySelector('[data-start-report]')?.addEventListener('click', () => {

@@ -122,6 +122,32 @@ function preloadCriticalAssets() {
   Promise.allSettled(CRITICAL_ASSETS.map(preloadAsset));
 }
 
+function showLaunchSplash() {
+  if (window.__nanaLaunchSplashShown) return;
+  window.__nanaLaunchSplashShown = true;
+
+  const splash = document.createElement('div');
+  splash.className = 'nana-launch-splash';
+  splash.setAttribute('aria-hidden', 'true');
+  splash.innerHTML = `
+    <span class="nana-launch-wink">
+      <img src="${ASSETS.winkFace1}" alt="" class="nana-launch-wink__frame nana-launch-wink__frame--one" />
+      <img src="${ASSETS.winkFace2}" alt="" class="nana-launch-wink__frame nana-launch-wink__frame--two" />
+      <img src="${ASSETS.winkFace3}" alt="" class="nana-launch-wink__frame nana-launch-wink__frame--three" />
+    </span>
+  `;
+
+  document.body.append(splash);
+
+  window.setTimeout(() => {
+    splash.classList.add('nana-launch-splash--leaving');
+  }, 2850);
+
+  window.setTimeout(() => {
+    splash.remove();
+  }, 3400);
+}
+
 function startRouteLoading(app, route) {
   app.setAttribute('aria-busy', 'true');
   document.body.classList.add('nana-route-is-loading');
@@ -324,4 +350,5 @@ if (!window.location.hash) window.location.hash = '#get-started';
 installAssetLoadingObserver();
 preloadCriticalAssets();
 installPwaSupport();
+showLaunchSplash();
 renderApp();

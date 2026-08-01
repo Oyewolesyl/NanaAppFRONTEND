@@ -3,7 +3,6 @@ import { startGuidedTour } from "../appTour";
 
 export function renderGetStartedScreen(app) {
   app.innerHTML = "";
-  document.body.classList.remove("nana-landing-ready");
   window.clearTimeout(window.__nanaLandingReadyTimer);
 
   const screen = document.createElement("main");
@@ -17,14 +16,6 @@ export function renderGetStartedScreen(app) {
     <section class="app-thumbnail app-thumbnail--text-logo" aria-label="Nana the App logo">
       <img src="${ASSETS.logoFull}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
     </section>
-
-    <div class="landing-ai-wink" aria-hidden="true">
-      <span class="assistant-wink-icon" aria-hidden="true">
-        <img src="${ASSETS.winkFace1}" alt="" class="assistant-wink-frame assistant-wink-frame--one" />
-        <img src="${ASSETS.winkFace2}" alt="" class="assistant-wink-frame assistant-wink-frame--two" />
-        <img src="${ASSETS.winkFace3}" alt="" class="assistant-wink-frame assistant-wink-frame--three" />
-      </span>
-    </div>
 
     <button type="button" class="continue-button get-started-button">
       Get Started
@@ -55,17 +46,4 @@ export function renderGetStartedScreen(app) {
   });
 
   app.append(screen);
-
-  const splash = screen.querySelector(".landing-ai-wink");
-  if (splash) {
-    // Keep the splash outside the animated screen container. Transforms on a
-    // parent can trap position: fixed on tablet/desktop and create blue offsets.
-    document.body.append(splash);
-  }
-
-  window.__nanaLandingReadyTimer = window.setTimeout(() => {
-    screen.classList.add("get-started-screen--ready");
-    document.body.classList.add("nana-landing-ready");
-  }, 3200);
-
 }

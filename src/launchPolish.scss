@@ -1,0 +1,200 @@
+/* final launch layer
+   this file loads after the main styles so fragile mobile screens keep their
+   intended proportions on small iphones and desktop browsers. keep fixes
+   route-scoped so handover work can find and adjust them without side effects. */
+
+body[data-route="pain-type"] .pain-type-screen {
+  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+body[data-route="pain-type"] .pain-type-heading-wrap {
+  margin-top: 18px !important;
+  padding-inline: 22px !important;
+}
+
+body[data-route="pain-type"] .pain-type-grid,
+body[data-route="pain-type"] .pain-type-grid--friendly {
+  width: min(326px, calc(100vw - 32px)) !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin: 24px auto 0 !important;
+  padding-bottom: 112px !important;
+  align-items: stretch !important;
+}
+
+body[data-route="pain-type"] .pain-card,
+body[data-route="pain-type"] .pain-card--friendly {
+  min-width: 0 !important;
+  min-height: 132px !important;
+  height: 132px !important;
+  padding: 14px 10px 12px !important;
+  display: grid !important;
+  grid-template-rows: 38px 28px 28px !important;
+  place-items: center !important;
+  align-content: center !important;
+  gap: 6px !important;
+  overflow: hidden !important;
+}
+
+body[data-route="pain-type"] .pain-card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  flex: 0 0 38px !important;
+  transform: none !important;
+}
+
+body[data-route="pain-type"] .pain-card-icon svg {
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+
+body[data-route="pain-type"] .pain-card-label {
+  max-width: 100% !important;
+  color: #121b2c !important;
+  font-size: 19px !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+}
+
+body[data-route="pain-type"] .pain-card-hint {
+  max-width: 100% !important;
+  color: #4f5c67 !important;
+  font-size: 12px !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  white-space: normal !important;
+}
+
+body[data-route="child-added"] .child-card-list,
+body[data-route="homepage-newuser"] .child-card-list,
+body[data-route="child-added"] .child-card-list.child-card-list--two,
+body[data-route="homepage-newuser"] .child-card-list.child-card-list--two {
+  width: min(100%, 390px) !important;
+  margin: 22px auto 0 !important;
+  padding: 0 24px calc(170px + env(safe-area-inset-bottom, 0px)) !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  gap: 22px !important;
+}
+
+body[data-route="child-added"] .child-card,
+body[data-route="homepage-newuser"] .child-card,
+body[data-route="child-added"] .child-card.child-card--compact,
+body[data-route="homepage-newuser"] .child-card.child-card--compact {
+  box-sizing: border-box !important;
+  width: min(100%, 292px) !important;
+  inline-size: min(100%, 292px) !important;
+  min-height: 252px !important;
+  padding: 22px 20px 20px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto auto !important;
+  justify-items: center !important;
+  align-content: center !important;
+  gap: 10px !important;
+  overflow: visible !important;
+}
+
+body[data-route="child-added"] .child-card-photo-wrap,
+body[data-route="homepage-newuser"] .child-card-photo-wrap,
+body[data-route="child-added"] .child-card-photo-frame,
+body[data-route="homepage-newuser"] .child-card-photo-frame {
+  width: 84px !important;
+  height: 84px !important;
+  margin: 0 auto !important;
+  flex: 0 0 84px !important;
+}
+
+body[data-route="child-added"] .child-card-meta,
+body[data-route="homepage-newuser"] .child-card-meta,
+body[data-route="child-added"] .child-card-meta--compact,
+body[data-route="homepage-newuser"] .child-card-meta--compact {
+  width: 100% !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+body[data-route="child-added"] .child-card .child-name,
+body[data-route="homepage-newuser"] .child-card .child-name {
+  max-width: 100% !important;
+  font-size: clamp(26px, 7.4vw, 32px) !important;
+  line-height: 1.04 !important;
+  text-align: center !important;
+}
+
+body[data-route="child-added"] .child-card .child-age,
+body[data-route="homepage-newuser"] .child-card .child-age,
+body[data-route="child-added"] .child-card-age,
+body[data-route="homepage-newuser"] .child-card-age {
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+}
+
+body[data-route="child-added"] .child-card .child-open-map-btn,
+body[data-route="child-added"] .child-card.child-card--compact .child-open-map-btn,
+body[data-route="homepage-newuser"] .child-card .child-open-map-btn,
+body[data-route="homepage-newuser"] .child-card.child-card--compact .child-open-map-btn {
+  box-sizing: border-box !important;
+  flex: 0 0 auto !important;
+  grid-column: 1 / -1 !important;
+  justify-self: center !important;
+  width: 246px !important;
+  inline-size: 246px !important;
+  min-inline-size: 246px !important;
+  max-inline-size: 246px !important;
+  min-width: 246px !important;
+  max-width: 246px !important;
+  height: 46px !important;
+  block-size: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  padding: 0 18px !important;
+  margin: 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+body[data-route="child-added"] .child-added-screen .child-card .child-open-map-btn,
+body[data-route="homepage-newuser"] .homepage-new-user-screen .child-card .child-open-map-btn {
+  width: 246px !important;
+  inline-size: 246px !important;
+  min-inline-size: 246px !important;
+  max-inline-size: 246px !important;
+  min-width: 246px !important;
+  max-width: 246px !important;
+  height: 46px !important;
+  block-size: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  margin: 0 auto !important;
+  padding: 0 18px !important;
+  font-size: 15px !important;
+}
+
+body[data-route="child-added"] .floating-add-btn,
+body[data-route="homepage-newuser"] .floating-add-btn {
+  right: max(22px, calc((100vw - 360px) / 2 + 20px)) !important;
+  top: auto !important;
+  bottom: calc(132px + env(safe-area-inset-bottom, 0px)) !important;
+  transform: none !important;
+}

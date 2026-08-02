@@ -141,11 +141,51 @@ export function childCardHtml(child, compact = false, options = {}) {
 }
 
 export function wireChildCards(root) {
+  stabilizeChildCardLayout(root);
+
   root.querySelectorAll('[data-child-id]').forEach((card) => {
     card.querySelector('.child-open-map-btn')?.addEventListener('click', () => {
       setActiveChild(card.dataset.childId);
       window.location.hash = '#body-map';
     });
+  });
+}
+
+function stabilizeChildCardLayout(root) {
+  // Final handover guard: the project has several historical mobile overrides
+  // for the child cards. These inline-important values keep the launch cards
+  // readable and centered across small Safari/Chrome viewports.
+  root.querySelectorAll('.child-card').forEach((card) => {
+    card.style.setProperty('box-sizing', 'border-box', 'important');
+    card.style.setProperty('width', '292px', 'important');
+    card.style.setProperty('max-width', 'calc(100vw - 52px)', 'important');
+    card.style.setProperty('min-height', '252px', 'important');
+    card.style.setProperty('padding', '22px 20px 20px', 'important');
+    card.style.setProperty('display', 'grid', 'important');
+    card.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important');
+    card.style.setProperty('justify-items', 'center', 'important');
+    card.style.setProperty('align-content', 'center', 'important');
+    card.style.setProperty('gap', '10px', 'important');
+
+    const button = card.querySelector('.child-open-map-btn');
+    if (!button) return;
+    button.style.setProperty('box-sizing', 'border-box', 'important');
+    button.style.setProperty('grid-column', '1 / -1', 'important');
+    button.style.setProperty('justify-self', 'center', 'important');
+    button.style.setProperty('width', '246px', 'important');
+    button.style.setProperty('min-width', '246px', 'important');
+    button.style.setProperty('max-width', '246px', 'important');
+    button.style.setProperty('height', '46px', 'important');
+    button.style.setProperty('min-height', '46px', 'important');
+    button.style.setProperty('max-height', '46px', 'important');
+    button.style.setProperty('margin', '0 auto', 'important');
+    button.style.setProperty('padding', '0 18px', 'important');
+    button.style.setProperty('display', 'inline-flex', 'important');
+    button.style.setProperty('align-items', 'center', 'important');
+    button.style.setProperty('justify-content', 'center', 'important');
+    button.style.setProperty('font-size', '15px', 'important');
+    button.style.setProperty('line-height', '1', 'important');
+    button.style.setProperty('white-space', 'nowrap', 'important');
   });
 }
 

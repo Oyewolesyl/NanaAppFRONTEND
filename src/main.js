@@ -2,6 +2,7 @@
 // Figma-aligned design-system layer that should win final visual conflicts.
 import './mobileNavFixes.scss';
 import './styles.scss';
+import './launchPolish.scss';
 
 import { renderGetStartedScreen } from './screens/getStartedScreen';
 import { renderSelectRoleScreen } from './screens/selectRoleScreen';

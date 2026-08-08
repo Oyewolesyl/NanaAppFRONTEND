@@ -53,7 +53,7 @@ const TOUR_STEPS = [
   },
   {
     route: '#assistant',
-    target: '.assistant-hero, .assistant-empty',
+    target: '.assistant-chat-shell, .assistant-screen, .assistant-hero, .assistant-empty, [data-assistant-panel]',
     title: 'review nana assistant',
     body: 'the assistant creates a caregiver-ready handoff, highlights attention level, and keeps the safety disclaimer visible.',
     action: 'finish',
@@ -180,6 +180,11 @@ export function showGuidedTourForRoute() {
 
   const target = document.querySelector(step.target);
   if (!target) {
+    if (index === TOUR_STEPS.length - 1) {
+      finishTour();
+      return;
+    }
+
     setTimeout(showGuidedTourForRoute, 250);
     return;
   }

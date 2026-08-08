@@ -155,6 +155,19 @@ function stabilizeChildCardLayout(root) {
   // Final handover guard: the project has several historical mobile overrides
   // for the child cards. These inline-important values keep the launch cards
   // readable and centered across small Safari/Chrome viewports.
+  root.querySelectorAll('.child-card-list').forEach((list) => {
+    list.style.setProperty('box-sizing', 'border-box', 'important');
+    list.style.setProperty('width', '100%', 'important');
+    list.style.setProperty('max-width', '390px', 'important');
+    list.style.setProperty('margin-left', 'auto', 'important');
+    list.style.setProperty('margin-right', 'auto', 'important');
+    list.style.setProperty('padding-left', '0', 'important');
+    list.style.setProperty('padding-right', '0', 'important');
+    list.style.setProperty('grid-template-columns', 'minmax(0, 292px)', 'important');
+    list.style.setProperty('justify-content', 'center', 'important');
+    list.style.setProperty('justify-items', 'center', 'important');
+  });
+
   root.querySelectorAll('.child-card').forEach((card) => {
     card.style.setProperty('box-sizing', 'border-box', 'important');
     card.style.setProperty('width', '292px', 'important');
@@ -166,6 +179,9 @@ function stabilizeChildCardLayout(root) {
     card.style.setProperty('justify-items', 'center', 'important');
     card.style.setProperty('align-content', 'center', 'important');
     card.style.setProperty('gap', '10px', 'important');
+    card.style.setProperty('margin-left', 'auto', 'important');
+    card.style.setProperty('margin-right', 'auto', 'important');
+    card.style.setProperty('place-self', 'center', 'important');
 
     const button = card.querySelector('.child-open-map-btn');
     if (!button) return;

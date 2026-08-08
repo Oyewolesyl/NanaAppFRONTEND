@@ -80,11 +80,14 @@ body[data-route="child-added"] .child-card-list,
 body[data-route="homepage-newuser"] .child-card-list,
 body[data-route="child-added"] .child-card-list.child-card-list--two,
 body[data-route="homepage-newuser"] .child-card-list.child-card-list--two {
-  width: min(100%, 390px) !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 390px !important;
   margin: 22px auto 0 !important;
-  padding: 0 24px calc(170px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 0 0 calc(170px + env(safe-area-inset-bottom, 0px)) !important;
   display: grid !important;
-  grid-template-columns: 1fr !important;
+  grid-template-columns: minmax(0, 292px) !important;
+  justify-content: center !important;
   justify-items: center !important;
   gap: 22px !important;
 }
@@ -104,6 +107,8 @@ body[data-route="homepage-newuser"] .child-card.child-card--compact {
   justify-items: center !important;
   align-content: center !important;
   gap: 10px !important;
+  margin-inline: auto !important;
+  place-self: center !important;
   overflow: visible !important;
 }
 

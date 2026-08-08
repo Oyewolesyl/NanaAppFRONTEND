@@ -125,16 +125,21 @@ function positionTourCard(step, target) {
   const rect = target.getBoundingClientRect();
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
-  const gap = 12;
-  const reservedBottom = 118;
-  const cardHeight = 196;
+  const safeTop = 14;
+  const gap = 14;
+  const reservedBottom = Math.max(124, viewportHeight * 0.18);
+  const cardHeight = Math.min(
+    Math.max(178, card.offsetHeight || 196),
+    viewportHeight - reservedBottom - safeTop - 10
+  );
   const spotlightPad = 8;
 
+  const safeBottom = viewportHeight - reservedBottom;
   const spotlightX = Math.max(10, rect.left - spotlightPad);
-  const spotlightY = Math.max(10, rect.top - spotlightPad);
+  const spotlightY = Math.max(10, Math.min(rect.top - spotlightPad, safeBottom - 78));
   const spotlightWidth = Math.min(viewportWidth - 20, rect.width + spotlightPad * 2);
   const spotlightHeight = Math.min(
-    viewportHeight - reservedBottom - spotlightY,
+    safeBottom - spotlightY,
     rect.height + spotlightPad * 2
   );
 
@@ -144,12 +149,19 @@ function positionTourCard(step, target) {
   spotlight.style.setProperty('--tour-h', `${Math.max(70, spotlightHeight)}px`);
 
   const cardWidth = Math.min(318, viewportWidth - 28);
-  const belowTop = rect.bottom + gap;
-  const aboveTop = rect.top - cardHeight - gap;
-  const maxTop = Math.max(14, viewportHeight - reservedBottom - cardHeight);
-  const top = belowTop + cardHeight < viewportHeight - reservedBottom
-    ? belowTop
-    : Math.max(14, Math.min(aboveTop, maxTop));
+  const belowTop = Math.round(rect.bottom + gap);
+  const aboveTop = Math.round(rect.top - cardHeight - gap);
+  const centerTop = Math.round((safeBottom - cardHeight + safeTop) / 2);
+  const maxTop = Math.max(safeTop, safeBottom - cardHeight);
+  let top = centerTop;
+
+  if (belowTop + cardHeight <= safeBottom) {
+    top = belowTop;
+  } else if (aboveTop >= safeTop) {
+    top = aboveTop;
+  }
+
+  top = Math.max(safeTop, Math.min(top, maxTop));
   const left = Math.min(
     viewportWidth - cardWidth - 14,
     Math.max(14, rect.left + rect.width / 2 - cardWidth / 2)
@@ -195,8 +207,11 @@ export function showGuidedTourForRoute() {
   tour.querySelector('h2').textContent = step.title;
   tour.querySelector('p').textContent = step.body;
   tour.querySelector('[data-tour-next]').textContent = step.action;
-  positionTourCard(step, target);
-  tour.hidden = false;
+  target.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
+  requestAnimationFrame(() => {
+    positionTourCard(step, target);
+    tour.hidden = false;
+  });
 }
 
 window.addEventListener('resize', () => {

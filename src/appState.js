@@ -1,3 +1,5 @@
+import { createBackendChild, createBackendPainLog, getStoredAccessToken } from './backendApi';
+
 const K = {
   children: 'nana_children_v3',
   activeChildId: 'nana_active_child_id_v3',
@@ -7,9 +9,9 @@ const K = {
   role: 'nana_role_v3',
 };
 
-// This prototype runs without a backend for the core pain-report flow, so
-// localStorage is the source of truth for demo/resit data. Versioned keys let
-// future schema changes reset safely without corrupting older browser data.
+// localStorage keeps the app responsive offline and during testing. When a user
+// is signed in, the same records are mirrored to the Render/Supabase backend so
+// the backend manager can document real children and pain reports.
 function hasStored(key) {
   return localStorage.getItem(key) !== null;
 }
@@ -53,6 +55,7 @@ function normalizeChild(child = {}) {
 
   return {
     id: child.id || uid('child'),
+    backend_id: child.backend_id || child.remote_id || child.backendId || null,
     name: name || 'Child',
     age: Math.max(1, Math.min(18, Number(child.age || 4))),
     photo_url: child.photo_url || child.photoUrl || child.photo || '/inactivechildpicture.svg',
@@ -170,6 +173,7 @@ export function saveChild(child) {
   write(K.painLogs, appState.painLogs);
 
   window.dispatchEvent(new CustomEvent('nana:children-updated', { detail: safe }));
+  syncChildToBackend(safe).catch(() => {});
 
   return safe;
 }
@@ -273,6 +277,7 @@ export function savePainLog({ extendLogId } = {}) {
     write(K.painLogs, appState.painLogs);
     sessionStorage.removeItem('nana_extend_log_id');
     resetPainDraft();
+    syncPainLogToBackend(merged).catch(() => {});
 
     return merged;
   }
@@ -291,6 +296,7 @@ export function savePainLog({ extendLogId } = {}) {
   write(K.painLogs, appState.painLogs);
   sessionStorage.removeItem('nana_extend_log_id');
   resetPainDraft();
+  syncPainLogToBackend(log).catch(() => {});
 
   return log;
 }
@@ -298,4 +304,112 @@ export function savePainLog({ extendLogId } = {}) {
 export function setRole(role) {
   appState.role = role;
   write(K.role, role);
+}
+
+function zoneSide(zoneId) {
+  return String(zoneId || '').startsWith('back-') ||
+    ['upper-back', 'lower-back', 'left-glute', 'right-glute', 'left-hamstring', 'right-hamstring', 'left-calf', 'right-calf', 'left-heel', 'right-heel'].includes(zoneId)
+    ? 'back'
+    : 'front';
+}
+
+function normalizeBackendZone(zoneId, intensity) {
+  const aliases = {
+    tummy: 'abdomen',
+    'left-upper-arm': 'left-arm',
+    'right-upper-arm': 'right-arm',
+    'left-hip': 'hips',
+    'right-hip': 'hips',
+    'left-glute': 'glutes',
+    'right-glute': 'glutes',
+    'left-knee': 'left-shin',
+    'right-knee': 'right-shin',
+    'left-back-knee': 'left-calf',
+    'right-back-knee': 'right-calf',
+    'left-ankle': 'left-foot',
+    'right-ankle': 'right-foot',
+  };
+
+  const zone = aliases[zoneId] || zoneId;
+  const painLevel = Math.max(0, Math.min(4, Math.round((Number(intensity || 0) / 10) * 4)));
+
+  return {
+    zone_id: zone,
+    side: zoneSide(zoneId),
+    pain_level: painLevel,
+  };
+}
+
+function persistChildren() {
+  write(K.children, appState.children);
+  write(K.activeChildId, appState.activeChildId);
+}
+
+function persistPainLogs() {
+  write(K.painLogs, appState.painLogs);
+}
+
+export async function syncChildToBackend(child) {
+  if (!getStoredAccessToken() || !child || child.backend_id) return child;
+
+  const remote = await createBackendChild(child);
+  const index = appState.children.findIndex((item) => item.id === child.id);
+
+  if (index >= 0) {
+    appState.children[index] = {
+      ...appState.children[index],
+      backend_id: remote.id,
+    };
+    persistChildren();
+  }
+
+  return remote;
+}
+
+export async function syncPainLogToBackend(log) {
+  if (!getStoredAccessToken() || !log || log.backend_id) return log;
+
+  const child = appState.children.find((item) => item.id === (log.childId || log.child_id));
+  if (child && !child.backend_id) {
+    await syncChildToBackend(child);
+  }
+
+  const syncedChild = appState.children.find((item) => item.id === (log.childId || log.child_id));
+  const backendChildId = syncedChild?.backend_id;
+
+  if (!backendChildId) return log;
+
+  const zones = [...new Set(log.zones || [])].map((zone) => normalizeBackendZone(zone, log.intensity));
+  const remote = await createBackendPainLog({
+    child_id: backendChildId,
+    zones,
+    pain_type: log.painType || log.pain_type || 'other',
+    when_did_it_start: log.started || log.when_did_it_start || '',
+    pain_scale: Number(log.intensity ?? log.pain_scale ?? 0),
+    notes: log.notes || '',
+  });
+
+  const index = appState.painLogs.findIndex((item) => item.id === log.id);
+
+  if (index >= 0) {
+    appState.painLogs[index] = {
+      ...appState.painLogs[index],
+      backend_id: remote.id,
+    };
+    persistPainLogs();
+  }
+
+  return remote;
+}
+
+export async function syncLocalDataToBackend() {
+  if (!getStoredAccessToken()) return;
+
+  for (const child of appState.children) {
+    await syncChildToBackend(child);
+  }
+
+  for (const log of appState.painLogs) {
+    await syncPainLogToBackend(log);
+  }
 }

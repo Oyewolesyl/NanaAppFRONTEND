@@ -1,4 +1,4 @@
-import { appState } from '../appState';
+import { appState, syncLocalDataToBackend } from '../appState';
 import { showToast } from '../toast';
 import { ASSETS } from '../assets';
 
@@ -274,6 +274,9 @@ export function renderAuthScreen(app) {
         );
 
         showToast('Signed in');
+        await syncLocalDataToBackend().catch(() => {
+          showToast('Signed in. Local records will sync when the backend is reachable.', 'error');
+        });
         goNext();
       } catch (err) {
         status.textContent =

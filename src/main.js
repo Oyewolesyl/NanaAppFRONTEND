@@ -20,7 +20,7 @@ import { renderHistoryScreen } from './screens/historyScreen';
 import { renderSettingsScreen } from './screens/settingsScreen';
 import { renderManageChildrenScreen } from './screens/manageChildrenScreen';
 import { renderAssistantScreen } from './screens/assistantScreen';
-import { appState } from './appState';
+import { appState, syncLocalDataToBackend } from './appState';
 import { ASSETS } from './assets';
 import { showGuidedTourForRoute } from './appTour';
 
@@ -29,6 +29,7 @@ let assetObserverInstalled = false;
 let criticalAssetsStarted = false;
 let deferredInstallPrompt = null;
 let installPromptRendered = false;
+let backendBootSyncStarted = false;
 
 // Keep this list small and launch-critical. These assets appear early in the
 // flow or are expensive enough that a delayed load would make the app feel
@@ -121,6 +122,20 @@ function preloadCriticalAssets() {
   // Fire-and-forget by design: preloading should improve perceived speed but
   // must never block the app from rendering on a weak or offline connection.
   Promise.allSettled(CRITICAL_ASSETS.map(preloadAsset));
+}
+
+function scheduleBackendBootSync() {
+  if (backendBootSyncStarted) return;
+  if (!localStorage.getItem('nana_access_token')) return;
+
+  backendBootSyncStarted = true;
+
+  // Existing users may already have children and pain logs saved in this
+  // browser from before backend sync existed. Run this once after the first
+  // paint so the manager can receive those records without forcing a logout.
+  window.setTimeout(() => {
+    syncLocalDataToBackend().catch(() => null);
+  }, 900);
 }
 
 function showLaunchSplash() {
@@ -353,3 +368,4 @@ preloadCriticalAssets();
 installPwaSupport();
 showLaunchSplash();
 renderApp();
+scheduleBackendBootSync();

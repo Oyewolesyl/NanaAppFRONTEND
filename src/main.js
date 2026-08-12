@@ -1,3 +1,10 @@
+/*
+  handover: frontend boot and routing
+  - this file owns the browser-side app shell: splash, hash routing, page rendering, fixed header, overlays, and bottom navigation.
+  - keep the opening wink/smile splash separate from the get-started screen. the splash is only the temporary brand transition; get-started is the first product screen.
+  - screens are rendered into #app from route-specific functions. shared state comes from appState.js, and backend calls are intentionally non-blocking so the mobile flow still works on slow networks.
+  - visual changes should be checked on small mobile heights first, because safari browser chrome and the fixed bottom nav are the easiest places to create clipping.
+*/
 // Legacy mobile fit rules load first; styles.scss ends with the current
 // Figma-aligned design-system layer that should win final visual conflicts.
 import './mobileNavFixes.scss';

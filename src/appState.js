@@ -1,3 +1,10 @@
+/*
+  handover: local app state
+  - this module is the single source of truth for profiles, children, selected child, and saved pain reports in the frontend.
+  - data is saved locally first, then mirrored to the backend when a signed-in access token exists. this protects the child-report flow from network delays.
+  - local `id` values keep the UI stable immediately; `backend_id` means that same record has already been created in the Supabase-backed API.
+  - when adding fields, update the local defaults here and the backend insert/update payloads together so the manager sees the same data the app records.
+*/
 import { createBackendChild, createBackendPainLog, getStoredAccessToken } from './backendApi';
 
 const K = {

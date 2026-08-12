@@ -1,3 +1,9 @@
+/*
+  handover: frontend backend client
+  - this is the thin fetch layer used by the app after login/signup.
+  - the frontend sends the user's bearer token only; it never contains the Supabase service-role key or the private manager token.
+  - keep these helpers small and predictable: build the URL, attach auth headers, parse JSON, and let calling screens decide how to recover.
+*/
 const API_URL = import.meta.env.VITE_API_URL || 'https://nanaappbackend.onrender.com';
 
 export function getStoredAccessToken() {

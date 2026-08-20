@@ -57,7 +57,21 @@ Nana AI is an explainable care-support feature added to the pain reporting flow.
 
 The feature is intentionally designed as decision support, not diagnosis. It keeps the app safe for a child-care context while still showing how AI can add value to Nana's core function.
 
-## Setup
+## Technical Handover Notes
+
+### Three.js body map
+
+The full body-map screen uses `src/screens/ShowpainScreen.js`. That file dynamically imports `three` and `three/examples/jsm/loaders/GLTFLoader.js`, loads `/bodymap.glb`, creates the scene/camera/lights, and uses raycasting to convert taps on the 3D body into named pain zones.
+
+The small review/summary body previews use `src/miniBody3d.js`. This now uses the same npm Three.js dependency and GLTFLoader instead of loading Three.js from a CDN. That keeps the project dependency story consistent for handover and for the technical interview.
+
+### Data flow
+
+The app keeps local UI state in `src/appState.js` so screens update instantly. When a user is signed in, `src/backendApi.js` mirrors child profiles and pain reports to the Express/Supabase backend using the user's bearer token.
+
+### Safe AI positioning
+
+Nana Assistant is framed as care-support and handoff generation. It summarizes a pain report, highlights what to watch, and prepares caregiver/professional wording. It does not diagnose, prescribe, or replace medical help.`r`n`r`n## Setup
 
 ### Requirements
 
@@ -96,7 +110,7 @@ npm run preview
 
 ## Environment Variables
 
-Create `.env.local` in the frontend root if needed:
+Copy `.env.example` to `.env.local` for local development if needed:
 
 ```env
 VITE_API_URL=https://nanaappbackend.onrender.com

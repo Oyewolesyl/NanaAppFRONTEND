@@ -1,4 +1,4 @@
-# Nana App â€” Frontend
+# Nana App - Frontend
 
 Nana is a mobile-first child pain communication app for parents, caregivers, and health professionals. It helps children communicate where and when they hurt through a playful 3D body map, child profiles, pain intensity tracking, and a structured pain history.
 
@@ -122,38 +122,38 @@ VITE_API_URL=https://nanaappbackend.onrender.com
 
 ```text
 nana-app-front-end/
-â”œâ”€â”€ index.html
-â”œâ”€â”€ package.json
-â”œâ”€â”€ public/
-â”‚   â”œâ”€â”€ bodymap.glb
-â”‚   â”œâ”€â”€ ani1.svg
-â”‚   â”œâ”€â”€ ani2.svg
-â”‚   â””â”€â”€ ani3.svg
-â””â”€â”€ src/
-    â”œâ”€â”€ appState.js
-    â”œâ”€â”€ assets.js
-    â”œâ”€â”€ main.js
-    â”œâ”€â”€ miniBody3d.js
-    â”œâ”€â”€ styles.scss
-    â”œâ”€â”€ mobileNavFixes.scss
-    â”œâ”€â”€ sharedUi.js
-    â”œâ”€â”€ components/
-    â”‚   â”œâ”€â”€ addChildOverlay.js
-    â”‚   â””â”€â”€ statusBar.js
-    â””â”€â”€ screens/
-        â”œâ”€â”€ authScreen.js
-        â”œâ”€â”€ getStartedScreen.js
-        â”œâ”€â”€ homepageNewUserScreen.js
-        â”œâ”€â”€ childAddedScreen.js
-        â”œâ”€â”€ manageChildrenScreen.js
-        â”œâ”€â”€ ShowpainScreen.js
-        â”œâ”€â”€ Paintypescreen.js
-        â”œâ”€â”€ WhenDidItStartScreen.js
-        â”œâ”€â”€ Painscalescreen.js
-        â”œâ”€â”€ summaryScreen.js
-        â”œâ”€â”€ confirmationScreen.js
-        â”œâ”€â”€ historyScreen.js
-        â””â”€â”€ settingsScreen.js
+|-- index.html
+|-- package.json
+|-- public/
+|   |-- bodymap.glb
+|   |-- ani1.svg
+|   |-- ani2.svg
+|   `-- ani3.svg
+`-- src/
+    |-- appState.js
+    |-- assets.js
+    |-- main.js
+    |-- miniBody3d.js
+    |-- styles.scss
+    |-- mobileNavFixes.scss
+    |-- sharedUi.js
+    |-- components/
+    |   |-- addChildOverlay.js
+    |   `-- statusBar.js
+    `-- screens/
+        |-- authScreen.js
+        |-- getStartedScreen.js
+        |-- homepageNewUserScreen.js
+        |-- childAddedScreen.js
+        |-- manageChildrenScreen.js
+        |-- ShowpainScreen.js
+        |-- Paintypescreen.js
+        |-- WhenDidItStartScreen.js
+        |-- Painscalescreen.js
+        |-- summaryScreen.js
+        |-- confirmationScreen.js
+        |-- historyScreen.js
+        `-- settingsScreen.js
 ```
 
 ## Submission Checks

@@ -6,6 +6,7 @@
   - when adding fields, update the local defaults here and the backend insert/update payloads together so the manager sees the same data the app records.
 */
 import { createBackendChild, createBackendPainLog, getStoredAccessToken } from './backendApi';
+import { normalizeBackendZone } from './bodyMap/bodyZones.js';
 
 const K = {
   children: 'nana_children_v3',
@@ -313,39 +314,6 @@ export function setRole(role) {
   write(K.role, role);
 }
 
-function zoneSide(zoneId) {
-  return String(zoneId || '').startsWith('back-') ||
-    ['upper-back', 'lower-back', 'left-glute', 'right-glute', 'left-hamstring', 'right-hamstring', 'left-calf', 'right-calf', 'left-heel', 'right-heel'].includes(zoneId)
-    ? 'back'
-    : 'front';
-}
-
-function normalizeBackendZone(zoneId, intensity) {
-  const aliases = {
-    tummy: 'abdomen',
-    'left-upper-arm': 'left-arm',
-    'right-upper-arm': 'right-arm',
-    'left-hip': 'hips',
-    'right-hip': 'hips',
-    'left-glute': 'glutes',
-    'right-glute': 'glutes',
-    'left-knee': 'left-shin',
-    'right-knee': 'right-shin',
-    'left-back-knee': 'left-calf',
-    'right-back-knee': 'right-calf',
-    'left-ankle': 'left-foot',
-    'right-ankle': 'right-foot',
-  };
-
-  const zone = aliases[zoneId] || zoneId;
-  const painLevel = Math.max(0, Math.min(4, Math.round((Number(intensity || 0) / 10) * 4)));
-
-  return {
-    zone_id: zone,
-    side: zoneSide(zoneId),
-    pain_level: painLevel,
-  };
-}
 
 function persistChildren() {
   write(K.children, appState.children);

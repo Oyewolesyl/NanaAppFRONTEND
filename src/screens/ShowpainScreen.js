@@ -1,6 +1,7 @@
 import { ASSETS } from "../assets";
 import { getActiveChild, updatePainDraft, appState } from "../appState";
 import { childContextHtml, painProgressHtml } from "../sharedUi";
+import { BODY_ZONE_LABELS as LABELS, BODY_ZONE_BOUNDS_LOCAL as ZONE_BOUNDS_LOCAL } from "../bodyMap/bodyZones.js";
 
 let THREE;
 let GLTFLoader;
@@ -15,146 +16,8 @@ async function loadBodyMapEngine() {
   GLTFLoader = loaderModule.GLTFLoader;
 }
 
-/* ── Labels (child-friendly + clinically accurate) ─────────────── */
-const LABELS = {
-  "head":              "Head",
-  "back-head":         "Back of Head",
-  "neck":              "Neck",
-  "back-neck":         "Back of Neck",
-  "left-shoulder":     "Left Shoulder",
-  "right-shoulder":    "Right Shoulder",
-  "chest":             "Chest",
-  "tummy":             "Tummy",
-  "groin":             "Groin",
-  "upper-back":        "Upper Back",
-  "lower-back":        "Lower Back",
-  "left-glute":        "Left Bottom",
-  "right-glute":       "Right Bottom",
-  "left-upper-arm":    "Left Upper Arm",
-  "right-upper-arm":   "Right Upper Arm",
-  "left-forearm":      "Left Forearm",
-  "right-forearm":     "Right Forearm",
-  "left-hand":         "Left Hand",
-  "right-hand":        "Right Hand",
-  "left-hip":          "Left Hip",
-  "right-hip":         "Right Hip",
-  "left-thigh":        "Left Thigh",
-  "right-thigh":       "Right Thigh",
-  "left-hamstring":    "Left Hamstring",
-  "right-hamstring":   "Right Hamstring",
-  "left-knee":         "Left Knee",
-  "right-knee":        "Right Knee",
-  "left-back-knee":    "Left Back of Knee",
-  "right-back-knee":   "Right Back of Knee",
-  "left-shin":         "Left Shin",
-  "right-shin":        "Right Shin",
-  "left-calf":         "Left Calf",
-  "right-calf":        "Right Calf",
-  "left-ankle":        "Left Ankle",
-  "right-ankle":       "Right Ankle",
-  "left-foot":         "Left Foot",
-  "right-foot":        "Right Foot",
-  "left-heel":         "Left Heel",
-  "right-heel":        "Right Heel",
-};
-
 const FILLS  = ["rgba(255,111,97,.55)"];
 const BADGES = ["#FF6F61"];
-
-/* ── Zone detection — ORIGINAL model local space ──────────────────
-   GLB accessor bounds:
-     Y: 0.001 → 1.100  (0 = feet, 1.1 = crown)
-     X: -0.341 → +0.341 (negative = model's LEFT arm)
-     Z: -0.062 → +0.221 (positive = front of body)
-   ────────────────────────────────────────────────────────────────*/
-function getZoneFromPoint(pt, isFront) {
-  const x = pt.x, y = pt.y;
-
-  // ── Head / neck
-  if (y > 0.93)                          return isFront ? "head" : "back-head";
-  if (y > 0.82 && Math.abs(x) < 0.09)   return isFront ? "neck" : "back-neck";
-
-  // ── Shoulders (outer upper torso / arm junction)
-  if (Math.abs(x) > 0.16 && y > 0.76) {
-    return (x < 0 ? "left" : "right") + "-shoulder";
-  }
-
-  // ── Arms (outside torso, below shoulder)
-  // Lower X threshold so narrow arm geometry is easier to tap
-  if (Math.abs(x) > 0.16) {
-    const s = x < 0 ? "left" : "right";
-    if (y > 0.64) return `${s}-upper-arm`;
-    if (y > 0.44) return `${s}-forearm`;
-    return `${s}-hand`;
-  }
-
-  // ── Torso centre
-  // chest: upper torso, tighter — stops well above navel
-  if (y > 0.76) return isFront ? "chest"   : "upper-back";
-  // tummy: mid torso, nudged up toward chest
-  if (y > 0.60) return isFront ? "tummy"   : "lower-back";
-
-  // ── Hip / groin / glute belt
-  // groin sits just below tummy (0.46–0.60), nudged toward tummy not privates
-  if (y > 0.46) {
-    if (isFront) {
-      if (Math.abs(x) < 0.07) return "groin";
-      return (x < 0 ? "left" : "right") + "-hip";
-    }
-    return (x < 0 ? "left" : "right") + "-glute";
-  }
-
-  // ── Legs
-  const s = x < 0 ? "left" : "right";
-  if (y > 0.28) return isFront ? `${s}-thigh`     : `${s}-hamstring`;
-  if (y > 0.21) return isFront ? `${s}-knee`      : `${s}-back-knee`;
-  if (y > 0.09) return isFront ? `${s}-shin`      : `${s}-calf`;
-  if (y > 0.04) return `${s}-ankle`;
-  return isFront ? `${s}-foot` : `${s}-heel`;
-}
-
-/* ── Zone bounding boxes — ORIGINAL model local space ──────────── */
-const ZONE_BOUNDS_LOCAL = {
-  "head":              { x: 0,      y: 0.99,  z: 0.06,  w:0.22, h:0.18, d:0.20 },
-  "back-head":         { x: 0,      y: 0.99,  z:-0.03,  w:0.22, h:0.18, d:0.20 },
-  "neck":              { x: 0,      y: 0.86,  z: 0.02,  w:0.09, h:0.09, d:0.09 },
-  "back-neck":         { x: 0,      y: 0.86,  z:-0.02,  w:0.09, h:0.09, d:0.09 },
-  "left-shoulder":     { x:-0.22,   y: 0.78,  z: 0,     w:0.12, h:0.10, d:0.12 },
-  "right-shoulder":    { x: 0.22,   y: 0.78,  z: 0,     w:0.12, h:0.10, d:0.12 },
-  "chest":             { x: 0,      y: 0.77,  z: 0.08,  w:0.30, h:0.11, d:0.10 },
-  "tummy":             { x: 0,      y: 0.63,  z: 0.07,  w:0.28, h:0.12, d:0.10 },
-  "groin":             { x: 0,      y: 0.50,  z: 0.06,  w:0.12, h:0.10, d:0.10 },
-  "left-hip":          { x:-0.12,   y: 0.50,  z: 0.06,  w:0.14, h:0.10, d:0.10 },
-  "right-hip":         { x: 0.12,   y: 0.50,  z: 0.06,  w:0.14, h:0.10, d:0.10 },
-  "upper-back":        { x: 0,      y: 0.77,  z:-0.07,  w:0.30, h:0.11, d:0.10 },
-  "lower-back":        { x: 0,      y: 0.63,  z:-0.06,  w:0.28, h:0.12, d:0.10 },
-  "left-glute":        { x:-0.10,   y: 0.50,  z:-0.06,  w:0.14, h:0.10, d:0.10 },
-  "right-glute":       { x: 0.10,   y: 0.50,  z:-0.06,  w:0.14, h:0.10, d:0.10 },
-  "left-upper-arm":    { x:-0.26,   y: 0.66,  z: 0,     w:0.10, h:0.16, d:0.10 },
-  "right-upper-arm":   { x: 0.26,   y: 0.66,  z: 0,     w:0.10, h:0.16, d:0.10 },
-  "left-forearm":      { x:-0.27,   y: 0.49,  z: 0,     w:0.09, h:0.16, d:0.09 },
-  "right-forearm":     { x: 0.27,   y: 0.49,  z: 0,     w:0.09, h:0.16, d:0.09 },
-  "left-hand":         { x:-0.27,   y: 0.32,  z: 0,     w:0.09, h:0.09, d:0.08 },
-  "right-hand":        { x: 0.27,   y: 0.32,  z: 0,     w:0.09, h:0.09, d:0.08 },
-  "left-thigh":        { x:-0.10,   y: 0.33,  z: 0,     w:0.13, h:0.14, d:0.13 },
-  "right-thigh":       { x: 0.10,   y: 0.33,  z: 0,     w:0.13, h:0.14, d:0.13 },
-  "left-hamstring":    { x:-0.10,   y: 0.33,  z:-0.05,  w:0.13, h:0.14, d:0.13 },
-  "right-hamstring":   { x: 0.10,   y: 0.33,  z:-0.05,  w:0.13, h:0.14, d:0.13 },
-  "left-knee":         { x:-0.09,   y: 0.23,  z: 0.02,  w:0.10, h:0.08, d:0.09 },
-  "right-knee":        { x: 0.09,   y: 0.23,  z: 0.02,  w:0.10, h:0.08, d:0.09 },
-  "left-back-knee":    { x:-0.09,   y: 0.23,  z:-0.04,  w:0.10, h:0.08, d:0.09 },
-  "right-back-knee":   { x: 0.09,   y: 0.23,  z:-0.04,  w:0.10, h:0.08, d:0.09 },
-  "left-shin":         { x:-0.09,   y: 0.14,  z: 0.02,  w:0.09, h:0.12, d:0.09 },
-  "right-shin":        { x: 0.09,   y: 0.14,  z: 0.02,  w:0.09, h:0.12, d:0.09 },
-  "left-calf":         { x:-0.09,   y: 0.14,  z:-0.04,  w:0.09, h:0.12, d:0.09 },
-  "right-calf":        { x: 0.09,   y: 0.14,  z:-0.04,  w:0.09, h:0.12, d:0.09 },
-  "left-ankle":        { x:-0.08,   y: 0.05,  z: 0.01,  w:0.08, h:0.05, d:0.08 },
-  "right-ankle":       { x: 0.08,   y: 0.05,  z: 0.01,  w:0.08, h:0.05, d:0.08 },
-  "left-foot":         { x:-0.08,   y: 0.02,  z: 0.05,  w:0.09, h:0.05, d:0.15 },
-  "right-foot":        { x: 0.08,   y: 0.02,  z: 0.05,  w:0.09, h:0.05, d:0.15 },
-  "left-heel":         { x:-0.08,   y: 0.02,  z:-0.04,  w:0.09, h:0.05, d:0.10 },
-  "right-heel":        { x: 0.08,   y: 0.02,  z:-0.04,  w:0.09, h:0.05, d:0.10 },
-};
 
 // Model constants from GLB accessor
 const MODEL_LOCAL_Y_MIN  = 0.0008;
@@ -218,8 +81,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   let renderer, camera, scene, model, raycaster;
   let bodyMeshes = [];
   const overlays = [];
-
-  // ── CDN loader ───────────────────────────────────────────────
+  // Scene status and fallback handling.
   function setBodyLoading(message) {
     loadingEl.style.display = "flex";
     loadingEl.classList.remove("body-loading--error");

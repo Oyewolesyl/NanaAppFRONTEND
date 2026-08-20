@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MINI_ZONE_POINTS } from './bodyMap/bodyZones.js';
 
 function showMiniBodyFallback(container, label) {
   container.classList.add('mini-body-wrap--error');
@@ -16,47 +17,6 @@ function showMiniBodyFallback(container, label) {
   if (label) label.remove();
 }
 
-const MINI_ZONE_POINTS = {
-  head: { x: 0, y: 0.99, z: 0.1 },
-  "back-head": { x: 0, y: 0.99, z: -0.09 },
-  neck: { x: 0, y: 0.86, z: 0.1 },
-  "back-neck": { x: 0, y: 0.86, z: -0.09 },
-  chest: { x: 0, y: 0.76, z: 0.12 },
-  tummy: { x: 0, y: 0.62, z: 0.12 },
-  groin: { x: 0, y: 0.5, z: 0.1 },
-  "upper-back": { x: 0, y: 0.76, z: -0.1 },
-  "lower-back": { x: 0, y: 0.62, z: -0.1 },
-  "left-shoulder": { x: -0.18, y: 0.78, z: 0.06 },
-  "right-shoulder": { x: 0.18, y: 0.78, z: 0.06 },
-  "left-upper-arm": { x: -0.25, y: 0.66, z: 0.04 },
-  "right-upper-arm": { x: 0.25, y: 0.66, z: 0.04 },
-  "left-forearm": { x: -0.28, y: 0.49, z: 0.04 },
-  "right-forearm": { x: 0.28, y: 0.49, z: 0.04 },
-  "left-hand": { x: -0.29, y: 0.32, z: 0.04 },
-  "right-hand": { x: 0.29, y: 0.32, z: 0.04 },
-  "left-hip": { x: -0.12, y: 0.5, z: 0.1 },
-  "right-hip": { x: 0.12, y: 0.5, z: 0.1 },
-  "left-glute": { x: -0.11, y: 0.5, z: -0.1 },
-  "right-glute": { x: 0.11, y: 0.5, z: -0.1 },
-  "left-thigh": { x: -0.09, y: 0.34, z: 0.08 },
-  "right-thigh": { x: 0.09, y: 0.34, z: 0.08 },
-  "left-hamstring": { x: -0.09, y: 0.34, z: -0.08 },
-  "right-hamstring": { x: 0.09, y: 0.34, z: -0.08 },
-  "left-knee": { x: -0.08, y: 0.23, z: 0.08 },
-  "right-knee": { x: 0.08, y: 0.23, z: 0.08 },
-  "left-back-knee": { x: -0.08, y: 0.23, z: -0.08 },
-  "right-back-knee": { x: 0.08, y: 0.23, z: -0.08 },
-  "left-shin": { x: -0.08, y: 0.14, z: 0.07 },
-  "right-shin": { x: 0.08, y: 0.14, z: 0.07 },
-  "left-calf": { x: -0.08, y: 0.14, z: -0.07 },
-  "right-calf": { x: 0.08, y: 0.14, z: -0.07 },
-  "left-ankle": { x: -0.08, y: 0.05, z: 0.06 },
-  "right-ankle": { x: 0.08, y: 0.05, z: 0.06 },
-  "left-foot": { x: -0.08, y: 0.02, z: 0.11 },
-  "right-foot": { x: 0.08, y: 0.02, z: 0.11 },
-  "left-heel": { x: -0.08, y: 0.02, z: -0.08 },
-  "right-heel": { x: 0.08, y: 0.02, z: -0.08 },
-};
 
 export function mountMiniBody(container, {
   view = 'front',
@@ -77,6 +37,8 @@ export function mountMiniBody(container, {
     label.textContent = `${zones.length} spot${zones.length > 1 ? 's' : ''}`;
     container.append(label);
   }
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+
   Promise.resolve().then(() => {
     // This miniature model mirrors the full body-map selection on review
     // screens. It is intentionally passive so the form remains the focus.
@@ -110,7 +72,7 @@ export function mountMiniBody(container, {
       });
       function loop() {
         requestAnimationFrame(loop);
-        if (rotate) model.rotation.y += rotateSpeed;
+        if (rotate && !reduceMotion) model.rotation.y += rotateSpeed;
         renderer.render(scene, camera);
       }
       loop();

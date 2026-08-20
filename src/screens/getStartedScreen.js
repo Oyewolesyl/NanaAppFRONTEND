@@ -11,10 +11,16 @@ export function renderGetStartedScreen(app) {
   screen.insertAdjacentHTML("beforeend", `
     <h1 class="welcome-title">Welcome</h1>
 
-    <p class="welcome-copy">Create your account to start using Nana.</p>
+    <p class="welcome-copy">Create a child profile, mark pain on the 3D body map, and share a clear handoff.</p>
 
     <section class="app-thumbnail app-thumbnail--text-logo" aria-label="Nana the App logo">
       <img src="${ASSETS.logoFull}" alt="Nana the App" class="thumbnail-mark thumbnail-mark--text" />
+    </section>
+
+    <section class="landing-built-strip" aria-label="Nana core flow">
+      <span><strong>profile</strong><em>child context</em></span>
+      <span><strong>3D map</strong><em>where it hurts</em></span>
+      <span><strong>handoff</strong><em>care-ready note</em></span>
     </section>
 
     <button type="button" class="continue-button get-started-button">

@@ -11,3 +11,14 @@
 | testing and iteration | user-test Notion, findings slides, implemented UI fixes | do not claim tests that were not documented; show before/after changes |
 | project management | sprint board and retrospectives | connect commits and deliverables to sprint goals |
 | entrepreneurship | business report and marketing plan | caregiver value, school/clinic relevance, privacy risk, feasible phased business model |
+
+
+## scope correction evidence
+
+During the final cleanup, an accidental marketing-scope change was corrected so the product app and marketing site stayed separate.
+
+- `2309f8e` documented the attempted landing refinement.
+- `754e258` reverted the unintended app/landing scope issue.
+- `b2f6ace` is the separate marketing landing commit that shortened the marketing page.
+
+Use this in the jury as evidence that the project scope was controlled: app functionality, backend hardening, backend manager, and marketing landing updates were treated as separate deliverables.

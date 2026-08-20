@@ -63,3 +63,8 @@ The backend accepts comma-separated `FRONTEND_URL` and `MANAGER_URL` values, whi
 - Final Figma URL and prototype access.
 - Final PDF exports for business report, proposal paper, marketing plan, and jury presentation.
 - Sprint board URL with July-August sprints and retrospectives.
+
+
+## performance correction
+
+The January/June feedback said the dependency setup and 3D loading needed clearer explanation. The current frontend fixes this by keeping Three.js in `package.json` and using npm imports rather than a CDN script. The full 3D body map is dynamically imported only when the body-map screen is opened, which keeps the first app load lighter. The when-start illustrations were also moved out of inline JavaScript and into `public/when-start/`, so the main bundle no longer carries those large base64 strings.

@@ -49,7 +49,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       </div>
     </div>
     <div class="zoom-row">
-      <button type="button" class="zoom-btn zoom-btn--minus" aria-label="Zoom out">−</button>
+      <button type="button" class="zoom-btn zoom-btn--minus" aria-label="Zoom out">-</button>
       <span class="zoom-label" id="zoomLabel">100%</span>
       <button type="button" class="zoom-btn zoom-btn--plus" aria-label="Zoom in">+</button>
     </div>
@@ -70,6 +70,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   const sel     = new Map((appState.painDraft?.zones || []).map(z => [z, 0]));
   let cidx      = 0;
   let hasTapped = false;   // pulse stops after first successful tap
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
   // Continuous camera distance (zoom). Start close enough that the body map is
   // the usable focal point, while the minus control still lets testers zoom out.
@@ -144,13 +145,25 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   // ── Scene init ───────────────────────────────────────────────
   async function init() {
     setBodyLoading("Preparing 3D body map...");
-    await loadBodyMapEngine();
+    try {
+      await loadBodyMapEngine();
+    } catch (error) {
+      activateBodyFallback("3D body map could not start. Use this map.");
+      console.error("Body map engine load error:", error);
+      return;
+    }
 
     const rect  = wrap.getBoundingClientRect();
     const W = rect.width  || 300;
     const H = rect.height || 420;
 
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch (error) {
+      activateBodyFallback("3D body map is not available on this device. Use this map.");
+      console.error("WebGL renderer error:", error);
+      return;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(W, H);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -204,7 +217,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
 
       (function loop(ts) {
         requestAnimationFrame(loop);
-        if (!hasTapped) {
+        if (!hasTapped && !reduceMotion) {
           // Smooth sine wave: peaks every ~2 s, intensity 0–0.18
           const t = (ts || 0) * 0.0015;
           const intensity = Math.pow(Math.sin(t * Math.PI), 2) * 0.18;

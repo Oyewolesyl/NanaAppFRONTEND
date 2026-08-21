@@ -16080,3 +16080,67 @@ body[data-route="body-map"] .body-zone-label[style] {
   overflow: visible !important;
   white-space: nowrap !important;
 }
+
+/* History search repair: keep the icon from expanding into the input. */
+body[data-route="history"] .history-search-wrap {
+  width: min(calc(100vw - 40px), 390px) !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 20px auto 0 !important;
+  padding: 0 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+body[data-route="history"] .history-search-icon {
+  position: relative !important;
+  flex: 0 0 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+body[data-route="history"] .history-search-icon::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 2px !important;
+  top: 2px !important;
+  width: 12px !important;
+  height: 12px !important;
+  border: 2px solid #00a997 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+}
+
+body[data-route="history"] .history-search-icon::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 14px !important;
+  top: 15px !important;
+  width: 8px !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: #00a997 !important;
+  transform: rotate(45deg) !important;
+}
+
+body[data-route="history"] .history-search-input {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  outline: 0 !important;
+}

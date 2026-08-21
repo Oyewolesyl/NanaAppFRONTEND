@@ -1,5 +1,4 @@
 import { ASSETS } from "../assets";
-import { startGuidedTour } from "../appTour";
 
 export function renderGetStartedScreen(app) {
   app.innerHTML = "";
@@ -29,7 +28,6 @@ export function renderGetStartedScreen(app) {
   `);
 
   screen.querySelector(".get-started-button")?.addEventListener("click", () => {
-    startGuidedTour({ force: true });
     window.location.hash = "#select-role";
   });
 

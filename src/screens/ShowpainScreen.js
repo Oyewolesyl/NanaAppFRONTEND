@@ -57,13 +57,13 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   `);
 
   screen.querySelector(".back-button").addEventListener("click",  () => { window.location.hash = fromScreen; });
-  screen.querySelector(".show-pain-continue").addEventListener("click", () => { updatePainDraft({ zones: [...sel.keys()], view: "rotatable" }); window.location.hash = "#pain-type"; });
 
   const wrap      = screen.querySelector("#bodySvgWrap");
   const canvas    = screen.querySelector("#bodyCanvas");
   const loadingEl = screen.querySelector("#bodyLoading");
   const badgesEl  = screen.querySelector("#bodyBadges");
   const zlbl      = screen.querySelector("#zoomLabel");
+  const continueBtn = screen.querySelector(".show-pain-continue");
 
   let isFront   = true;
   let modelYaw  = 0;
@@ -82,6 +82,20 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   let renderer, camera, scene, model, raycaster;
   let bodyMeshes = [];
   const overlays = [];
+
+  function updateContinueState() {
+    continueBtn.disabled = sel.size === 0;
+    continueBtn.setAttribute("aria-disabled", String(sel.size === 0));
+  }
+
+  continueBtn.addEventListener("click", () => {
+    if (!sel.size) return;
+    updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
+    window.location.hash = "#pain-type";
+  });
+
+  updateContinueState();
+
   // Scene status and fallback handling.
   function setBodyLoading(message) {
     loadingEl.style.display = "flex";
@@ -133,6 +147,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         }
 
         updatePainDraft({ zones: [...sel.keys()], view: "fallback" });
+        updateContinueState();
         fallback.querySelectorAll("[data-zone]").forEach((item) => {
           item.classList.toggle("is-selected", sel.has(item.dataset.zone));
         });
@@ -281,6 +296,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     }
 
     updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
+    updateContinueState();
     refreshOverlays();
     updateBadges();
   }
@@ -374,7 +390,10 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const zoneSideIsFront = origLocal.z >= 0;
     isFront = zoneSideIsFront;
 
-    commitZoneSelection(getZoneFromPoint(origLocal, zoneSideIsFront));
+    const zone =
+      getZoneFromPoint(origLocal, zoneSideIsFront) ||
+      fallbackZoneFromCanvasPoint(clientX, clientY);
+    commitZoneSelection(zone);
   }
 
   let suppressNextClick = false;
@@ -510,7 +529,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       el.style.top = `${py}px`;
       el.dataset.zone = zone;
       el.textContent = LABELS[zone] || zone;
-      el.addEventListener("click", () => { sel.delete(zone); updatePainDraft({ zones: [...sel.keys()], view: 'rotatable' }); refreshOverlays(); updateBadges(); });
+      el.addEventListener("click", () => { sel.delete(zone); updatePainDraft({ zones: [...sel.keys()], view: 'rotatable' }); updateContinueState(); refreshOverlays(); updateBadges(); });
       badgesEl.appendChild(el);
     });
   }

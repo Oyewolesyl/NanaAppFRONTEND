@@ -305,8 +305,59 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     return getZoneFromPoint({ x: localX, y: localY }, isFront);
   }
 
+  function isZoneOnVisibleSide(zone, front) {
+    const isBackZone =
+      zone.includes("back") ||
+      zone.includes("glute") ||
+      zone.includes("hamstring") ||
+      zone.includes("calf") ||
+      zone.includes("heel");
+
+    return front ? !isBackZone : isBackZone;
+  }
+
+  function nearestZoneFromPoint(point, front) {
+    let bestZone = null;
+    let bestScore = Infinity;
+
+    Object.entries(ZONE_BOUNDS_LOCAL).forEach(([zone, box]) => {
+      if (!isZoneOnVisibleSide(zone, front)) return;
+
+      const dx = Math.abs(point.x - box.x) / Math.max(box.w, 0.08);
+      const dy = Math.abs(point.y - box.y) / Math.max(box.h, 0.06);
+      const score = dx * dx + dy * dy;
+
+      if (score < bestScore) {
+        bestScore = score;
+        bestZone = zone;
+      }
+    });
+
+    return bestScore <= 6.5 ? bestZone : null;
+  }
+
+  function getZoneFromPoint(point, front) {
+    for (const [zone, box] of Object.entries(ZONE_BOUNDS_LOCAL)) {
+      if (!isZoneOnVisibleSide(zone, front)) continue;
+
+      const inX = Math.abs(point.x - box.x) <= box.w / 2;
+      const inY = Math.abs(point.y - box.y) <= box.h / 2;
+      const inZ =
+        typeof point.z !== "number" ||
+        Math.abs(point.z - (box.z || 0)) <= Math.max(box.d || 0.1, 0.12);
+
+      if (inX && inY && inZ) return zone;
+    }
+
+    return nearestZoneFromPoint(point, front);
+  }
+
   function handleTap(clientX, clientY) {
-    if (!model) return;
+    if (!model || !camera) {
+      commitZoneSelection(fallbackZoneFromCanvasPoint(clientX, clientY));
+      return;
+    }
+
     const rect = canvas.getBoundingClientRect();
     const nx =  ((clientX - rect.left) / rect.width)  * 2 - 1;
     const ny = -((clientY - rect.top)  / rect.height) * 2 + 1;
@@ -412,9 +463,9 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     e.preventDefault();
     const state = touchState;
     touchState = null;
-    if (window.PointerEvent) return;
     // Only fire tap if it was a single touch and barely moved
     if (state && state.type === "single" && !state.moved && e.changedTouches.length) {
+      suppressNextClick = true;
       handleTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
     }
   }, { passive: false });

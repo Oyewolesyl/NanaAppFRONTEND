@@ -3,8 +3,10 @@ import { showToast } from '../toast';
 import { ASSETS } from '../assets';
 
 const API_URL =
-  import.meta.env.VITE_API_URL ||
-  'https://nanaappbackend.onrender.com';
+  (
+    import.meta.env.VITE_API_URL ||
+    'https://nanaappbackend.onrender.com'
+  ).replace(/\/+$/, '');
 
 export function renderAuthScreen(app) {
   app.innerHTML = '';

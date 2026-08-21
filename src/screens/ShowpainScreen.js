@@ -57,13 +57,13 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   `);
 
   screen.querySelector(".back-button").addEventListener("click",  () => { window.location.hash = fromScreen; });
+  screen.querySelector(".show-pain-continue").addEventListener("click", () => { updatePainDraft({ zones: [...sel.keys()], view: "rotatable" }); window.location.hash = "#pain-type"; });
 
   const wrap      = screen.querySelector("#bodySvgWrap");
   const canvas    = screen.querySelector("#bodyCanvas");
   const loadingEl = screen.querySelector("#bodyLoading");
   const badgesEl  = screen.querySelector("#bodyBadges");
   const zlbl      = screen.querySelector("#zoomLabel");
-  const continueBtn = screen.querySelector(".show-pain-continue");
 
   let isFront   = true;
   let modelYaw  = 0;
@@ -82,20 +82,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
   let renderer, camera, scene, model, raycaster;
   let bodyMeshes = [];
   const overlays = [];
-
-  function updateContinueState() {
-    continueBtn.disabled = sel.size === 0;
-    continueBtn.setAttribute("aria-disabled", String(sel.size === 0));
-  }
-
-  continueBtn.addEventListener("click", () => {
-    if (!sel.size) return;
-    updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
-    window.location.hash = "#pain-type";
-  });
-
-  updateContinueState();
-
   // Scene status and fallback handling.
   function setBodyLoading(message) {
     loadingEl.style.display = "flex";
@@ -147,7 +133,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
         }
 
         updatePainDraft({ zones: [...sel.keys()], view: "fallback" });
-        updateContinueState();
         fallback.querySelectorAll("[data-zone]").forEach((item) => {
           item.classList.toggle("is-selected", sel.has(item.dataset.zone));
         });
@@ -296,7 +281,6 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     }
 
     updatePainDraft({ zones: [...sel.keys()], view: "rotatable" });
-    updateContinueState();
     refreshOverlays();
     updateBadges();
   }
@@ -321,59 +305,8 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     return getZoneFromPoint({ x: localX, y: localY }, isFront);
   }
 
-  function isZoneOnVisibleSide(zone, front) {
-    const isBackZone =
-      zone.includes("back") ||
-      zone.includes("glute") ||
-      zone.includes("hamstring") ||
-      zone.includes("calf") ||
-      zone.includes("heel");
-
-    return front ? !isBackZone : isBackZone;
-  }
-
-  function nearestZoneFromPoint(point, front) {
-    let bestZone = null;
-    let bestScore = Infinity;
-
-    Object.entries(ZONE_BOUNDS_LOCAL).forEach(([zone, box]) => {
-      if (!isZoneOnVisibleSide(zone, front)) return;
-
-      const dx = Math.abs(point.x - box.x) / Math.max(box.w, 0.08);
-      const dy = Math.abs(point.y - box.y) / Math.max(box.h, 0.06);
-      const score = dx * dx + dy * dy;
-
-      if (score < bestScore) {
-        bestScore = score;
-        bestZone = zone;
-      }
-    });
-
-    return bestScore <= 6.5 ? bestZone : null;
-  }
-
-  function getZoneFromPoint(point, front) {
-    for (const [zone, box] of Object.entries(ZONE_BOUNDS_LOCAL)) {
-      if (!isZoneOnVisibleSide(zone, front)) continue;
-
-      const inX = Math.abs(point.x - box.x) <= box.w / 2;
-      const inY = Math.abs(point.y - box.y) <= box.h / 2;
-      const inZ =
-        typeof point.z !== "number" ||
-        Math.abs(point.z - (box.z || 0)) <= Math.max(box.d || 0.1, 0.12);
-
-      if (inX && inY && inZ) return zone;
-    }
-
-    return nearestZoneFromPoint(point, front);
-  }
-
   function handleTap(clientX, clientY) {
-    if (!model || !camera) {
-      commitZoneSelection(fallbackZoneFromCanvasPoint(clientX, clientY));
-      return;
-    }
-
+    if (!model) return;
     const rect = canvas.getBoundingClientRect();
     const nx =  ((clientX - rect.left) / rect.width)  * 2 - 1;
     const ny = -((clientY - rect.top)  / rect.height) * 2 + 1;
@@ -390,10 +323,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     const zoneSideIsFront = origLocal.z >= 0;
     isFront = zoneSideIsFront;
 
-    const zone =
-      getZoneFromPoint(origLocal, zoneSideIsFront) ||
-      fallbackZoneFromCanvasPoint(clientX, clientY);
-    commitZoneSelection(zone);
+    commitZoneSelection(getZoneFromPoint(origLocal, zoneSideIsFront));
   }
 
   let suppressNextClick = false;
@@ -482,9 +412,9 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
     e.preventDefault();
     const state = touchState;
     touchState = null;
+    if (window.PointerEvent) return;
     // Only fire tap if it was a single touch and barely moved
     if (state && state.type === "single" && !state.moved && e.changedTouches.length) {
-      suppressNextClick = true;
       handleTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
     }
   }, { passive: false });
@@ -529,7 +459,7 @@ export function renderShowPainScreen(app, { fromScreen = "#child-added" } = {}) 
       el.style.top = `${py}px`;
       el.dataset.zone = zone;
       el.textContent = LABELS[zone] || zone;
-      el.addEventListener("click", () => { sel.delete(zone); updatePainDraft({ zones: [...sel.keys()], view: 'rotatable' }); updateContinueState(); refreshOverlays(); updateBadges(); });
+      el.addEventListener("click", () => { sel.delete(zone); updatePainDraft({ zones: [...sel.keys()], view: 'rotatable' }); refreshOverlays(); updateBadges(); });
       badgesEl.appendChild(el);
     });
   }

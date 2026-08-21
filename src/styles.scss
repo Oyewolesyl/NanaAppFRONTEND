@@ -15959,3 +15959,124 @@ body[data-route="get-started"] .tagline {
     transform: none !important;
   }
 }
+
+/* App function/layout repair: restore centered cards, readable buttons, fixed body-map chrome. */
+body[data-route="child-added"] .child-added-screen,
+body[data-route="homepage-newuser"] .homepage-new-user-screen {
+  align-items: center !important;
+}
+
+body[data-route="child-added"] .children-content,
+body[data-route="homepage-newuser"] .children-content {
+  width: min(calc(100vw - 40px), 390px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  align-items: center !important;
+  justify-items: center !important;
+  text-align: center !important;
+}
+
+body[data-route="child-added"] .child-card-list,
+body[data-route="homepage-newuser"] .child-card-list,
+body[data-route="child-added"] .child-card-list.child-card-list--two,
+body[data-route="homepage-newuser"] .child-card-list.child-card-list--two {
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  align-items: center !important;
+}
+
+body[data-route="child-added"] .child-card,
+body[data-route="homepage-newuser"] .child-card,
+body[data-route="child-added"] .child-card.child-card--compact,
+body[data-route="homepage-newuser"] .child-card.child-card--compact {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.continue-button,
+.auth-compact-button,
+body[data-route="child-added"] .child-card button:not(.child-edit-button):not(.child-delete-button),
+body[data-route="homepage-newuser"] .child-card button:not(.child-edit-button):not(.child-delete-button) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+  text-align: center !important;
+  white-space: normal !important;
+  line-height: 1.12 !important;
+}
+
+body[data-route="body-map"] .show-pain-screen {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  padding-top: max(12px, env(safe-area-inset-top, 0px) + 10px) !important;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 0px) + 14px) !important;
+}
+
+body[data-route="body-map"] .show-pain-top-bar,
+body[data-route="body-map"] .pain-progress,
+body[data-route="body-map"] .show-pain-title,
+body[data-route="body-map"] .child-context-pill,
+body[data-route="body-map"] .zoom-row,
+body[data-route="body-map"] .show-pain-continue {
+  flex-shrink: 0 !important;
+}
+
+body[data-route="body-map"] .show-pain-top-bar {
+  position: relative !important;
+  top: auto !important;
+  margin-top: 0 !important;
+}
+
+body[data-route="body-map"] .body-map-wrap {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body[data-route="body-map"] .body-svg-wrap,
+body[data-route="body-map"] #bodyBadges {
+  overflow: visible !important;
+}
+
+body[data-route="body-map"] #bodyBadges {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 20 !important;
+}
+
+body[data-route="body-map"] .body-zone-label,
+body[data-route="body-map"] .body-zone-label[style] {
+  position: absolute !important;
+  z-index: 30 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  max-width: 138px !important;
+  padding: 6px 10px !important;
+  border: 3px solid #fff8ea !important;
+  border-radius: 999px !important;
+  background: #ff4f55 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(255,79,85,.2), 0 10px 18px rgba(255,79,85,.32) !important;
+  font-family: "Nunito", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  text-indent: 0 !important;
+  text-align: center !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
